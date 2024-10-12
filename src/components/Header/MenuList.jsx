@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
+import * as colors from '../../config/colors';
 
 MenuList.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -17,7 +18,16 @@ const clienteList = ['Minhas consultas', 'Histórico de consultas', 'Meu Perfil'
 
 function MenuList({ open, setOpen }) {
   return (
-    <Drawer open={open} onClose={() => setOpen(false)} anchor="right">
+    <Drawer
+      open={open}
+      onClose={() => setOpen(false)}
+      anchor="right"
+      PaperProps={{
+        sx: {
+          backgroundColor: colors.primaryColor,
+          color: colors.primaryWhiteColor
+        }
+      }}>
       <Box
         sx={{ width: 250, textAlign: 'center' }}
         role="presentation"
