@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import * as colors from '../../config/colors';
 
 const TextFieldStyled = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
@@ -16,7 +15,8 @@ export const InputType = {
   TEXT: 'text',
   NUMBER: 'number',
   DATE: 'date',
-  TEXTAREA: 'textarea'
+  TEXTAREA: 'textarea',
+  PASSWORD: 'password'
 };
 
 Input.propTypes = {
@@ -71,6 +71,8 @@ function Input({
   // const error = isError();
   // const errorText = `${placeholder} não pode ser vazio`;
 
+  const inputBorderRadius = '10px';
+
   return (
     <TextFieldStyled
       type={select ? null : inputType}
@@ -82,7 +84,18 @@ function Input({
       // Fix placeholder on top of input
       slotProps={{
         inputplaceholder: { shrink: true },
-        htmlInput: { min: 0, step: 'any' }
+        htmlInput: {
+          min: 0,
+          step: 'any',
+          style: {
+            borderRadius: inputBorderRadius
+          }
+        },
+        input: {
+          style: {
+            borderRadius: inputBorderRadius
+          }
+        }
       }}
       // Textarea
       multiline={inputType === InputType.TEXTAREA}
@@ -91,7 +104,9 @@ function Input({
       fullWidth
       sx={{
         width: inputWidth,
-        input: { backgroundColor: colors.primaryWhiteColor }
+        '& .MuiSelect-outlined': {
+          borderRadius: inputBorderRadius,
+        },
       }}
       // Error text
       // error={error}

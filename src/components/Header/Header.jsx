@@ -7,13 +7,14 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuList from './MenuList';
+import * as colors from '../../config/colors';
 
 function Header() {
   const [open, setOpen] = useState(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: colors.primaryColor }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/">QuickCheck</Link>
