@@ -38,6 +38,7 @@ export const comorbidadesOptions = [
 export const defaultList = [
   'Login',
   'Cadastro',
+  'Ajuda',
   'Sobre',
 ];
 
@@ -45,6 +46,7 @@ export const clienteList = [
   'Minhas consultas',
   'Histórico de consultas',
   'Meu Perfil',
+  'Ajuda',
   'Sobre',
   'Logout'
 ];
