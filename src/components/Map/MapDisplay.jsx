@@ -1,6 +1,7 @@
-import { MapContainer, TileLayer, Popup, Marker, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
+import MapButtons from './MapButtons';
 
-function Map() {
+export default function MapDisplay() {
   return (
     <MapContainer
       style={{ width: '100%', height: '100vh' }}
@@ -11,14 +12,12 @@ function Map() {
         attribution="Google Maps"
         url="https://www.google.us/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
       />
-      <ZoomControl position="bottomright" />
       <Marker position={[51.505, -0.09]}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
+      <MapButtons />
     </MapContainer>
   );
 }
-
-export default Map;
