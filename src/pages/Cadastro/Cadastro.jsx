@@ -1,40 +1,47 @@
 import { useState } from 'react';
 import { Typography, Button } from '@mui/material';
-import Input, { InputType } from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import * as colors from '../../config/colors';
+import { styled } from '@mui/material/styles';
+import CadastroRender from './CadastroRender';
+import CadastroOptions from './CadastroOptions';
+import { UserRoles } from '../../config/enums';
+
+const StyledButton = styled(Button)(() => ({
+  width: '15rem',
+  padding: '1rem'
+}));
 
 export default function Cadastro() {
-  const roleOptions = [
-    { value: 'cliente', label: 'Paciente' },
-    { value: 'funcionario', label: 'Médico' },
-    { value: 'estabelecimento', label: 'Hospital/Clínica' }
-  ];
+  const [option, setOption] = useState(UserRoles.CLIENTE);
+  const [role, setRole] = useState('');
 
-  const initialData = {
-    email: '',
-    senha: '',
-    tipo: roleOptions[0].value
+  const handleChange = (event) => {
+    setOption(event.target.value);
   };
 
-  const [data, setData] = useState(initialData);
+  const handleRole = () => {
+    if (role === '') {
+      setRole(option);
+    } else {
+      setRole('');
+    }
+  };
 
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
       <VerticalContainer style={{ width: '15rem' }}>
         <Typography variant="h3">Cadastro</Typography>
-        <Input data={data} setData={setData} keyName="email" placeholder="Email" />
-        <Input
-          data={data}
-          setData={setData}
-          keyName="senha"
-          placeholder="Senha"
-          inputType={InputType.PASSWORD}
-        />
-        <Input data={data} setData={setData} keyName="tipo" select selectList={roleOptions} />
-        <Button variant="contained" sx={{ width: '15rem', padding: '1rem' }}>
-          Cadastrar
-        </Button>
+        {role === '' ? (
+          <>
+            <CadastroOptions handleChange={handleChange} />
+            <StyledButton variant="contained" onClick={handleRole}>
+              Continuar
+            </StyledButton>
+          </>
+        ) : (
+          <CadastroRender userRole={role} />
+        )}
       </VerticalContainer>
     </VerticalContainer>
   );

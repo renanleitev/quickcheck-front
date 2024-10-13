@@ -1,20 +1,16 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import Input, { InputType } from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import * as colors from '../../config/colors';
+import { roleOptions } from '../../config/enums';
 
 export default function Login() {
-  const roleOptions = [
-    { value: 'cliente', label: 'Paciente' },
-    { value: 'funcionario', label: 'Médico' },
-    { value: 'estabelecimento', label: 'Hospital/Clínica' }
-  ];
-
   const initialData = {
     email: '',
     senha: '',
-    tipo: roleOptions[0].value
+    role: roleOptions[0].value
   };
 
   const [data, setData] = useState(initialData);
@@ -31,10 +27,16 @@ export default function Login() {
           placeholder="Senha"
           inputType={InputType.PASSWORD}
         />
-        <Input data={data} setData={setData} keyName="tipo" select selectList={roleOptions} />
+        <Input data={data} setData={setData} keyName="role" select selectList={roleOptions} />
         <Button variant="contained" sx={{ width: '15rem', padding: '1rem' }}>
           Entrar
         </Button>
+        <VerticalContainer style={{ rowGap: '1rem' }}>
+          <Typography>Ainda não possui uma conta?</Typography>
+          <Typography>
+            <Link to="/cadastro">Cadastre-se!</Link>
+          </Typography>
+        </VerticalContainer>
       </VerticalContainer>
     </VerticalContainer>
   );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
+import * as colors from '../../config/colors';
 
 const TextFieldStyled = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
@@ -20,7 +21,7 @@ export const InputType = {
 };
 
 Input.propTypes = {
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   keyName: PropTypes.string.isRequired,
   inputType: PropTypes.string,
   data: PropTypes.objectOf(
@@ -78,6 +79,7 @@ function Input({
       type={select ? null : inputType}
       value={data[keyName]}
       onChange={handleInput}
+      label={placeholder}
       placeholder={placeholder}
       disabled={disabled}
       select={select}
@@ -104,9 +106,17 @@ function Input({
       fullWidth
       sx={{
         width: inputWidth,
+        '& .MuiOutlinedInput-root': {
+          borderRadius: inputBorderRadius,
+        },
         '& .MuiSelect-outlined': {
           borderRadius: inputBorderRadius,
         },
+        "& .MuiFormLabel-root": {
+          backgroundColor: colors.primaryWhiteColor,
+          borderRadius: inputBorderRadius,
+          padding: '0 10px'
+        }
       }}
       // Error text
       // error={error}

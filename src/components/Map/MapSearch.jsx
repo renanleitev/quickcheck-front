@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import * as colors from '../../config/colors';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import Input from '../Input/Input';
-import { especialidadesOptions } from '../../config/especialidades';
+import { especialidadesOptions } from '../../config/enums';
 import PropTypes from 'prop-types';
 
 const tabWidth = '10rem';
