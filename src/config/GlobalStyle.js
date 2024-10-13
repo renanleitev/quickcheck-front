@@ -12,7 +12,7 @@ export default createGlobalStyle`
     }
     body {
         font-family: Roboto;
-        color: ${colors.primaryDarkColor};
+        color: ${colors.primaryWhiteColor};
     }
     html, body, #root {
         height: 100%;

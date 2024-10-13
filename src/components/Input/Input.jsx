@@ -1,6 +1,15 @@
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import * as colors from '../../config/colors';
+
+const TextFieldStyled = styled(TextField)(() => ({
+  '& .MuiInputBase-input': {
+    backgroundColor: 'white'
+  }
+}));
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const InputType = {
@@ -11,9 +20,9 @@ export const InputType = {
 };
 
 Input.propTypes = {
-  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
   keyName: PropTypes.string.isRequired,
-  keyType: PropTypes.string,
+  inputType: PropTypes.string,
   data: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.string,
@@ -24,17 +33,21 @@ Input.propTypes = {
   ).isRequired,
   setData: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  inputWidth: PropTypes.number
+  inputWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  select: PropTypes.bool,
+  selectList: PropTypes.arrayOf(PropTypes.object)
 };
 
 function Input({
-  label,
+  placeholder,
   keyName,
-  keyType = InputType.TEXT,
+  inputType = InputType.TEXT,
   data,
   setData,
   disabled = false,
-  inputWidth = 512
+  inputWidth,
+  select = false,
+  selectList = []
 }) {
   const handleInput = useCallback(
     (e) => {
@@ -56,31 +69,42 @@ function Input({
   //   return false;
   // };
   // const error = isError();
-  // const errorText = `${label} não pode ser vazio`;
+  // const errorText = `${placeholder} não pode ser vazio`;
 
   return (
-    <TextField
-      type={keyType}
-      label={label}
+    <TextFieldStyled
+      type={select ? null : inputType}
       value={data[keyName]}
       onChange={handleInput}
-      placeholder={label}
+      placeholder={placeholder}
       disabled={disabled}
-      // Fix label on top of input
+      select={select}
+      // Fix placeholder on top of input
       slotProps={{
-        inputLabel: { shrink: true },
+        inputplaceholder: { shrink: true },
         htmlInput: { min: 0, step: 'any' }
       }}
       // Textarea
-      multiline={keyType === InputType.TEXTAREA}
+      multiline={inputType === InputType.TEXTAREA}
       rows={2}
       // Style
       fullWidth
-      sx={{ width: inputWidth }}
+      sx={{
+        width: inputWidth,
+        input: { backgroundColor: colors.primaryWhiteColor }
+      }}
       // Error text
       // error={error}
       // helperText={error && errorText}
-    />
+    >
+      {selectList.map((selectItem) => {
+        return (
+          <MenuItem key={selectItem.value} value={selectItem.value}>
+            {selectItem.label}
+          </MenuItem>
+        );
+      })}
+    </TextFieldStyled>
   );
 }
 

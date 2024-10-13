@@ -2,16 +2,22 @@ import { Button } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import Control from 'react-leaflet-custom-control';
 import { ZoomControl } from 'react-leaflet';
+import PropTypes from 'prop-types';
 
-export default function MapButtons() {
+MapButtons.propTypes = {
+  setOpen: PropTypes.func.isRequired
+};
+
+export default function MapButtons({ setOpen }) {
   return (
     <>
       <Control position="bottomright">
         <Button
           variant="contained"
+          onClick={() => setOpen(true)}
           sx={{
             borderRadius: '50%',
-            width: 50, 
+            width: 50,
             height: 50,
             marginBottom: '7rem',
             position: 'absolute',
