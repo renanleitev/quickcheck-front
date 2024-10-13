@@ -5,9 +5,22 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import * as colors from '../../config/colors';
 
+const inputBorderRadius = '10px';
+
 const TextFieldStyled = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
     backgroundColor: 'white'
+  },
+  '& .MuiOutlinedInput-root': {
+    borderRadius: inputBorderRadius
+  },
+  '& .MuiSelect-outlined': {
+    borderRadius: inputBorderRadius
+  },
+  '& .MuiFormLabel-root': {
+    backgroundColor: colors.primaryWhiteColor,
+    borderRadius: inputBorderRadius,
+    padding: '0 10px'
   }
 }));
 
@@ -71,8 +84,6 @@ function Input({
   // const error = isError();
   // const errorText = `${placeholder} não pode ser vazio`;
 
-  const inputBorderRadius = '10px';
-
   return (
     <TextFieldStyled
       type={select ? null : inputType}
@@ -82,6 +93,7 @@ function Input({
       placeholder={placeholder}
       disabled={disabled}
       select={select}
+      autoComplete="new-password"
       // Fix placeholder on top of input
       slotProps={{
         inputplaceholder: { shrink: true },
@@ -104,18 +116,7 @@ function Input({
       // Style
       fullWidth
       sx={{
-        width: inputWidth,
-        '& .MuiOutlinedInput-root': {
-          borderRadius: inputBorderRadius,
-        },
-        '& .MuiSelect-outlined': {
-          borderRadius: inputBorderRadius,
-        },
-        "& .MuiFormLabel-root": {
-          backgroundColor: colors.primaryWhiteColor,
-          borderRadius: inputBorderRadius,
-          padding: '0 10px'
-        }
+        width: inputWidth
       }}
       // Error text
       // error={error}

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,7 +16,7 @@ function Header() {
       <AppBar position="static" sx={{ bgcolor: colors.primaryColor }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/">QuickCheck</Link>
+            QuickCheck
           </Typography>
           <IconButton
             size="large"

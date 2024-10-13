@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -8,15 +10,26 @@ import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import * as colors from '../../config/colors';
+import { clienteList, defaultList } from '../../config/enums';
 
 MenuList.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired
 };
 
-const clienteList = ['Minhas consultas', 'Histórico de consultas', 'Meu Perfil', 'Sobre', 'Logout'];
-
 function MenuList({ open, setOpen }) {
+  const location = useLocation();
+
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    if (location.pathname === '/cadastro' || location.pathname === '/login') {
+      setList(defaultList);
+    } else {
+      setList(clienteList);
+    }
+  }, [location.pathname]);
+
   return (
     <Drawer
       open={open}
@@ -37,7 +50,7 @@ function MenuList({ open, setOpen }) {
         </Typography>
         <Divider />
         <List>
-          {clienteList.map((text) => (
+          {list.map((text) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemText primary={text} />

@@ -21,16 +21,30 @@ export const userLabels = {
 export const roleOptions = [
   { value: UserRoles.CLIENTE, label: userLabels[UserRoles.CLIENTE] },
   { value: UserRoles.FUNCIONARIO, label: userLabels[UserRoles.FUNCIONARIO] },
-  { value: UserRoles.ESTABELECIMENTO, label: userLabels[UserRoles.ESTABELECIMENTO] },
+  { value: UserRoles.ESTABELECIMENTO, label: userLabels[UserRoles.ESTABELECIMENTO] }
 ];
 
 export const sexoOptions = [
   { value: 'M', label: 'Masculino' },
-  { value: 'F', label: 'Feminino' },
+  { value: 'F', label: 'Feminino' }
 ];
 
 export const comorbidadesOptions = [
   { value: 'diabetes', label: 'Diabetes' },
   { value: 'hipertensao', label: 'Hipertensão' },
   { value: 'obesidade', label: 'Obesidade' }
+];
+
+export const defaultList = [
+  'Login',
+  'Cadastro',
+  'Sobre',
+];
+
+export const clienteList = [
+  'Minhas consultas',
+  'Histórico de consultas',
+  'Meu Perfil',
+  'Sobre',
+  'Logout'
 ];

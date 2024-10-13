@@ -31,12 +31,9 @@ export default function Login() {
         <Button variant="contained" sx={{ width: '15rem', padding: '1rem' }}>
           Entrar
         </Button>
-        <VerticalContainer style={{ rowGap: '1rem' }}>
-          <Typography>Ainda não possui uma conta?</Typography>
-          <Typography>
-            <Link to="/cadastro">Cadastre-se!</Link>
-          </Typography>
-        </VerticalContainer>
+        <Typography>
+          Primeiro acesso? <Link to="/cadastro">Cadastre-se!</Link>
+        </Typography>
       </VerticalContainer>
     </VerticalContainer>
   );
