@@ -16,7 +16,6 @@ export const InputType = {
   TEXT: 'text',
   NUMBER: 'number',
   DATE: 'date',
-  TEXTAREA: 'textarea',
   PASSWORD: 'password'
 };
 

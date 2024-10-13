@@ -40,7 +40,7 @@ export default function Cadastro() {
             </StyledButton>
           </>
         ) : (
-          <CadastroRender userRole={role} />
+          <CadastroRender userRole={role} setUserRole={setRole} />
         )}
       </VerticalContainer>
     </VerticalContainer>

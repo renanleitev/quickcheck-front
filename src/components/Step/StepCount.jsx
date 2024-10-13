@@ -5,12 +5,12 @@ import StepLabel from '@mui/material/StepLabel';
 import PropTypes from 'prop-types';
 import * as colors from '../../config/colors';
 
-StepSetup.propTypes = {
+StepCount.propTypes = {
   steps: PropTypes.arrayOf(PropTypes.string).isRequired,
   activeStep: PropTypes.number.isRequired
 };
 
-export default function StepSetup({ steps, activeStep }) {
+export default function StepCount({ steps, activeStep }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep} alternativeLabel>

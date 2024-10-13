@@ -2,46 +2,27 @@ import { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, comorbidadesOptions } from '../../../config/enums';
-import StepPessoal from './Steps/StepPessoal';
-import StepContato from './Steps/StepContato';
-import StepSaude from './Steps/StepSaude';
-import StepFinal from './Steps/StepFinal';
-import StepSetup from '../../../components/StepSetup/StepSteup';
+import StepCount from '../../../components/Step/StepCount';
+import StepRender from './StepRender';
 import PropTypes from 'prop-types';
 
-StepRender.propTypes = {
-  step: PropTypes.number.isRequired,
-  data: PropTypes.object.isRequired,
-  setData: PropTypes.func.isRequired
+CadastroCliente.propTypes = {
+  setUserRole: PropTypes.func.isRequired
 };
 
-function StepRender({ step, data, setData }) {
-  switch (step) {
-    case 1:
-      return <StepContato data={data} setData={setData} />;
-    case 2:
-      return <StepSaude data={data} setData={setData} />;
-    case 3:
-      return <StepFinal data={data} setData={setData} />;
-    case 0:
-    default:
-      return <StepPessoal data={data} setData={setData} />;
-  }
-}
-
-export default function CadastroCliente() {
-  const initialClientData = {
+export default function CadastroCliente({ setUserRole }) {
+  const initialData = {
     // StepPessoal
     nome: '',
     cpf: '',
-    nascimento: new Date(),
-    idade: new Date(),
-    sexo: sexoOptions[0].value,
+    nascimento: new Date().toISOString().split('T')[0], // Convertendo para o formato yyyy-MM-dd
+    idade: new Date().toISOString().split('T')[0], // Convertendo para o formato yyyy-MM-dd
     // StepContato
     endereco: '',
     telefone: '',
     // StepSaude
     numeroCartaoSUS: '',
+    sexo: sexoOptions[0].value,
     comorbidades: comorbidadesOptions[0].value,
     // StepFinal
     email: '',
@@ -50,7 +31,7 @@ export default function CadastroCliente() {
     role: UserRoles.CLIENTE
   };
 
-  const [data, setData] = useState(initialClientData);
+  const [data, setData] = useState(initialData);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -63,7 +44,11 @@ export default function CadastroCliente() {
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if (activeStep === 0) {
+      setUserRole('');
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
   };
 
   return (
@@ -71,14 +56,10 @@ export default function CadastroCliente() {
       style={{
         width: widthContainer
       }}>
-      <StepSetup steps={steps} activeStep={activeStep} />
+      <StepCount steps={steps} activeStep={activeStep} />
       <StepRender step={activeStep} data={data} setData={setData} />
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={handleBack}
-          sx={{ mr: 1 }}>
+        <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
           Voltar
         </Button>
         <Button variant="contained" onClick={handleNext}>
