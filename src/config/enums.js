@@ -35,12 +35,7 @@ export const comorbidadesOptions = [
   { value: 'obesidade', label: 'Obesidade' }
 ];
 
-export const defaultList = [
-  'Login',
-  'Cadastro',
-  'Ajuda',
-  'Sobre',
-];
+export const defaultList = ['Login', 'Cadastro', 'Ajuda', 'Sobre'];
 
 export const clienteList = [
   'Minhas consultas',
@@ -50,3 +45,9 @@ export const clienteList = [
   'Sobre',
   'Logout'
 ];
+
+// Marco Zero Recife
+export const defaultCoords = [-8.062255486215344, -34.871117742328956];
+
+// Zoom padrão do mapa
+export const zoomLevel = 17;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Box, Button } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, comorbidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
+import StepButtons from '../../../components/Step/StepButtons';
 import StepRender from './StepRender';
 import PropTypes from 'prop-types';
 
@@ -39,18 +39,6 @@ export default function CadastroCliente({ setUserRole }) {
 
   const widthContainer = '20rem';
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    if (activeStep === 0) {
-      setUserRole('');
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    }
-  };
-
   return (
     <VerticalContainer
       style={{
@@ -58,14 +46,12 @@ export default function CadastroCliente({ setUserRole }) {
       }}>
       <StepCount steps={steps} activeStep={activeStep} />
       <StepRender step={activeStep} data={data} setData={setData} />
-      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-        <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
-          Voltar
-        </Button>
-        <Button variant="contained" onClick={handleNext}>
-          {activeStep === steps.length - 1 ? 'Finalizar' : 'Avançar'}
-        </Button>
-      </Box>
+      <StepButtons
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        setUserRole={setUserRole}
+        steps={steps}
+      />
     </VerticalContainer>
   );
 }
