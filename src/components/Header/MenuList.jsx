@@ -1,4 +1,5 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -9,6 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import colors from '../../config/colors';
+import { UserRoles } from '../../config/enums';
+import useList from './useList';
 
 MenuList.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -17,27 +20,35 @@ MenuList.propTypes = {
 
 function MenuList({ open, setOpen }) {
   const location = useLocation();
-  const navigate = useNavigate();
 
-  const defaultList = [
-    { name: 'Login', onClick: () => navigate('/login') },
-    { name: 'Cadastro', onClick: () => navigate('/cadastro') },
-    { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-    { name: 'Sobre', onClick: () => navigate('/sobre') }
-  ];
+  const [list, setList] = useState([]);
 
-  const clienteList = [
-    { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
-    { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
-    { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-    { name: 'Sobre', onClick: () => navigate('/sobre') },
-    { name: 'Logout', onClick: () => navigate('/login') }
-  ];
+  // TODO: Substituir o role mockado pelo role do usuário logado
+  const userRole = UserRoles.CLIENTE;
 
   // O usuário não está logado quando a URL está em cadastro ou login
   const notLoggedIn = location.pathname === '/cadastro' || location.pathname === '/login';
 
-  const list = notLoggedIn ? defaultList : clienteList;
+  const { defaultList, clienteList, funcionarioList, estabelecimentoList } = useList();
+
+  useEffect(() => {
+    if (notLoggedIn) {
+      setList(defaultList);
+    } else {
+      switch (userRole) {
+        case UserRoles.ESTABELECIMENTO:
+          setList(estabelecimentoList);
+          break;
+        case UserRoles.FUNCIONARIO:
+          setList(funcionarioList);
+          break;
+        case UserRoles.CLIENTE:
+        default:
+          setList(clienteList);
+          break;
+      }
+    }
+  }, [clienteList, defaultList, estabelecimentoList, funcionarioList, notLoggedIn, userRole]);
 
   return (
     <Drawer
