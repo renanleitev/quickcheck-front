@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import Input, { InputType } from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 import { roleOptions } from '../../config/enums';
 
 export default function Login() {

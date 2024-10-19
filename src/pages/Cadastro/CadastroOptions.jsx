@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import { UserRoles, userLabels } from '../../config/enums';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 CadastroOptions.propTypes = {
   handleChange: PropTypes.func.isRequired

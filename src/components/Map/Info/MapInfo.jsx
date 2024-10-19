@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Avatar, Box, Card, CardHeader, Drawer, IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import * as colors from '../../../config/colors';
+import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import PropTypes from 'prop-types';
 import StepInfo from './Steps/StepInfo';

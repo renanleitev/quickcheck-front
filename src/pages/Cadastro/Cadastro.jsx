@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Typography, Button } from '@mui/material';
 import { VerticalContainer } from '../../config/GlobalStyle';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 import { styled } from '@mui/material/styles';
 import CadastroRender from './CadastroRender';
 import CadastroOptions from './CadastroOptions';

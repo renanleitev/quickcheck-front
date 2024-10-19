@@ -1,34 +1,15 @@
 import { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import { Tab, Tabs } from '@mui/material';
 import Button from '@mui/material/Button';
-import styled from 'styled-components';
-import * as colors from '../../../config/colors';
+import colors from '../../../config/colors';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import Input from '../../Input/Input';
 import { especialidadesOptions } from '../../../config/enums';
 import PropTypes from 'prop-types';
+import { StyledTabs, StyledTab } from '../../Tab/Tab';
 
-const tabWidth = '10rem';
 const buttonWidth = '20rem';
 const inputWidth = '20rem';
-
-const StyledTabs = styled(Tabs)({
-  borderBottom: `2px solid ${colors.primaryWhiteColor}`,
-  '& .MuiTabs-indicator': {
-    backgroundColor: colors.primaryWhiteColor
-  }
-});
-
-const StyledTab = styled(Tab)({
-  width: tabWidth,
-  '&.Mui-selected': {
-    backgroundColor: colors.primaryWhiteColor
-  },
-  '&.MuiTab-textColorPrimary': {
-    color: colors.primaryWhiteColor
-  }
-});
 
 MapSearch.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -36,12 +17,12 @@ MapSearch.propTypes = {
 };
 
 function MapSearch({ open, setOpen }) {
-  const initalData = {
+  const initialData = {
     nome: '',
     especialidade: especialidadesOptions[0].value
   };
 
-  const [data, setData] = useState(initalData);
+  const [data, setData] = useState(initialData);
 
   const [tab, setTab] = useState(0);
 

@@ -3,7 +3,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import PropTypes from 'prop-types';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 StepCount.propTypes = {
   steps: PropTypes.arrayOf(PropTypes.string).isRequired,

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuList from './MenuList';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 function Header() {
   const [open, setOpen] = useState(false);

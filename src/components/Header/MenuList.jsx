@@ -8,7 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 MenuList.propTypes = {
   open: PropTypes.bool.isRequired,

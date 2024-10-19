@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { injectStyle } from 'react-toastify/dist/inject-style';
-import * as colors from './colors';
+import colors from './colors';
 
 injectStyle();
 
@@ -38,7 +38,7 @@ export default createGlobalStyle`
     }
     body .Toastify .Toastify__toast-container .Toastify__toast--success {
         margin-top: 70px;
-        background-color: ${colors.sucessColor};
+        background-color: ${colors.successColor};
         color:  ${colors.primaryWhiteColor};
     }
     body .Toastify .Toastify__toast-container .Toastify__toast--error {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 const inputBorderRadius = '10px';
 

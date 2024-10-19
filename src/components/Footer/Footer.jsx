@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 const BarFooter = styled.div`
   background-color: ${colors.primaryColor};

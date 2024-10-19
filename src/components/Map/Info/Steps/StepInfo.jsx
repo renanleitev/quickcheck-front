@@ -1,6 +1,6 @@
 import { CardMedia, CardContent, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import * as colors from '../../../../config/colors';
+import colors from '../../../../config/colors';
 
 StepInfo.propTypes = {
   imagem: PropTypes.string.isRequired,

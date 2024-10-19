@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
 import PropTypes from 'prop-types';
-import * as colors from '../../config/colors';
+import colors from '../../config/colors';
 
 StepButtons.propTypes = {
   activeStep: PropTypes.number.isRequired,
