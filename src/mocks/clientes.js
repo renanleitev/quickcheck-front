@@ -1,7 +1,7 @@
 export const clientes = [
   {
     nome: 'Fulano de Tal',
-    CPF: '999.999.999-99',
+    cpf: 99999999999,
     idade: 27,
     nascimento: new Date().toISOString(),
     sexo: 'M',

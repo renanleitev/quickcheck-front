@@ -4,6 +4,7 @@ import { UserRoles, sexoOptions, especialidadesOptions } from '../../../config/e
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
 import StepRender from './StepRender';
+import { formatCalendarDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
 
 CadastroFuncionario.propTypes = {
@@ -15,8 +16,8 @@ export default function CadastroFuncionario({ setUserRole }) {
     // StepPessoal
     nome: '',
     cpf: '',
-    nascimento: new Date().toISOString().split('T')[0], // Convertendo para o formato yyyy-MM-dd
-    idade: new Date().toISOString().split('T')[0], // Convertendo para o formato yyyy-MM-dd
+    nascimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+    idade: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
     // StepContato
     endereco: '',
     telefone: '',

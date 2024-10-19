@@ -5,6 +5,7 @@ import Cadastro from '../pages/Cadastro/Cadastro';
 import Page404 from '../pages/Page404/Page404';
 import Perfil from '../pages/Perfil/Perfil';
 import VerPerfil from '../pages/Perfil/Pages/VerPerfil';
+import EditarPerfil from '../pages/Perfil/Pages/EditarPerfil';
 
 export default function RoutesController() {
   return (
@@ -14,6 +15,7 @@ export default function RoutesController() {
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/ver-perfil" element={<VerPerfil />} />
+      <Route path="/editar-perfil" element={<EditarPerfil />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

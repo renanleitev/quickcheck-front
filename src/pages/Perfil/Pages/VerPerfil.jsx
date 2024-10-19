@@ -9,9 +9,13 @@ import { formatBirthDate } from '../../../hooks/formatDate';
 export default function VerPerfil() {
   const navigate = useNavigate();
 
+  // TODO: Substituir dado mockado por dados reais da API
   const cliente = clientes[0];
 
   const color = colors.primaryDarkColor;
+
+  const buttonWidth = '100%';
+  const buttonHeight = '3rem';
 
   return (
     <VerticalContainer style={{ padding: '2rem' }}>
@@ -24,7 +28,7 @@ export default function VerPerfil() {
             Nome: {cliente.nome}
           </Typography>
           <Typography variant="h6" color={color}>
-            CPF: {cliente.CPF}
+            CPF: {cliente.cpf}
           </Typography>
           <Typography variant="h6" color={color}>
             Idade: {cliente.idade}
@@ -51,7 +55,7 @@ export default function VerPerfil() {
         <Button
           variant="contained"
           onClick={() => navigate('/perfil')}
-          sx={{ width: '100%', height: '4rem' }}
+          sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Voltar
         </Button>
