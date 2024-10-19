@@ -25,7 +25,8 @@ export default function MapButtons({ setOpen }) {
             right: 0,
             minWidth: 0,
             padding: 0
-          }}>
+          }}
+        >
           <Search />
         </Button>
       </Control>

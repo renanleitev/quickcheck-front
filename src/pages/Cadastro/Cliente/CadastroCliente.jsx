@@ -43,13 +43,14 @@ export default function CadastroCliente({ setUserRole }) {
     <VerticalContainer
       style={{
         width: widthContainer
-      }}>
+      }}
+    >
       <StepCount steps={steps} activeStep={activeStep} />
       <StepRender step={activeStep} data={data} setData={setData} />
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}
-        setUserRole={setUserRole}
+        onReset={() => setUserRole('')}
         steps={steps}
       />
     </VerticalContainer>

@@ -3,10 +3,10 @@ import Drawer from '@mui/material/Drawer';
 import { Tab, Tabs } from '@mui/material';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
-import * as colors from '../../config/colors';
-import { VerticalContainer } from '../../config/GlobalStyle';
-import Input from '../Input/Input';
-import { especialidadesOptions } from '../../config/enums';
+import * as colors from '../../../config/colors';
+import { VerticalContainer } from '../../../config/GlobalStyle';
+import Input from '../../Input/Input';
+import { especialidadesOptions } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
 const tabWidth = '10rem';
@@ -58,7 +58,8 @@ function MapSearch({ open, setOpen }) {
         sx: {
           backgroundColor: colors.primaryColor
         }
-      }}>
+      }}
+    >
       <VerticalContainer style={{ padding: '2rem' }}>
         <StyledTabs value={tab} onChange={handleTabChange} aria-label="quickcheck-search-tabs">
           <StyledTab label="Hospitais" value={0} />

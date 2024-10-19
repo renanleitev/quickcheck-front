@@ -1,15 +1,17 @@
-import { Button, Drawer } from '@mui/material';
+import { useState } from 'react';
+import { Drawer } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import * as colors from '../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
 import PropTypes from 'prop-types';
+import StepInfo from './Steps/StepInfo';
+import StepHorarios from './Steps/StepHorarios';
+import StepButtons from '../Step/StepButtons';
+import { horarios } from '../../mocks/horarios';
 
 MapInfo.propTypes = {
   data: PropTypes.object.isRequired,
@@ -18,6 +20,24 @@ MapInfo.propTypes = {
 };
 
 export default function MapInfo({ data, open, setOpen }) {
+  const steps = ['Info', 'Horários', 'Confirmar', 'Finalizar'];
+  const [step, setStep] = useState(0);
+  const initialAgendamento = {
+    especialidade: '',
+    horario: undefined
+  };
+  const [agendamento, setAgendamento] = useState(initialAgendamento);
+
+  function stepRender() {
+    switch (step) {
+      case 1:
+        return <StepHorarios data={agendamento} setData={setAgendamento} horarios={horarios} />;
+      case 0:
+      default:
+        return <StepInfo imagem={data.imagem} horarioFuncionamento={data.horarioFuncionamento} />;
+    }
+  }
+
   return (
     <Drawer
       open={open}
@@ -27,34 +47,41 @@ export default function MapInfo({ data, open, setOpen }) {
         sx: {
           backgroundColor: colors.primaryColor
         }
-      }}>
+      }}
+    >
       <VerticalContainer>
-        <Card>
+        <Card sx={{ backgroundColor: colors.primaryColor, boxShadow: 'none' }}>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: colors.primaryColor }} aria-label="recipe">
+              <Avatar
+                sx={{ backgroundColor: colors.primaryWhiteColor, color: colors.primaryColor }}
+                aria-label="estabelecimento-nome"
+              >
                 {data.nome.charAt(0).toUpperCase()}
               </Avatar>
             }
             action={
-              <IconButton aria-label="settings">
+              <IconButton sx={{ color: colors.primaryWhiteColor }} aria-label="settings">
                 <MoreVertIcon />
               </IconButton>
             }
             title={data.nome}
+            titleTypographyProps={{ color: colors.primaryWhiteColor }}
             subheader={data.endereco}
+            subheaderTypographyProps={{ color: colors.primaryWhiteColor }}
+            sx={{
+              borderBottom: `1px solid ${colors.primaryWhiteColor}`
+            }}
           />
-          <CardMedia component="img" height="194" image={data.imagem} alt="Imagem" />
-          <CardContent>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {data.horarioFuncionamento}
-            </Typography>
-          </CardContent>
+          {stepRender(step)}
           <HorizontalContainer style={{ padding: '0.5rem', justifyContent: 'flex-end' }}>
-            <Button variant="contained" color="error" onClick={() => setOpen(false)}>
-              Voltar
-            </Button>
-            <Button variant="contained">Agendar</Button>
+            <StepButtons
+              activeStep={step}
+              setActiveStep={setStep}
+              onReset={() => () => setOpen(false)}
+              steps={steps}
+              nextStepLabel="Agendar"
+            />
           </HorizontalContainer>
         </Card>
       </VerticalContainer>

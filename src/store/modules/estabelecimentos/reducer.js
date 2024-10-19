@@ -9,7 +9,7 @@ export const initialEstabelecimento = {
   latitude: '',
   longitude: '',
   descricao: '',
-  assinante: false,
+  assinante: false
 };
 
 export const initialState = {

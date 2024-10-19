@@ -37,9 +37,10 @@ export default function StepCount({ steps, activeStep }) {
                   color: colors.primaryWhiteColor // Just text label (ACTIVE)
                 },
                 '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
-                  fill: colors.primaryDarkColor  // circle's number (ACTIVE)
+                  fill: colors.primaryDarkColor // circle's number (ACTIVE)
                 }
-              }}>
+              }}
+            >
               <StepLabel>{label}</StepLabel>
             </Step>
           );

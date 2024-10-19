@@ -9,28 +9,25 @@ export const initialFuncionario = {
   nascimento: new Date(),
   sexo: '',
   especialidade: '',
-  crm: '',
+  crm: ''
 };
 
 export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   error: '',
   funcionario: initialFuncionario,
-  funcionarios: [],
+  funcionarios: []
 };
 
-export const getFuncionario = createAsyncThunk(
-  'Funcionarios/getFuncionario',
-  async (id) => {
-    try {
-      const url = `${baseFuncionariosURL}/${id}`;
-      const response = await axiosInstance.get(url);
-      return response.data;
-    } catch (error) {
-      return error.message;
-    }
+export const getFuncionario = createAsyncThunk('Funcionarios/getFuncionario', async (id) => {
+  try {
+    const url = `${baseFuncionariosURL}/${id}`;
+    const response = await axiosInstance.get(url);
+    return response.data;
+  } catch (error) {
+    return error.message;
   }
-);
+});
 
 export const funcionariosSlice = createSlice({
   name: 'funcionarios',

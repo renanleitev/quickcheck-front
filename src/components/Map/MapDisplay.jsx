@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import MapButtons from './MapButtons';
-import MapSearch from './MapSearch';
+import MapButtons from './Components/MapButtons';
+import MapSearch from './Components/MapSearch';
 import MapInfo from './MapInfo';
 import HomeMarker from './Markers/HomeMarker';
 import HospitalMarker from './Markers/HospitalMarker';
@@ -17,7 +17,8 @@ export default function MapDisplay() {
       style={{ width: '100%', height: '100vh' }}
       center={defaultCoords}
       zoom={zoomLevel}
-      zoomControl={false}>
+      zoomControl={false}
+    >
       <TileLayer
         attribution="Google Maps"
         url="https://www.google.us/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"

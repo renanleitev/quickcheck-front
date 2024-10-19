@@ -6,7 +6,7 @@ import rootReducer from './modules/rootReducer';
 
 const store = configureStore({
   middleware: () => [thunk],
-  reducer: persistedReducers(rootReducer),
+  reducer: persistedReducers(rootReducer)
 });
 
 export const persistor = persistStore(store);

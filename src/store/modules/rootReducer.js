@@ -6,7 +6,7 @@ import { estabelecimentosReducer } from './estabelecimentos/reducer';
 const rootReducer = combineReducers({
   clientes: clientesReducer,
   funcionarios: funcionariosReducer,
-  estabelecimentos: estabelecimentosReducer,
+  estabelecimentos: estabelecimentosReducer
 });
 
 export default rootReducer;

@@ -40,11 +40,13 @@ function MenuList({ open, setOpen }) {
           backgroundColor: colors.primaryColor,
           color: colors.primaryWhiteColor
         }
-      }}>
+      }}
+    >
       <Box
         sx={{ width: 250, textAlign: 'center' }}
         role="presentation"
-        onClick={() => setOpen(false)}>
+        onClick={() => setOpen(false)}
+      >
         <Typography variant="h5" padding="1rem">
           Menu
         </Typography>

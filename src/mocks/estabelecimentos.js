@@ -9,8 +9,7 @@ export const hospitais = [
   {
     nome: 'Hospital Português',
     endereco: 'Av. Gov. Agamenon Magalhães, 4760 - Paissandu, Recife - PE, 52010-075',
-    horarioFuncionamento:
-      `Horário de funcionamento: Aberto 24 horas
+    horarioFuncionamento: `Horário de funcionamento: Aberto 24 horas
       \n Pronto-socorro: Aberto 24 horas
       \n Telefone: (81) 3416-1122`,
     imagem:

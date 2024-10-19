@@ -23,7 +23,8 @@ function Header() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={() => setOpen(true)}>
+            onClick={() => setOpen(true)}
+          >
             <MenuIcon />
           </IconButton>
         </Toolbar>

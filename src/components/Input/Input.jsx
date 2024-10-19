@@ -9,7 +9,7 @@ const inputBorderRadius = '10px';
 
 const TextFieldStyled = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
-    backgroundColor: colors.primaryWhiteColor,
+    backgroundColor: colors.primaryWhiteColor
   },
   '& .MuiOutlinedInput-root': {
     borderRadius: inputBorderRadius

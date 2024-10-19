@@ -4,18 +4,25 @@ import PropTypes from 'prop-types';
 StepButtons.propTypes = {
   activeStep: PropTypes.number.isRequired,
   setActiveStep: PropTypes.func.isRequired,
-  setUserRole: PropTypes.func.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.string).isRequired
+  onReset: PropTypes.func.isRequired,
+  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nextStepLabel: PropTypes.string
 };
 
-export default function StepButtons({ activeStep, setActiveStep, setUserRole, steps }) {
+export default function StepButtons({
+  activeStep,
+  setActiveStep,
+  onReset,
+  steps,
+  nextStepLabel = 'Avançar'
+}) {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
     if (activeStep === 0) {
-      setUserRole('');
+      onReset();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
@@ -27,7 +34,7 @@ export default function StepButtons({ activeStep, setActiveStep, setUserRole, st
         Voltar
       </Button>
       <Button variant="contained" onClick={handleNext}>
-        {activeStep === steps.length - 1 ? 'Finalizar' : 'Avançar'}
+        {activeStep === steps.length - 1 ? 'Finalizar' : nextStepLabel}
       </Button>
     </Box>
   );

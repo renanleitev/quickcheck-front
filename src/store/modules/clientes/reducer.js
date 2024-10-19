@@ -18,7 +18,7 @@ export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   error: '',
   cliente: initialCliente,
-  clientes: [],
+  clientes: []
 };
 
 export const getCliente = createAsyncThunk('clientes/getCliente', async (id) => {

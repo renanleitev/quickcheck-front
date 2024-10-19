@@ -28,7 +28,8 @@ export default function CadastroOptions({ handleChange }) {
         aria-labelledby="usuario-opcao-label"
         defaultValue={UserRoles.CLIENTE}
         name="radio-buttons-group"
-        onChange={handleChange}>
+        onChange={handleChange}
+      >
         <FormControlLabel
           value={UserRoles.CLIENTE}
           control={<StyledRadio />}
