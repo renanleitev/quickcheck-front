@@ -28,14 +28,13 @@ function MenuList({ open, setOpen }) {
 
   const clienteList = [
     { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
-    { name: 'Histórico de consultas', onClick: () => navigate('/historico') },
     { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
     { name: 'Ajuda', onClick: () => navigate('/ajuda') },
     { name: 'Sobre', onClick: () => navigate('/sobre') },
     { name: 'Logout', onClick: () => navigate('/login') }
   ];
 
-  // O usuário não está logado quando a URL está em cadastrou ou login
+  // O usuário não está logado quando a URL está em cadastro ou login
   const notLoggedIn = location.pathname === '/cadastro' || location.pathname === '/login';
 
   const list = notLoggedIn ? defaultList : clienteList;

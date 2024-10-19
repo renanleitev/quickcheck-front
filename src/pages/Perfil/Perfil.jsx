@@ -2,6 +2,7 @@ import { Typography, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import KeyIcon from '@mui/icons-material/Key';
+import BackButton from '../../components/Button/BackButton';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +16,7 @@ export default function Perfil() {
   return (
     <VerticalContainer style={{ marginTop: '2rem' }}>
       <Typography variant="h4" color={colors.primaryDarkColor}>
-        Perfil
+        Meu Perfil
       </Typography>
       <Button
         variant="contained"
@@ -41,9 +42,7 @@ export default function Perfil() {
       >
         Editar Perfil
       </Button>
-      <Button sx={{ width: buttonWidth, height: buttonHeight }} onClick={() => navigate('/')}>
-        Voltar
-      </Button>
+      <BackButton />
     </VerticalContainer>
   );
 }

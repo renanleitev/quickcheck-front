@@ -7,6 +7,7 @@ import Perfil from '../pages/Perfil/Perfil';
 import VerPerfil from '../pages/Perfil/Pages/VerPerfil';
 import EditarPerfil from '../pages/Perfil/Pages/EditarPerfil';
 import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
+import Agendamento from '../pages/Agendamento/Agendamento';
 
 export default function RoutesController() {
   return (
@@ -18,6 +19,7 @@ export default function RoutesController() {
       <Route path="/ver-perfil" element={<VerPerfil />} />
       <Route path="/editar-perfil" element={<EditarPerfil />} />
       <Route path="/alterar-senha" element={<AlterarSenha />} />
+      <Route path="/agendamentos" element={<Agendamento />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

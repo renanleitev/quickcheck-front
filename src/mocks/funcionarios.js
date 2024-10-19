@@ -1,14 +1,18 @@
 export const medicos = [
   {
-    nome: 'Ricardo Henrique'
+    nome: 'Ricardo Henrique',
+    especialidade: 'Cardiologista'
   },
   {
-    nome: 'Alceu Valença'
+    nome: 'Alceu Valença',
+    especialidade: 'Neurologista'
   },
   {
-    nome: 'Elba Ramalho'
+    nome: 'Elba Ramalho',
+    especialidade: 'Pediatra'
   },
   {
-    nome: 'Luiz Gonzaga'
+    nome: 'Luiz Gonzaga',
+    especialidade: 'Psiquiatra'
   }
 ];
