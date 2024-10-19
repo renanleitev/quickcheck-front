@@ -1,5 +1,5 @@
-import Input, { InputType } from '../Input/Input';
-import { UserRoles } from '../../config/enums';
+import Input, { InputType } from '../../Input/Input';
+import { UserRoles } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
 StepPessoal.propTypes = {

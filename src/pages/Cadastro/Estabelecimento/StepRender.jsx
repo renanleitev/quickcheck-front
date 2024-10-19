@@ -1,7 +1,7 @@
-import StepPessoal from '../../../components/StepContent/StepPessoal';
-import StepContato from '../../../components/StepContent/StepContato';
-import StepDescricao from '../../../components/StepContent/StepDescricao';
-import StepLogin from '../../../components/StepContent/StepLogin';
+import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
+import StepContato from '../../../components/Step/StepContent/StepContato';
+import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
+import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import { UserRoles } from '../../../config/enums';
 import PropTypes from 'prop-types';
 

@@ -1,7 +1,7 @@
-import StepPessoal from '../../../components/StepContent/StepPessoal';
-import StepContato from '../../../components/StepContent/StepContato';
-import StepSaude from '../../../components/StepContent/StepSaude';
-import StepLogin from '../../../components/StepContent/StepLogin';
+import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
+import StepContato from '../../../components/Step/StepContent/StepContato';
+import StepSaude from '../../../components/Step/StepContent/StepSaude';
+import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import PropTypes from 'prop-types';
 
 StepRender.propTypes = {

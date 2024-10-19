@@ -1,4 +1,4 @@
-import Input, { InputType } from '../Input/Input';
+import Input, { InputType } from '../../Input/Input';
 import PropTypes from 'prop-types';
 
 StepLogin.propTypes = {

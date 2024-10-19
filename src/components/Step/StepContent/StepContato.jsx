@@ -1,4 +1,4 @@
-import Input from '../Input/Input';
+import Input from '../../Input/Input';
 import PropTypes from 'prop-types';
 
 StepContato.propTypes = {

@@ -1,22 +1,22 @@
-import Input, { InputType } from '../Input/Input';
-import { especialidadesOptions, sexoOptions } from '../../config/enums';
+import Input, { InputType } from '../../Input/Input';
+import { comorbidadesOptions, sexoOptions } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
-StepProfissao.propTypes = {
+StepSaude.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired
 };
 
-export default function StepProfissao({ data, setData }) {
+export default function StepSaude({ data, setData }) {
   return (
     <>
       <Input
         data={data}
         setData={setData}
-        keyName="especialidade"
-        placeholder="Especialidade"
+        keyName="comorbidades"
+        placeholder="Comorbidades"
         select
-        selectList={especialidadesOptions}
+        selectList={comorbidadesOptions}
       />
       <Input
         data={data}
@@ -29,8 +29,8 @@ export default function StepProfissao({ data, setData }) {
       <Input
         data={data}
         setData={setData}
-        keyName="crm"
-        placeholder="CRM"
+        keyName="numeroCartaoSUS"
+        placeholder="Número do Cartão do SUS"
         inputType={InputType.NUMBER}
       />
     </>

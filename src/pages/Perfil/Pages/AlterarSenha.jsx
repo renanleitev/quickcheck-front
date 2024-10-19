@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import StepLogin from '../../../components/StepContent/StepLogin';
+import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import colors from '../../../config/colors';
 import { clientes } from '../../../mocks/clientes';
 import { formatCalendarDate } from '../../../hooks/formatDate';
