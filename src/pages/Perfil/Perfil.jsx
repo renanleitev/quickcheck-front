@@ -1,7 +1,6 @@
 import { Typography, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import KeyIcon from '@mui/icons-material/Key';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
@@ -41,15 +40,6 @@ export default function Perfil() {
         onClick={() => navigate('/editar-perfil')}
       >
         Editar Perfil
-      </Button>
-      <Button
-        variant="contained"
-        sx={{ width: buttonWidth, height: buttonHeight }}
-        color="error"
-        startIcon={<DeleteIcon />}
-        onClick={() => navigate('/apagar-perfil')}
-      >
-        Apagar Perfil
       </Button>
       <Button sx={{ width: buttonWidth, height: buttonHeight }} onClick={() => navigate('/')}>
         Voltar

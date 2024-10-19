@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { clientes } from '../../../mocks/clientes';
 import colors from '../../../config/colors';
@@ -52,6 +52,15 @@ export default function VerPerfil() {
             Número Cartão SUS: {cliente.numeroCartaoSUS}
           </Typography>
         </VerticalContainer>
+        <Button
+          variant="contained"
+          sx={{ width: buttonWidth, height: buttonHeight }}
+          color="error"
+          startIcon={<DeleteIcon />}
+          onClick={() => navigate('/apagar-perfil')}
+        >
+          Apagar Perfil
+        </Button>
         <Button
           variant="contained"
           onClick={() => navigate('/perfil')}

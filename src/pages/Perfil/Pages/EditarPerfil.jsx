@@ -41,7 +41,7 @@ export default function EditarPerfil() {
           <>
             <StepPessoal data={data} setData={setData} />
             <StepContato data={data} setData={setData} />
-            <StepSaude data={data} setData={setData} />
+            <StepProfissao data={data} setData={setData} />
           </>
         );
       case UserRoles.CLIENTE:
@@ -50,7 +50,7 @@ export default function EditarPerfil() {
           <>
             <StepPessoal data={data} setData={setData} />
             <StepContato data={data} setData={setData} />
-            <StepProfissao data={data} setData={setData} />
+            <StepSaude data={data} setData={setData} />
           </>
         );
     }
