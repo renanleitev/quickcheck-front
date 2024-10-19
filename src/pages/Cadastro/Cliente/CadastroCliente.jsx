@@ -51,7 +51,7 @@ export default function CadastroCliente({ setUserRole }) {
         activeStep={activeStep}
         setActiveStep={setActiveStep}
         onReset={() => setUserRole('')}
-        steps={steps}
+        stepsNumber={steps.length}
       />
     </VerticalContainer>
   );

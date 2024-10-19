@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MapButtons from './Components/MapButtons';
 import MapSearch from './Components/MapSearch';
-import MapInfo from './MapInfo';
+import MapInfo from './Info/MapInfo';
 import HomeMarker from './Markers/HomeMarker';
 import HospitalMarker from './Markers/HospitalMarker';
 import { defaultCoords, zoomLevel } from '../../config/enums';

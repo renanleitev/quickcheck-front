@@ -2,6 +2,10 @@ export const primaryColor = '#0d6efd';
 
 export const primaryWhiteColor = 'white';
 
+export const primaryGrayColor = 'gray';
+
+export const secondaryGrayColor = 'lightgray';
+
 export const primaryDarkColor = '#1A1A1D';
 
 export const sucessColor = 'green';

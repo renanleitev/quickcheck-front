@@ -8,7 +8,9 @@ export const horarios = [
     horarioAgendamento: new Date().toISOString(),
     status: 'DISPONIVEL',
     funcionario: medicos[0],
-    estabelecimento: hospitais[0]
+    estabelecimento: hospitais[0],
+    descricao:
+      'Lembramos aos pacientes que é recomendado chegar com 30 min de antecedência antes da consulta.'
   },
   {
     id: 1,
@@ -16,7 +18,9 @@ export const horarios = [
     horarioAgendamento: new Date().toISOString(),
     status: 'DISPONIVEL',
     funcionario: medicos[1],
-    estabelecimento: hospitais[0]
+    estabelecimento: hospitais[0],
+    descricao:
+      'Lembramos aos pacientes que é recomendado chegar com 30 min de antecedência antes da consulta.'
   },
   {
     id: 2,
@@ -24,6 +28,8 @@ export const horarios = [
     horarioAgendamento: new Date().toISOString(),
     status: 'DISPONIVEL',
     funcionario: medicos[2],
-    estabelecimento: hospitais[0]
+    estabelecimento: hospitais[0],
+    descricao:
+      'Lembramos aos pacientes que é recomendado chegar com 30 min de antecedência antes da consulta.'
   }
 ];

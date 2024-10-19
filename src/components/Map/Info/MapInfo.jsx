@@ -5,13 +5,16 @@ import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import * as colors from '../../config/colors';
-import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
+import * as colors from '../../../config/colors';
+import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import PropTypes from 'prop-types';
 import StepInfo from './Steps/StepInfo';
 import StepHorarios from './Steps/StepHorarios';
-import StepButtons from '../Step/StepButtons';
-import { horarios } from '../../mocks/horarios';
+import StepConfirmar from './Steps/StepConfirmar';
+import StepFinalizar from './Steps/StepFinalizar';
+import StepButtons from '../../Step/StepButtons';
+import { horarios } from '../../../mocks/horarios';
+import formatDate from '../../../hooks/formatDate';
 
 MapInfo.propTypes = {
   data: PropTypes.object.isRequired,
@@ -20,7 +23,6 @@ MapInfo.propTypes = {
 };
 
 export default function MapInfo({ data, open, setOpen }) {
-  const steps = ['Info', 'Horários', 'Confirmar', 'Finalizar'];
   const [step, setStep] = useState(0);
   const initialAgendamento = {
     especialidade: '',
@@ -30,6 +32,22 @@ export default function MapInfo({ data, open, setOpen }) {
 
   function stepRender() {
     switch (step) {
+      case 3:
+        return (
+          <StepFinalizar
+            funcionarioNome={agendamento?.horario?.funcionario?.nome}
+            horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+            descricao={agendamento?.horario?.descricao}
+          />
+        );
+      case 2:
+        return (
+          <StepConfirmar
+            funcionarioNome={agendamento?.horario?.funcionario?.nome}
+            horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+            descricao={agendamento?.horario?.descricao}
+          />
+        );
       case 1:
         return <StepHorarios data={agendamento} setData={setAgendamento} horarios={horarios} />;
       case 0:
@@ -78,9 +96,11 @@ export default function MapInfo({ data, open, setOpen }) {
             <StepButtons
               activeStep={step}
               setActiveStep={setStep}
-              onReset={() => () => setOpen(false)}
-              steps={steps}
+              onReset={() => setOpen(false)}
+              stepsNumber={4}
               nextStepLabel="Agendar"
+              disableNextButton={step === 1 && agendamento?.horario === undefined}
+              hideNextButton={step === 3}
             />
           </HorizontalContainer>
         </Card>

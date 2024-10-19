@@ -1,10 +1,10 @@
 import { Avatar, Box, CardHeader, Checkbox } from '@mui/material';
-import Input from '../../Input/Input';
-import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
-import { especialidadesOptions } from '../../../config/enums';
-import * as colors from '../../../config/colors';
+import Input from '../../../Input/Input';
+import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
+import { especialidadesOptions } from '../../../../config/enums';
+import * as colors from '../../../../config/colors';
 import PropTypes from 'prop-types';
-import formatDate from '../../../hooks/formatDate';
+import formatDate from '../../../../hooks/formatDate';
 
 StepHorarios.propTypes = {
   data: PropTypes.object.isRequired,

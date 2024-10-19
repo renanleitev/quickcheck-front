@@ -1,27 +1,32 @@
 import { Box, Button } from '@mui/material';
 import PropTypes from 'prop-types';
+import * as colors from '../../config/colors';
 
 StepButtons.propTypes = {
   activeStep: PropTypes.number.isRequired,
   setActiveStep: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-  nextStepLabel: PropTypes.string
+  stepsNumber: PropTypes.number.isRequired,
+  nextStepLabel: PropTypes.string,
+  disableNextButton: PropTypes.bool,
+  hideNextButton: PropTypes.bool
 };
 
 export default function StepButtons({
   activeStep,
   setActiveStep,
   onReset,
-  steps,
-  nextStepLabel = 'Avançar'
+  stepsNumber,
+  nextStepLabel = 'Avançar',
+  disableNextButton = false,
+  hideNextButton = false
 }) {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    if (activeStep === 0) {
+    if (activeStep === 0 || activeStep === stepsNumber - 1) {
       onReset();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -33,9 +38,20 @@ export default function StepButtons({
       <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
         Voltar
       </Button>
-      <Button variant="contained" onClick={handleNext}>
-        {activeStep === steps.length - 1 ? 'Finalizar' : nextStepLabel}
-      </Button>
+      {!hideNextButton && (
+        <Button
+          variant="contained"
+          onClick={handleNext}
+          disabled={disableNextButton}
+          sx={{
+            '&.Mui-disabled': {
+              color: colors.secondaryGrayColor
+            }
+          }}
+        >
+          {activeStep === stepsNumber - 1 ? 'Finalizar' : nextStepLabel}
+        </Button>
+      )}
     </Box>
   );
 }
