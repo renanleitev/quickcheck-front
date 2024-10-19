@@ -1,12 +1,12 @@
-import Input, { InputType } from '../../../../components/Input/Input';
+import Input, { InputType } from '../Input/Input';
 import PropTypes from 'prop-types';
 
-StepFinal.propTypes = {
+StepLogin.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired
 };
 
-export default function StepFinal({ data, setData }) {
+export default function StepLogin({ data, setData }) {
   return (
     <>
       <Input data={data} setData={setData} keyName="email" placeholder="Email" />

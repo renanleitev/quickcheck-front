@@ -1,3 +1,5 @@
+import { UserRoles } from '../config/enums';
+
 export const clientes = [
   {
     nome: 'Fulano de Tal',
@@ -11,6 +13,7 @@ export const clientes = [
     endereco: 'Rua da Saudade, 999, Aflitos, Recife',
     comorbidades: 'Hipertensão',
     numeroCartaoSUS: '999-9999-9999',
-    imagem: ''
+    imagem: '',
+    role: UserRoles.CLIENTE
   }
 ];

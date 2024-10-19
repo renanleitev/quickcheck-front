@@ -9,7 +9,7 @@ StepButtons.propTypes = {
   stepsNumber: PropTypes.number.isRequired,
   nextStepLabel: PropTypes.string,
   disableNextButton: PropTypes.bool,
-  hideNextButton: PropTypes.bool
+  isSetupFinished: PropTypes.bool
 };
 
 export default function StepButtons({
@@ -19,14 +19,14 @@ export default function StepButtons({
   stepsNumber,
   nextStepLabel = 'Avançar',
   disableNextButton = false,
-  hideNextButton = false
+  isSetupFinished = false
 }) {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    if (activeStep === 0 || activeStep === stepsNumber - 1) {
+    if (activeStep === 0 || isSetupFinished) {
       onReset();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -38,7 +38,7 @@ export default function StepButtons({
       <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
         Voltar
       </Button>
-      {!hideNextButton && (
+      {!isSetupFinished && (
         <Button
           variant="contained"
           onClick={handleNext}

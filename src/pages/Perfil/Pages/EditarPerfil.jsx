@@ -2,19 +2,59 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import StepPessoal from '../../Cadastro/Cliente/Steps/StepPessoal';
+import StepPessoal from '../../../components/StepContent/StepPessoal';
+import StepContato from '../../../components/StepContent/StepContato';
+import StepSaude from '../../../components/StepContent/StepSaude';
+import StepProfissao from '../../../components/StepContent/StepProfissao';
+import StepDescricao from '../../../components/StepContent/StepDescricao';
 import colors from '../../../config/colors';
 import { clientes } from '../../../mocks/clientes';
-import {formatCalendarDate} from '../../../hooks/formatDate';
+import { formatCalendarDate } from '../../../hooks/formatDate';
+import { UserRoles } from '../../../config/enums';
 
 export default function EditarPerfil() {
   const navigate = useNavigate();
-  const [data, setData] = useState({...clientes[0], nascimento: formatCalendarDate(clientes[0].nascimento)});
+
+  // TODO: Substituir dado mockado por dados reais da API
+  const [data, setData] = useState({
+    ...clientes[0],
+    nascimento: formatCalendarDate(clientes[0].nascimento)
+  });
 
   const color = colors.primaryDarkColor;
 
   const buttonWidth = '100%';
   const buttonHeight = '3rem';
+
+  function renderPerfil() {
+    switch (data.role) {
+      case UserRoles.ESTABELECIMENTO:
+        return (
+          <>
+            <StepPessoal data={data} setData={setData} role={UserRoles.ESTABELECIMENTO} />
+            <StepContato data={data} setData={setData} />
+            <StepDescricao data={data} setData={setData} />
+          </>
+        );
+      case UserRoles.FUNCIONARIO:
+        return (
+          <>
+            <StepPessoal data={data} setData={setData} />
+            <StepContato data={data} setData={setData} />
+            <StepSaude data={data} setData={setData} />
+          </>
+        );
+      case UserRoles.CLIENTE:
+      default:
+        return (
+          <>
+            <StepPessoal data={data} setData={setData} />
+            <StepContato data={data} setData={setData} />
+            <StepProfissao data={data} setData={setData} />
+          </>
+        );
+    }
+  }
 
   return (
     <VerticalContainer style={{ padding: '2rem' }}>
@@ -22,7 +62,7 @@ export default function EditarPerfil() {
         Editar Perfil
       </Typography>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
-        <StepPessoal data={data} setData={setData} />
+        {renderPerfil()}
         <Button
           variant="contained"
           color="success"

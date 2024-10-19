@@ -7,7 +7,7 @@ export function formatBirthDate(string) {
   return capitalizeFirstLetter(dayjs(string).locale('pt-br').format('DD/MM/YY'));
 }
 
-export function formatCalendarDate(string){
+export function formatCalendarDate(string) {
   if (!string) return ''; // Handle empty strings
   return new Date(string).toISOString().split('T')[0];
 }

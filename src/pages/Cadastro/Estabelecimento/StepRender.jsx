@@ -1,7 +1,8 @@
-import StepPessoal from './Steps/StepPessoal';
-import StepContato from './Steps/StepContato';
-import StepDescricao from './Steps/StepDescricao';
-import StepFinal from './Steps/StepFinal';
+import StepPessoal from '../../../components/StepContent/StepPessoal';
+import StepContato from '../../../components/StepContent/StepContato';
+import StepDescricao from '../../../components/StepContent/StepDescricao';
+import StepLogin from '../../../components/StepContent/StepLogin';
+import { UserRoles } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
 StepRender.propTypes = {
@@ -17,9 +18,9 @@ export default function StepRender({ step, data, setData }) {
     case 2:
       return <StepDescricao data={data} setData={setData} />;
     case 3:
-      return <StepFinal data={data} setData={setData} />;
+      return <StepLogin data={data} setData={setData} />;
     case 0:
     default:
-      return <StepPessoal data={data} setData={setData} />;
+      return <StepPessoal data={data} setData={setData} role={UserRoles.ESTABELECIMENTO} />;
   }
 }

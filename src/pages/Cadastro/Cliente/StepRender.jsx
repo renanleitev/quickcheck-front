@@ -1,7 +1,7 @@
-import StepPessoal from './Steps/StepPessoal';
-import StepContato from './Steps/StepContato';
-import StepSaude from './Steps/StepSaude';
-import StepFinal from './Steps/StepFinal';
+import StepPessoal from '../../../components/StepContent/StepPessoal';
+import StepContato from '../../../components/StepContent/StepContato';
+import StepSaude from '../../../components/StepContent/StepSaude';
+import StepLogin from '../../../components/StepContent/StepLogin';
 import PropTypes from 'prop-types';
 
 StepRender.propTypes = {
@@ -17,7 +17,7 @@ export default function StepRender({ step, data, setData }) {
     case 2:
       return <StepSaude data={data} setData={setData} />;
     case 3:
-      return <StepFinal data={data} setData={setData} />;
+      return <StepLogin data={data} setData={setData} />;
     case 0:
     default:
       return <StepPessoal data={data} setData={setData} />;
