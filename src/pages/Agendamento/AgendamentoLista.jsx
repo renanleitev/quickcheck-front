@@ -47,26 +47,15 @@ export default function AgendamentoLista() {
         {/* Cabeçalho */}
         <TableHead>
           <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            {/* Espaço reservado para o ícone de expandir a linha oculta */}
             <TableCell />
             <TableCell sx={{ minWidth: columnWidth }}>Horário</TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Médico
-            </TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Especialidade
-            </TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Hospital/Clínica
-            </TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Telefone
-            </TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Endereço
-            </TableCell>
-            <TableCell align="right" sx={{ minWidth: columnWidth }}>
-              Status
-            </TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Hospital/Clínica</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Telefone</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Endereço</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Status</TableCell>
           </TableRow>
         </TableHead>
         {/* Resultados */}
@@ -78,22 +67,24 @@ export default function AgendamentoLista() {
                 key={horario.nome}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
+                {/* Ícone para expandir a linha oculta */}
                 <TableCell>
                   <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
+                {/* Informações relevantes */}
                 <TableCell component="th" scope="row">
                   {formatDate(horario.horarioAtendimento)}
                 </TableCell>
-                <TableCell align="right">{horario.funcionario.nome}</TableCell>
-                <TableCell align="right">{horario.funcionario.especialidade}</TableCell>
-                <TableCell align="right">{horario.estabelecimento.nome}</TableCell>
-                <TableCell align="right">{horario.estabelecimento.telefone}</TableCell>
-                <TableCell align="right">{horario.estabelecimento.endereco}</TableCell>
-                <TableCell align="right">{horario.status}</TableCell>
+                <TableCell>{horario.funcionario.nome}</TableCell>
+                <TableCell>{horario.funcionario.especialidade}</TableCell>
+                <TableCell>{horario.estabelecimento.nome}</TableCell>
+                <TableCell>{horario.estabelecimento.telefone}</TableCell>
+                <TableCell>{horario.estabelecimento.endereco}</TableCell>
+                <TableCell>{horario.status}</TableCell>
               </TableRow>
-              {/* Linha escondida - expande quando o usuário clica */}
+              {/* Linha oculta - expande quando o usuário clica no ícone */}
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={open} timeout="auto" unmountOnExit>
