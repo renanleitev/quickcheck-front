@@ -1,16 +1,14 @@
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { coordsHospitais } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
 
 HospitalMarker.propTypes = {
-  setOpen: PropTypes.func.isRequired
+  latitude: PropTypes.number.isRequired,
+  longitude: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
-export default function HospitalMarker({ setOpen }) {
-  // Usando dados mockados por enquanto
-  const { latitude, longitude } = coordsHospitais.HospitalPortugues;
-
+export default function HospitalMarker({ latitude, longitude, onClick }) {
   const iconSize = 40;
 
   const homeIcon = new L.icon({
@@ -24,7 +22,7 @@ export default function HospitalMarker({ setOpen }) {
       icon={homeIcon}
       eventHandlers={{
         click: () => {
-          setOpen(true);
+          onClick();
         }
       }}
     />

@@ -7,5 +7,8 @@ export const medicos = [
   },
   {
     nome: 'Elba Ramalho'
+  },
+  {
+    nome: 'Luiz Gonzaga'
   }
 ];

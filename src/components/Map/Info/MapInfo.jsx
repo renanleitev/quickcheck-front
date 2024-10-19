@@ -1,9 +1,5 @@
-import { useState } from 'react';
-import { Drawer } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import { useState, useEffect, useMemo } from 'react';
+import { Avatar, Box, Card, CardHeader, Drawer, IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import * as colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
@@ -24,11 +20,19 @@ MapInfo.propTypes = {
 
 export default function MapInfo({ data, open, setOpen }) {
   const [step, setStep] = useState(0);
-  const initialAgendamento = {
-    especialidade: '',
-    horario: undefined
-  };
+  const initialAgendamento = useMemo(() => {
+    return {
+      especialidade: '',
+      horario: undefined
+    }
+  }, []);
   const [agendamento, setAgendamento] = useState(initialAgendamento);
+
+  // Redefinindo o estado geral quando muda de estabelecimento
+  useEffect(() => {
+    setStep(0);
+    setAgendamento(initialAgendamento);
+  }, [data, initialAgendamento]);
 
   function stepRender() {
     switch (step) {
@@ -91,7 +95,8 @@ export default function MapInfo({ data, open, setOpen }) {
               borderBottom: `1px solid ${colors.primaryWhiteColor}`
             }}
           />
-          {stepRender(step)}
+          {/* Definindo uma alturar para criar efeito scroll */}
+          <Box sx={{ height: '23rem', overflow: 'auto' }}>{stepRender(step)}</Box>
           <HorizontalContainer style={{ padding: '0.5rem', justifyContent: 'flex-end' }}>
             <StepButtons
               activeStep={step}

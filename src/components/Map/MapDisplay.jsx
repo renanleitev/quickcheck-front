@@ -11,6 +11,7 @@ import { hospitais } from '../../mocks/estabelecimentos';
 export default function MapDisplay() {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const [data, setData] = useState(hospitais[0]);
 
   return (
     <MapContainer
@@ -24,10 +25,22 @@ export default function MapDisplay() {
         url="https://www.google.us/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
       />
       <HomeMarker />
-      <HospitalMarker setOpen={setOpenInfo} />
+      {hospitais.map((hospital) => {
+        return (
+          <HospitalMarker
+            key={hospital.id}
+            latitude={hospital.latitude}
+            longitude={hospital.longitude}
+            onClick={() => {
+              setData(hospital);
+              setOpenInfo(true);
+            }}
+          />
+        );
+      })}
       <MapButtons setOpen={setOpenSearch} />
       <MapSearch open={openSearch} setOpen={setOpenSearch} />
-      <MapInfo data={hospitais[0]} open={openInfo} setOpen={setOpenInfo} />
+      <MapInfo data={data} open={openInfo} setOpen={setOpenInfo} />
     </MapContainer>
   );
 }

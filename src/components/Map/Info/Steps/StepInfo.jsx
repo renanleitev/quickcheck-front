@@ -10,7 +10,7 @@ StepInfo.propTypes = {
 export default function StepInfo({ imagem, horarioFuncionamento }) {
   return (
     <>
-      <CardMedia component="img" height="194" image={imagem} alt="Imagem" />
+      <CardMedia component="img" height="294" image={imagem} alt="Imagem" />
       <CardContent>
         <Typography variant="body2" sx={{ color: colors.primaryWhiteColor }}>
           {horarioFuncionamento}
