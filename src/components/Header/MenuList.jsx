@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import * as colors from '../../config/colors';
-import { clienteList, defaultList } from '../../config/enums';
 
 MenuList.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -19,16 +17,28 @@ MenuList.propTypes = {
 
 function MenuList({ open, setOpen }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const [list, setList] = useState([]);
+  const defaultList = [
+    { name: 'Login', onClick: () => navigate('/login') },
+    { name: 'Cadastro', onClick: () => navigate('/cadastro') },
+    { name: 'Ajuda', onClick: () => navigate('/ajuda') },
+    { name: 'Sobre', onClick: () => navigate('/sobre') }
+  ];
 
-  useEffect(() => {
-    if (location.pathname === '/cadastro' || location.pathname === '/login') {
-      setList(defaultList);
-    } else {
-      setList(clienteList);
-    }
-  }, [location.pathname]);
+  const clienteList = [
+    { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
+    { name: 'Histórico de consultas', onClick: () => navigate('/historico') },
+    { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
+    { name: 'Ajuda', onClick: () => navigate('/ajuda') },
+    { name: 'Sobre', onClick: () => navigate('/sobre') },
+    { name: 'Logout', onClick: () => navigate('/login') }
+  ];
+
+  // O usuário não está logado quando a URL está em cadastrou ou login
+  const notLoggedIn = location.pathname === '/cadastro' || location.pathname === '/login';
+
+  const list = notLoggedIn ? defaultList : clienteList;
 
   return (
     <Drawer
@@ -52,10 +62,10 @@ function MenuList({ open, setOpen }) {
         </Typography>
         <Divider />
         <List>
-          {list.map((text) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={text} />
+          {list.map((item) => (
+            <ListItem key={item.name} disablePadding>
+              <ListItemButton onClick={item.onClick}>
+                <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           ))}

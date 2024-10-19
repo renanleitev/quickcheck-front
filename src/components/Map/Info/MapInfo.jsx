@@ -24,7 +24,7 @@ export default function MapInfo({ data, open, setOpen }) {
     return {
       especialidade: '',
       horario: undefined
-    }
+    };
   }, []);
   const [agendamento, setAgendamento] = useState(initialAgendamento);
 
