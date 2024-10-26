@@ -1,18 +1,20 @@
+import { especialidades } from "./especialidades";
+
 export const medicos = [
   {
     nome: 'Ricardo Henrique',
-    especialidade: 'Cardiologista'
+    especialidade: especialidades[0]
   },
   {
     nome: 'Alceu Valença',
-    especialidade: 'Neurologista'
+    especialidade: especialidades[1]
   },
   {
     nome: 'Elba Ramalho',
-    especialidade: 'Pediatra'
+    especialidade: especialidades[2]
   },
   {
     nome: 'Luiz Gonzaga',
-    especialidade: 'Psiquiatra'
+    especialidade: especialidades[3]
   }
 ];
