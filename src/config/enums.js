@@ -1,10 +1,10 @@
+import { comorbidades } from '../mocks/comorbidades';
+import { especialidades } from '../mocks/especialidades';
+
 // https://mui.com/material-ui/react-text-field/#select
-export const especialidadesOptions = [
-  { value: 'Cardiologia', label: 'Cardiologia' },
-  { value: 'Pediatria', label: 'Pediatria' },
-  { value: 'Neurologia', label: 'Neurologia' },
-  { value: 'Endocrinologia', label: 'Endocrinologia' }
-];
+export const especialidadesOptions = especialidades.map((especialidade) => {
+  return { value: especialidade, label: especialidade };
+});
 
 export const UserRoles = {
   CLIENTE: 'cliente',
@@ -29,11 +29,9 @@ export const sexoOptions = [
   { value: 'F', label: 'Feminino' }
 ];
 
-export const comorbidadesOptions = [
-  { value: 'diabetes', label: 'Diabetes' },
-  { value: 'hipertensao', label: 'Hipertensão' },
-  { value: 'obesidade', label: 'Obesidade' }
-];
+export const comorbidadesOptions = comorbidades.map((comorbidade) => {
+  return { value: comorbidade, label: comorbidade };
+});
 
 // Marco Zero Recife
 export const defaultCoords = [-8.062255486215344, -34.871117742328956];
