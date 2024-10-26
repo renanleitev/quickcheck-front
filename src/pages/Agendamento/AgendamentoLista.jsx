@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Box,
+  Button,
   Collapse,
   IconButton,
   Table,
@@ -11,7 +12,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
   Paper
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -89,7 +89,12 @@ export default function AgendamentoLista() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box width="80vw" p="2rem">
-                      <Typography variant="h6">{horario.descricao}</Typography>
+                      <Button variant="contained" sx={{ marginRight: '0.5rem' }}>
+                        Remarcar
+                      </Button>
+                      <Button variant="contained" color="error">
+                        Cancelar
+                      </Button>
                     </Box>
                   </Collapse>
                 </TableCell>

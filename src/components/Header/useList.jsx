@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-/** Hook para obter as listas de menu */ 
+/** Hook para obter as listas de menu */
 export default function useList() {
   const navigate = useNavigate();
 
