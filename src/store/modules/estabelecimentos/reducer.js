@@ -10,7 +10,6 @@ export const initialEstabelecimento = {
   longitude: '',
   descricao: '',
   assinante: false,
-  usuario: undefined
 };
 
 export const initialState = {
@@ -37,17 +36,6 @@ export const getEstabelecimento = createAsyncThunk(
 export const estabelecimentosSlice = createSlice({
   name: 'estabelecimentos',
   initialState,
-  reducers: {
-    loginEstabelecimento: (state, action) => {
-      state.estabelecimento = { ...action.payload };
-    },
-    logoutEstabelecimento: (state) => {
-      state.estabelecimento = initialEstabelecimento;
-      state.error = '';
-      state.estabelecimentos = [];
-      state.fetchStatus = fetchStatus.IDLE;
-    }
-  },
   extraReducers(builder) {
     builder
       // getEstabelecimento
@@ -64,7 +52,5 @@ export const estabelecimentosSlice = createSlice({
       });
   }
 });
-
-export const { loginEstabelecimento, logoutEstabelecimento } = estabelecimentosSlice.actions;
 
 export const estabelecimentosReducer = estabelecimentosSlice.reducer;

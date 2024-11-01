@@ -1,9 +1,9 @@
 import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import { clientes } from '../../../mocks/clientes';
 import Cliente from '../Content/Cliente';
 import Estabelecimento from '../Content/Estabelecimento';
 import Funcionario from '../Content/Funcionario';
@@ -13,8 +13,7 @@ import { UserRoles } from '../../../config/enums';
 export default function VerPerfil() {
   const navigate = useNavigate();
 
-  // TODO: Substituir dado mockado por dados reais da API
-  const cliente = clientes[0];
+  const usuario = useSelector((state) => state?.usuarios?.usuario) || UserRoles.CLIENTE;
 
   const color = colors.primaryDarkColor;
 
@@ -22,14 +21,14 @@ export default function VerPerfil() {
   const buttonHeight = '3rem';
 
   function renderPerfil() {
-    switch (cliente.role) {
+    switch (usuario?.role) {
       case UserRoles.ESTABELECIMENTO:
-        return <Estabelecimento user={cliente} />;
+        return <Estabelecimento entity={usuario} />;
       case UserRoles.FUNCIONARIO:
-        return <Funcionario user={cliente} />;
+        return <Funcionario entity={usuario} />;
       case UserRoles.CLIENTE:
       default:
-        return <Cliente user={cliente} />;
+        return <Cliente entity={usuario} />;
     }
   }
 

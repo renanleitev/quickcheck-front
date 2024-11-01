@@ -1,11 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutCliente } from '../../store/modules/clientes/reducer';
+import { useDispatch } from 'react-redux';
 import { logoutUsuario } from '../../store/modules/usuarios/reducer';
-import { logoutFuncionario } from '../../store/modules/funcionarios/reducer';
-import { logoutEstabelecimento } from '../../store/modules/estabelecimentos/reducer';
-import { UserRoles } from '../../config/enums';
 
 /** Hook para obter as listas de menu */
 export default function useList() {
@@ -13,25 +9,9 @@ export default function useList() {
 
   const dispatch = useDispatch();
 
-  const usuarioRole = useSelector((state) => state?.usuarios?.usuario?.role) || UserRoles.CLIENTE;
-
   const handleLogout = useCallback(() => {
-    // Primeiro, faz logout de cada entidade
-    switch (usuarioRole) {
-      case UserRoles.FUNCIONARIO:
-        dispatch(logoutFuncionario());
-        break;
-      case UserRoles.ESTABELECIMENTO:
-        dispatch(logoutEstabelecimento());
-        break;
-      case UserRoles.CLIENTE:
-      default:
-        dispatch(logoutCliente());
-        break;
-    }
-    // Depois, faz logout do usuário
     dispatch(logoutUsuario());
-  }, [dispatch, usuarioRole]);
+  }, [dispatch]);
 
   const defaultList = useMemo(
     () => [

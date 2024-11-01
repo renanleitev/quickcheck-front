@@ -10,7 +10,6 @@ export const initialFuncionario = {
   sexo: '',
   especialidade: '',
   crm: '',
-  usuario: undefined
 };
 
 export const initialState = {
@@ -34,17 +33,6 @@ export const getFuncionario = createAsyncThunk('Funcionarios/getFuncionario', as
 export const funcionariosSlice = createSlice({
   name: 'funcionarios',
   initialState,
-  reducers: {
-    loginFuncionario: (state, action) => {
-      state.funcionario = { ...action.payload };
-    },
-    logoutFuncionario: (state) => {
-      state.funcionario = initialFuncionario;
-      state.error = '';
-      state.funcionarios = [];
-      state.fetchStatus = fetchStatus.IDLE;
-    }
-  },
   extraReducers(builder) {
     builder
       // getFuncionario
@@ -61,7 +49,5 @@ export const funcionariosSlice = createSlice({
       });
   }
 });
-
-export const { loginFuncionario, logoutFuncionario } = funcionariosSlice.actions;
 
 export const funcionariosReducer = funcionariosSlice.reducer;

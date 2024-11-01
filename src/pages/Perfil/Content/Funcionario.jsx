@@ -4,43 +4,43 @@ import { formatBirthDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
 
 Funcionario.propTypes = {
-  user: PropTypes.object.isRequired
+  entity: PropTypes.object.isRequired
 };
 
-export default function Funcionario({ user }) {
+export default function Funcionario({ entity }) {
   const color = colors.primaryDarkColor;
 
   return (
     <>
       <Typography variant="h6" color={color}>
-        Nome: {user.nome}
+        Nome: {entity?.usuario?.nome}
       </Typography>
       <Typography variant="h6" color={color}>
-        CPF: {user.cpf}
+        CPF: {entity?.cpf}
       </Typography>
       <Typography variant="h6" color={color}>
-        Sexo: {user.sexo.toUpperCase() === 'M' ? 'Masculino' : 'Feminino'}
+        Sexo: {entity?.sexo?.toUpperCase() === 'M' ? 'Masculino' : 'Feminino'}
       </Typography>
       <Typography variant="h6" color={color}>
-        Idade: {user.idade}
+        Idade: {entity?.idade}
       </Typography>
       <Typography variant="h6" color={color}>
-        Data de Nascimento: {formatBirthDate(user.nascimento)}
+        Data de Nascimento: {formatBirthDate(entity.nascimento)}
       </Typography>
       <Typography variant="h6" color={color}>
-        Email: {user.email}
+        Email: {entity?.usuario?.email}
       </Typography>
       <Typography variant="h6" color={color}>
-        Telefone: {user.telefone}
+        Telefone: {entity?.usuario?.telefone}
       </Typography>
       <Typography variant="h6" color={color}>
-        Endereço: {user.endereco}
+        Endereço: {entity?.usuario?.endereco}
       </Typography>
       <Typography variant="h6" color={color}>
-        CRM: {user.crm}
+        CRM: {entity?.crm}
       </Typography>
       <Typography variant="h6" color={color}>
-        Especialidade: {user.especialidade}
+        Especialidade: {entity?.especialidade}
       </Typography>
     </>
   );

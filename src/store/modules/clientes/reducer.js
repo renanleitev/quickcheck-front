@@ -12,7 +12,6 @@ export const initialCliente = {
   longitude: '',
   numeroCartaoSUS: '',
   comorbidades: [],
-  usuario: undefined
 };
 
 export const initialState = {
@@ -36,17 +35,6 @@ export const getCliente = createAsyncThunk('clientes/getCliente', async (id) => 
 export const clientesSlice = createSlice({
   name: 'clientes',
   initialState,
-  reducers: {
-    loginCliente: (state, action) => {
-      state.cliente = { ...action.payload };
-    },
-    logoutCliente: (state) => {
-      state.cliente = initialCliente;
-      state.error = '';
-      state.clientes = [];
-      state.fetchStatus = fetchStatus.IDLE;
-    }
-  },
   extraReducers(builder) {
     builder
       // getCliente
@@ -63,7 +51,5 @@ export const clientesSlice = createSlice({
       });
   }
 });
-
-export const { loginCliente, logoutCliente } = clientesSlice.actions;
 
 export const clientesReducer = clientesSlice.reducer;

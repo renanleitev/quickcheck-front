@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import colors from '../../config/colors';
-import { UserRoles } from '../../config/enums';
+import { UserRoles, userLabels } from '../../config/enums';
 import useList from './useList';
 
 MenuList.propTypes = {
@@ -19,20 +19,19 @@ MenuList.propTypes = {
 };
 
 function MenuList({ open, setOpen }) {
-  const location = useLocation();
+  const usuario = useSelector((state) => state?.usuarios?.usuario?.usuario) || undefined;
+
+  const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
 
   const [list, setList] = useState([]);
 
   // TODO: Substituir o role mockado pelo role do usuário logado
   const userRole = UserRoles.CLIENTE;
 
-  // O usuário não está logado quando a URL está em cadastro ou login
-  const notLoggedIn = location.pathname === '/cadastro' || location.pathname === '/login';
-
   const { defaultList, clienteList, funcionarioList, estabelecimentoList } = useList();
 
   useEffect(() => {
-    if (notLoggedIn) {
+    if (!isLoggedIn) {
       setList(defaultList);
     } else {
       switch (userRole) {
@@ -48,7 +47,7 @@ function MenuList({ open, setOpen }) {
           break;
       }
     }
-  }, [clienteList, defaultList, estabelecimentoList, funcionarioList, notLoggedIn, userRole]);
+  }, [clienteList, defaultList, estabelecimentoList, funcionarioList, isLoggedIn, userRole]);
 
   return (
     <Drawer
@@ -67,9 +66,16 @@ function MenuList({ open, setOpen }) {
         role="presentation"
         onClick={() => setOpen(false)}
       >
-        <Typography variant="h5" padding="1rem">
-          Menu
-        </Typography>
+        {isLoggedIn ? (
+          <Box p="1rem">
+            <Typography variant="h5">{usuario?.nome}</Typography>
+            <Typography>{userLabels[usuario?.role]}</Typography>{' '}
+          </Box>
+        ) : (
+          <Typography variant="h5" padding="1rem">
+            Menu
+          </Typography>
+        )}
         <Divider />
         <List>
           {list.map((item) => (

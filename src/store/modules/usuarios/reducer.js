@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axiosInstance, { baseUsuariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
+// Atributos comuns para todas as entidades (cliente, funcionario e estabelecimento)
 export const initialUsuario = {
   id: '',
   nome: '',
@@ -10,7 +11,7 @@ export const initialUsuario = {
   role: '',
   telefone: '',
   endereco: '',
-  imagem: ''
+  imagem: '',
 };
 
 export const initialState = {
@@ -73,7 +74,7 @@ export const usuariosSlice = createSlice({
       // loginUsuario
       .addCase(loginUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.usuario = action.payload.usuario;
+        state.usuario = action.payload;
         state.isLoggedIn = true;
         toast.success('Usuário autenticado com sucesso. Redirecionando...');
       })
