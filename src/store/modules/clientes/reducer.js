@@ -11,7 +11,8 @@ export const initialCliente = {
   latitude: '',
   longitude: '',
   numeroCartaoSUS: '',
-  comorbidades: []
+  comorbidades: [],
+  usuario: undefined
 };
 
 export const initialState = {
@@ -27,14 +28,25 @@ export const getCliente = createAsyncThunk('clientes/getCliente', async (id) => 
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    return error.message;
+    console.log(error);
+    throw new Error("Não foi possível obter os dados");
   }
 });
 
 export const clientesSlice = createSlice({
   name: 'clientes',
   initialState,
-  reducers: {},
+  reducers: {
+    loginCliente: (state, action) => {
+      state.cliente = { ...action.payload };
+    },
+    logoutCliente: (state) => {
+      state.cliente = initialCliente;
+      state.error = '';
+      state.clientes = [];
+      state.fetchStatus = fetchStatus.IDLE;
+    }
+  },
   extraReducers(builder) {
     builder
       // getCliente
@@ -51,5 +63,7 @@ export const clientesSlice = createSlice({
       });
   }
 });
+
+export const { loginCliente, logoutCliente } = clientesSlice.actions;
 
 export const clientesReducer = clientesSlice.reducer;

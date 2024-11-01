@@ -9,7 +9,8 @@ export const initialEstabelecimento = {
   latitude: '',
   longitude: '',
   descricao: '',
-  assinante: false
+  assinante: false,
+  usuario: undefined
 };
 
 export const initialState = {
@@ -27,7 +28,8 @@ export const getEstabelecimento = createAsyncThunk(
       const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {
-      return error.message;
+      console.log(error);
+      throw new Error("Não foi possível obter os dados");
     }
   }
 );
@@ -35,7 +37,17 @@ export const getEstabelecimento = createAsyncThunk(
 export const estabelecimentosSlice = createSlice({
   name: 'estabelecimentos',
   initialState,
-  reducers: {},
+  reducers: {
+    loginEstabelecimento: (state, action) => {
+      state.estabelecimento = { ...action.payload };
+    },
+    logoutEstabelecimento: (state) => {
+      state.estabelecimento = initialEstabelecimento;
+      state.error = '';
+      state.estabelecimentos = [];
+      state.fetchStatus = fetchStatus.IDLE;
+    }
+  },
   extraReducers(builder) {
     builder
       // getEstabelecimento
@@ -52,5 +64,7 @@ export const estabelecimentosSlice = createSlice({
       });
   }
 });
+
+export const { loginEstabelecimento, logoutEstabelecimento } = estabelecimentosSlice.actions;
 
 export const estabelecimentosReducer = estabelecimentosSlice.reducer;

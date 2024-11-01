@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Cadastro from '../pages/Cadastro/Cadastro';
@@ -10,10 +11,11 @@ import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
 import Agendamento from '../pages/Agendamento/Agendamento';
 
 export default function RoutesController() {
+  const isLoggedIn = useSelector((state) => state.usuarios.isLoggedIn) || false;
+
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/ver-perfil" element={<VerPerfil />} />

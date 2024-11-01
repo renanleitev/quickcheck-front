@@ -9,7 +9,8 @@ export const initialFuncionario = {
   nascimento: new Date(),
   sexo: '',
   especialidade: '',
-  crm: ''
+  crm: '',
+  usuario: undefined
 };
 
 export const initialState = {
@@ -25,14 +26,25 @@ export const getFuncionario = createAsyncThunk('Funcionarios/getFuncionario', as
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    return error.message;
+    console.log(error);
+    throw new Error("Não foi possível obter os dados");
   }
 });
 
 export const funcionariosSlice = createSlice({
   name: 'funcionarios',
   initialState,
-  reducers: {},
+  reducers: {
+    loginFuncionario: (state, action) => {
+      state.funcionario = { ...action.payload };
+    },
+    logoutFuncionario: (state) => {
+      state.funcionario = initialFuncionario;
+      state.error = '';
+      state.funcionarios = [];
+      state.fetchStatus = fetchStatus.IDLE;
+    }
+  },
   extraReducers(builder) {
     builder
       // getFuncionario
@@ -49,5 +61,7 @@ export const funcionariosSlice = createSlice({
       });
   }
 });
+
+export const { loginFuncionario, logoutFuncionario } = funcionariosSlice.actions;
 
 export const funcionariosReducer = funcionariosSlice.reducer;

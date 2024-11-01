@@ -66,7 +66,7 @@ function Input({
     (e) => {
       setData({
         ...data,
-        [keyName]: e.currentTarget.value
+        [keyName]: e.target.value
       });
     },
     [data, keyName, setData]

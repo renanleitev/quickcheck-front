@@ -7,9 +7,9 @@ export const especialidadesOptions = especialidades.map((especialidade) => {
 });
 
 export const UserRoles = {
-  CLIENTE: 'cliente',
-  FUNCIONARIO: 'funcionario',
-  ESTABELECIMENTO: 'estabelecimento'
+  CLIENTE: 'CLIENTE',
+  FUNCIONARIO: 'FUNCIONARIO',
+  ESTABELECIMENTO: 'ESTABELECIMENTO'
 };
 
 export const userLabels = {
