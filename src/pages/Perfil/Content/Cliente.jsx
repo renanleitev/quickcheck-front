@@ -4,43 +4,43 @@ import { formatBirthDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
 
 Cliente.propTypes = {
-  entity: PropTypes.object.isRequired
+  entidade: PropTypes.object.isRequired
 };
 
-export default function Cliente({ entity }) {
+export default function Cliente({ entidade }) {
   const color = colors.primaryDarkColor;
 
   return (
     <>
       <Typography variant="h6" color={color}>
-        Nome: {entity?.usuario?.nome}
+        Nome: {entidade?.usuario?.nome}
       </Typography>
       <Typography variant="h6" color={color}>
-        CPF: {entity?.cpf}
+        CPF: {entidade?.cpf}
       </Typography>
       <Typography variant="h6" color={color}>
-        Sexo: {entity?.sexo?.toUpperCase() === 'M' ? 'Masculino' : 'Feminino'}
+        Sexo: {entidade?.sexo?.toUpperCase() === 'M' ? 'Masculino' : 'Feminino'}
       </Typography>
       <Typography variant="h6" color={color}>
-        Idade: {entity?.idade}
+        Idade: {entidade?.idade}
       </Typography>
       <Typography variant="h6" color={color}>
-        Data de Nascimento: {formatBirthDate(entity?.nascimento)}
+        Data de Nascimento: {formatBirthDate(entidade?.nascimento)}
       </Typography>
       <Typography variant="h6" color={color}>
-        Email: {entity?.usuario?.email}
+        Email: {entidade?.usuario?.email}
       </Typography>
       <Typography variant="h6" color={color}>
-        Telefone: {entity?.usuario?.telefone}
+        Telefone: {entidade?.usuario?.telefone}
       </Typography>
       <Typography variant="h6" color={color}>
-        Endereço: {entity?.usuario?.endereco}
+        Endereço: {entidade?.usuario?.endereco}
       </Typography>
       <Typography variant="h6" color={color}>
-        Comorbidades: {entity?.comorbidades}
+        Comorbidades: {entidade?.comorbidades}
       </Typography>
       <Typography variant="h6" color={color}>
-        Número Cartão SUS: {entity?.numeroCartaoSUS}
+        Número Cartão SUS: {entidade?.numeroCartaoSUS}
       </Typography>
     </>
   );

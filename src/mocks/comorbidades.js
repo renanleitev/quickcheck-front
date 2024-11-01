@@ -7,7 +7,7 @@ export const comorbidades = [
   'Doença cerebrovascular',
   'Doença renal crônica',
   'Hemoglobinopatias graves',
-  'Hipertensão arterial',
+  'Hipertensão',
   'Hipertensão Arterial Resistente (HAR)',
   'Hipertensão pulmonar',
   'Imunossuprimidos',

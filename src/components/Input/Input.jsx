@@ -88,6 +88,7 @@ function Input({
     <TextFieldStyled
       type={select ? null : inputType}
       value={data[keyName]}
+      defaultValue={data[keyName]}
       onChange={handleInput}
       label={placeholder}
       placeholder={placeholder}

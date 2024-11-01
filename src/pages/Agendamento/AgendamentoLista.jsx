@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   Button,
@@ -17,10 +18,13 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import formatDate from '../../hooks/formatDate';
-
-import { horarios } from '../../mocks/horarios';
+import { getHorarios } from '../../store/modules/horarios/reducer';
 
 export default function AgendamentoLista() {
+  const horarios = useSelector((state) => state?.horarios?.horarios) || [];
+
+  const dispatch = useDispatch();
+
   // Expandir a linha oculta
   const [open, setOpen] = useState(false);
 
@@ -41,6 +45,10 @@ export default function AgendamentoLista() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados por página';
 
+  useEffect(() => {
+    dispatch(getHorarios());
+  }, [dispatch]);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -60,13 +68,10 @@ export default function AgendamentoLista() {
         </TableHead>
         {/* Resultados */}
         <TableBody>
-          {horarios.map((horario) => (
+          {horarios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((horario) => (
             <>
               {/* Linha padrão - sempre visível */}
-              <TableRow
-                key={horario.nome}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+              <TableRow key={horario.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 {/* Ícone para expandir a linha oculta */}
                 <TableCell>
                   <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
@@ -75,14 +80,14 @@ export default function AgendamentoLista() {
                 </TableCell>
                 {/* Informações relevantes */}
                 <TableCell component="th" scope="row">
-                  {formatDate(horario.horarioAtendimento)}
+                  {formatDate(horario?.horarioAtendimento)}
                 </TableCell>
-                <TableCell>{horario.funcionario.nome}</TableCell>
-                <TableCell>{horario.funcionario.especialidade}</TableCell>
-                <TableCell>{horario.estabelecimento.nome}</TableCell>
-                <TableCell>{horario.estabelecimento.telefone}</TableCell>
-                <TableCell>{horario.estabelecimento.endereco}</TableCell>
-                <TableCell>{horario.status}</TableCell>
+                <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
+                <TableCell>{horario?.funcionario?.especialidade}</TableCell>
+                <TableCell>{horario?.estabelecimento?.usuario?.nome}</TableCell>
+                <TableCell>{horario.estabelecimento?.usuario?.telefone}</TableCell>
+                <TableCell>{horario.estabelecimento?.usuario?.endereco}</TableCell>
+                <TableCell>{horario?.status}</TableCell>
               </TableRow>
               {/* Linha oculta - expande quando o usuário clica no ícone */}
               <TableRow>

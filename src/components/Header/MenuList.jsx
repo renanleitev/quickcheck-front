@@ -19,14 +19,11 @@ MenuList.propTypes = {
 };
 
 function MenuList({ open, setOpen }) {
-  const usuario = useSelector((state) => state?.usuarios?.usuario?.usuario) || undefined;
+  const entidade = useSelector((state) => state?.usuarios?.entidade?.usuario) || undefined;
 
   const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
 
   const [list, setList] = useState([]);
-
-  // TODO: Substituir o role mockado pelo role do usuário logado
-  const userRole = UserRoles.CLIENTE;
 
   const { defaultList, clienteList, funcionarioList, estabelecimentoList } = useList();
 
@@ -34,7 +31,7 @@ function MenuList({ open, setOpen }) {
     if (!isLoggedIn) {
       setList(defaultList);
     } else {
-      switch (userRole) {
+      switch (entidade?.usuario?.role) {
         case UserRoles.ESTABELECIMENTO:
           setList(estabelecimentoList);
           break;
@@ -47,7 +44,7 @@ function MenuList({ open, setOpen }) {
           break;
       }
     }
-  }, [clienteList, defaultList, estabelecimentoList, funcionarioList, isLoggedIn, userRole]);
+  }, [clienteList, defaultList, estabelecimentoList, funcionarioList, isLoggedIn, entidade]);
 
   return (
     <Drawer
@@ -68,8 +65,8 @@ function MenuList({ open, setOpen }) {
       >
         {isLoggedIn ? (
           <Box p="1rem">
-            <Typography variant="h5">{usuario?.nome}</Typography>
-            <Typography>{userLabels[usuario?.role]}</Typography>{' '}
+            <Typography variant="h5">{entidade?.usuario?.nome}</Typography>
+            <Typography>{userLabels[entidade?.usuario?.role]}</Typography>{' '}
           </Box>
         ) : (
           <Typography variant="h5" padding="1rem">

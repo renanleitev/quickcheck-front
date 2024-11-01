@@ -13,26 +13,28 @@ import { horarios } from '../../../mocks/horarios';
 import formatDate from '../../../hooks/formatDate';
 
 MapInfo.propTypes = {
-  data: PropTypes.object.isRequired,
+  entidade: PropTypes.object,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired
 };
 
-export default function MapInfo({ data, open, setOpen }) {
+export default function MapInfo({ entidade, open, setOpen }) {
   const [step, setStep] = useState(0);
+
   const initialAgendamento = useMemo(() => {
     return {
       especialidade: '',
       horario: undefined
     };
   }, []);
+
   const [agendamento, setAgendamento] = useState(initialAgendamento);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
     setStep(0);
     setAgendamento(initialAgendamento);
-  }, [data, initialAgendamento]);
+  }, [entidade, initialAgendamento]);
 
   function stepRender() {
     switch (step) {
@@ -53,10 +55,10 @@ export default function MapInfo({ data, open, setOpen }) {
           />
         );
       case 1:
-        return <StepHorarios data={agendamento} setData={setAgendamento} horarios={horarios} />;
+        return <StepHorarios entidade={agendamento} setentidade={setAgendamento} horarios={horarios} />;
       case 0:
       default:
-        return <StepInfo imagem={data.imagem} horarioFuncionamento={data.horarioFuncionamento} />;
+        return <StepInfo imagem={entidade?.usuario?.imagem} horarioFuncionamento={entidade?.horarioFuncionamento} />;
     }
   }
 
@@ -79,7 +81,7 @@ export default function MapInfo({ data, open, setOpen }) {
                 sx={{ backgroundColor: colors.primaryWhiteColor, color: colors.primaryColor }}
                 aria-label="estabelecimento-nome"
               >
-                {data.nome.charAt(0).toUpperCase()}
+                {entidade?.usuario?.nome.charAt(0).toUpperCase()}
               </Avatar>
             }
             action={
@@ -87,9 +89,9 @@ export default function MapInfo({ data, open, setOpen }) {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={data.nome}
+            title={entidade?.usuario?.nome}
             titleTypographyProps={{ color: colors.primaryWhiteColor }}
-            subheader={data.endereco}
+            subheader={entidade?.usuario?.endereco}
             subheaderTypographyProps={{ color: colors.primaryWhiteColor }}
             sx={{
               borderBottom: `1px solid ${colors.primaryWhiteColor}`

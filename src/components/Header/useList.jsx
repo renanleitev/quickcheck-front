@@ -26,7 +26,7 @@ export default function useList() {
   const clienteList = useMemo(
     () => [
       { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
-      { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
+      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
       { name: 'Sobre', onClick: () => navigate('/sobre') },
       { name: 'Logout', onClick: () => handleLogout() }
@@ -37,7 +37,7 @@ export default function useList() {
   const funcionarioList = useMemo(
     () => [
       { name: 'Meus atendimentos', onClick: () => navigate('/agendamentos') },
-      { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
+      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
       { name: 'Sobre', onClick: () => navigate('/sobre') },
       { name: 'Logout', onClick: () => handleLogout() }
@@ -51,7 +51,7 @@ export default function useList() {
       { name: 'Atendimentos', onClick: () => navigate('/agendamentos') },
       { name: 'Pacientes', onClick: () => navigate('/pacientes') },
       { name: 'Médicos', onClick: () => navigate('/medicos') },
-      { name: 'Meu Perfil', onClick: () => navigate('/perfil') },
+      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
       { name: 'Sobre', onClick: () => navigate('/sobre') },
       { name: 'Logout', onClick: () => handleLogout() }

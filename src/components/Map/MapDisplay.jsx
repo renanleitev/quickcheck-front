@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MapButtons from './Components/MapButtons';
 import MapSearch from './Components/MapSearch';
@@ -6,12 +7,13 @@ import MapInfo from './Info/MapInfo';
 import HomeMarker from './Markers/HomeMarker';
 import HospitalMarker from './Markers/HospitalMarker';
 import { defaultCoords, zoomLevel } from '../../config/enums';
-import { hospitais } from '../../mocks/estabelecimentos';
 
 export default function MapDisplay() {
+  const estabelecimentos = useSelector(state => state?.estabelecimentos?.estabelecimentos) ?? [];
+
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
-  const [data, setData] = useState(hospitais[0]);
+  const [entidade, setEntidade] = useState(undefined);
 
   return (
     <MapContainer
@@ -24,15 +26,17 @@ export default function MapDisplay() {
         attribution="Google Maps"
         url="https://www.google.us/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
       />
+      {/* Localização do Cliente */}
       <HomeMarker />
-      {hospitais.map((hospital) => {
+      {/* Localização dos Estabelecimentos */}
+      {estabelecimentos.map((hospital) => {
         return (
           <HospitalMarker
             key={hospital.id}
-            latitude={hospital.latitude}
-            longitude={hospital.longitude}
+            latitude={hospital?.latitude}
+            longitude={hospital?.longitude}
             onClick={() => {
-              setData(hospital);
+              setEntidade(hospital);
               setOpenInfo(true);
             }}
           />
@@ -40,7 +44,7 @@ export default function MapDisplay() {
       })}
       <MapButtons setOpen={setOpenSearch} />
       <MapSearch open={openSearch} setOpen={setOpenSearch} />
-      <MapInfo data={data} open={openInfo} setOpen={setOpenInfo} />
+      <MapInfo entidade={entidade} open={openInfo} setOpen={setOpenInfo} />
     </MapContainer>
   );
 }

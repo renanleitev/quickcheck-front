@@ -12,7 +12,7 @@ import Agendamento from '../pages/Agendamento/Agendamento';
 import history from '../services/history';
 
 export default function RoutesController() {
-  const isLoggedIn = useSelector((state) => state.usuarios.isLoggedIn) || false;
+  const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
 
   // Obtendo a URL anterior que o usuário tentou acessar (caso não esteja autenticado)
   const location = useLocation();
@@ -20,7 +20,6 @@ export default function RoutesController() {
   // Protegendo as rotas, caso o usuário não esteja logado
   function handleAuth(children){
     if (isLoggedIn) {
-      console.log(location);
       history.push(location);
       return children;
     } else {

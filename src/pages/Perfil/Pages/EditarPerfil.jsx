@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
@@ -8,17 +9,21 @@ import StepSaude from '../../../components/Step/StepContent/StepSaude';
 import StepProfissao from '../../../components/Step/StepContent/StepProfissao';
 import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
 import colors from '../../../config/colors';
-import { clientes } from '../../../mocks/clientes';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { UserRoles } from '../../../config/enums';
 
 export default function EditarPerfil() {
   const navigate = useNavigate();
 
-  // TODO: Substituir dado mockado por dados reais da API
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+
   const [data, setData] = useState({
-    ...clientes[0],
-    nascimento: formatCalendarDate(clientes[0].nascimento)
+    ...entidade,
+    nome: entidade?.usuario?.nome,
+    telefone: entidade?.usuario?.telefone,
+    endereco: entidade?.usuario?.endereco,
+    role: entidade?.usuario?.role,
+    nascimento: formatCalendarDate(entidade?.nascimento),
   });
 
   const color = colors.primaryDarkColor;
@@ -27,7 +32,7 @@ export default function EditarPerfil() {
   const buttonHeight = '3rem';
 
   function renderPerfil() {
-    switch (data.role) {
+    switch (data?.role) {
       case UserRoles.ESTABELECIMENTO:
         return (
           <>

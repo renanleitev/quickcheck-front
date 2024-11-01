@@ -13,29 +13,25 @@ export default function StepPessoal({ data, setData, role }) {
     <>
       <Input data={data} setData={setData} keyName="nome" placeholder="Nome" />
       {role === UserRoles.ESTABELECIMENTO ? (
-        <Input
-          data={data}
-          setData={setData}
-          keyName="cnpj"
-          placeholder="CNPJ"
-          inputType={InputType.NUMBER}
-        />
+        <Input data={data} setData={setData} keyName="cnpj" placeholder="CNPJ" />
       ) : (
-        <Input
-          data={data}
-          setData={setData}
-          keyName="cpf"
-          placeholder="CPF"
-          inputType={InputType.NUMBER}
-        />
+        <>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="cpf"
+            placeholder="CPF"
+            inputType={InputType.NUMBER}
+          />
+          <Input
+            data={data}
+            setData={setData}
+            keyName="nascimento"
+            inputType={InputType.DATE}
+            placeholder="Data de Nascimento"
+          />
+        </>
       )}
-      <Input
-        data={data}
-        setData={setData}
-        keyName="nascimento"
-        inputType={InputType.DATE}
-        placeholder="Data de Nascimento"
-      />
     </>
   );
 }

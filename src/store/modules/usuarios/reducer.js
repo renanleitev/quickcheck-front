@@ -4,7 +4,7 @@ import axiosInstance, { baseUsuariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
 // Atributos comuns para todas as entidades (cliente, funcionario e estabelecimento)
-export const initialUsuario = {
+export const initialEntidade = {
   id: '',
   nome: '',
   email: '',
@@ -18,7 +18,8 @@ export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   isLoggedIn: false,
   error: '',
-  usuario: initialUsuario,
+  // entidade = cliente | funcionario | estabelecimento => todos possuem um usuario
+  entidade: initialEntidade,
   usuarios: []
 };
 
@@ -50,7 +51,7 @@ export const usuariosSlice = createSlice({
   reducers: {
     logoutUsuario: (state) => {
       state.isLoggedIn = false;
-      state.usuario = initialUsuario;
+      state.entidade = initialEntidade;
       state.error = '';
       state.usuarios = [];
       state.fetchStatus = fetchStatus.IDLE;
@@ -61,7 +62,7 @@ export const usuariosSlice = createSlice({
       // getUsuario
       .addCase(getUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.usuario = action.payload;
+        state.entidade = action.payload;
       })
       .addCase(getUsuario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
@@ -74,7 +75,7 @@ export const usuariosSlice = createSlice({
       // loginUsuario
       .addCase(loginUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.usuario = action.payload;
+        state.entidade = action.payload;
         state.isLoggedIn = true;
         toast.success('Usuário autenticado com sucesso. Redirecionando...');
       })

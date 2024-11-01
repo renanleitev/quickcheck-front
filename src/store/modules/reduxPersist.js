@@ -6,7 +6,7 @@ export default (reducers) => {
     {
       key: 'react-base',
       storage,
-      whitelist: ['clientes', 'funcionarios', 'estabelecimentos', 'usuarios']
+      whitelist: ['clientes', 'funcionarios', 'estabelecimentos', 'usuarios', 'horarios']
     },
     reducers
   );

@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Popup, Marker, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import { defaultCoords, zoomLevel } from '../../../config/enums';
+import { defaultCoords, UserRoles, zoomLevel } from '../../../config/enums';
+import { homeIcon, hospitalIcon } from './MarkerIcons';
 
 export default function HomeMarker() {
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
 
   const map = useMap();
 
-  const iconSize = 40;
-
-  const homeIcon = new L.icon({
-    iconUrl: 'https://img.icons8.com/?size=100&id=wFfu6zXx15Yk&format=png&color=000000',
-    iconSize: [iconSize, iconSize]
-  });
-
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (entidade?.usuario?.role === UserRoles.ESTABELECIMENTO) {
+      const latitude = entidade?.latitude;
+      const longitude = entidade?.longitude;
+      setCoords({ latitude, longitude });
+      map.flyTo([latitude, longitude], zoomLevel);
+    } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -29,10 +30,12 @@ export default function HomeMarker() {
         }
       );
     }
-  }, [map]);
+  }, [entidade?.latitude, entidade?.longitude, entidade?.usuario?.role, map]);
+
+  const icon = entidade?.usuario?.role === UserRoles.ESTABELECIMENTO ? hospitalIcon : homeIcon;
 
   return (
-    <Marker position={[coords.latitude, coords.longitude]} icon={homeIcon}>
+    <Marker position={[coords.latitude, coords.longitude]} icon={icon}>
       <Popup>Você está aqui</Popup>
     </Marker>
   );

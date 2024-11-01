@@ -13,7 +13,7 @@ import { UserRoles } from '../../../config/enums';
 export default function VerPerfil() {
   const navigate = useNavigate();
 
-  const usuario = useSelector((state) => state?.usuarios?.usuario) || UserRoles.CLIENTE;
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const color = colors.primaryDarkColor;
 
@@ -21,14 +21,14 @@ export default function VerPerfil() {
   const buttonHeight = '3rem';
 
   function renderPerfil() {
-    switch (usuario?.role) {
+    switch (entidade?.usuario?.role) {
       case UserRoles.ESTABELECIMENTO:
-        return <Estabelecimento entity={usuario} />;
+        return <Estabelecimento entidade={entidade} />;
       case UserRoles.FUNCIONARIO:
-        return <Funcionario entity={usuario} />;
+        return <Funcionario entidade={entidade} />;
       case UserRoles.CLIENTE:
       default:
-        return <Cliente entity={usuario} />;
+        return <Cliente entidade={entidade} />;
     }
   }
 
