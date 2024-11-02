@@ -5,11 +5,9 @@ import BackButton from '../../components/Button/BackButton';
 import colors from '../../config/colors';
 
 export default function Agendamento() {
-  const color = colors.primaryDarkColor;
-
   return (
     <VerticalContainer style={{ padding: '2rem' }}>
-      <Typography variant="h4" color={color}>
+      <Typography variant="h4" color={colors.primaryDarkColor}>
         Minhas consultas
       </Typography>
       <AgendamentoLista />

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Avatar, Box, Card, CardHeader, Drawer, IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import colors from '../../../config/colors';
@@ -9,8 +10,8 @@ import StepHorarios from './Steps/StepHorarios';
 import StepConfirmar from './Steps/StepConfirmar';
 import StepFinalizar from './Steps/StepFinalizar';
 import StepButtons from '../../Step/StepButtons';
-import { horarios } from '../../../mocks/horarios';
 import formatDate from '../../../hooks/formatDate';
+import { getHorarios } from '../../../store/modules/horarios/reducer';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
@@ -19,16 +20,27 @@ MapInfo.propTypes = {
 };
 
 export default function MapInfo({ entidade, open, setOpen }) {
+  const dispatch = useDispatch();
+
+  const horarios = useSelector((state) => state?.horarios?.horarios) || [];
+
   const [step, setStep] = useState(0);
 
   const initialAgendamento = useMemo(() => {
     return {
       especialidade: '',
-      horario: undefined
+      horario: undefined,
+      funcionario: undefined
     };
   }, []);
 
   const [agendamento, setAgendamento] = useState(initialAgendamento);
+
+  // Obtendo os horários
+  // TODO: Obter os horários de acordo com cada estabelecimento
+  useEffect(() => {
+    dispatch(getHorarios());
+  }, [dispatch]);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
@@ -55,10 +67,12 @@ export default function MapInfo({ entidade, open, setOpen }) {
           />
         );
       case 1:
-        return <StepHorarios entidade={agendamento} setentidade={setAgendamento} horarios={horarios} />;
+        return <StepHorarios data={agendamento} setData={setAgendamento} horarios={horarios} />;
       case 0:
       default:
-        return <StepInfo imagem={entidade?.usuario?.imagem} horarioFuncionamento={entidade?.horarioFuncionamento} />;
+        return (
+          <StepInfo imagem={entidade?.usuario?.imagem} info={entidade?.horarioFuncionamento} />
+        );
     }
   }
 
@@ -75,6 +89,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
     >
       <VerticalContainer>
         <Card sx={{ backgroundColor: colors.primaryColor, boxShadow: 'none' }}>
+          {/* Título do Estabelecimento + Endereço */}
           <CardHeader
             avatar={
               <Avatar
@@ -97,8 +112,10 @@ export default function MapInfo({ entidade, open, setOpen }) {
               borderBottom: `1px solid ${colors.primaryWhiteColor}`
             }}
           />
-          {/* Definindo uma alturar para criar efeito scroll */}
+          {/* Steps */}
+          {/* Definindo uma altura fixa para criar efeito scroll */}
           <Box sx={{ height: '23rem', overflow: 'auto' }}>{stepRender(step)}</Box>
+          {/* Steps Buttons */}
           <HorizontalContainer style={{ padding: '0.5rem', justifyContent: 'flex-end' }}>
             <StepButtons
               activeStep={step}

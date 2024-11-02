@@ -48,7 +48,7 @@ Input.propTypes = {
   disabled: PropTypes.bool,
   inputWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   select: PropTypes.bool,
-  selectList: PropTypes.arrayOf(PropTypes.object),
+  selectList: PropTypes.arrayOf([PropTypes.object, PropTypes.string, PropTypes.number]),
   multiline: PropTypes.bool,
   rows: PropTypes.number
 };
@@ -91,9 +91,7 @@ function Input({
   return (
     <TextFieldStyled
       type={select ? null : inputType}
-      {...(multiline
-        ? { defaultValue: data[keyName] }
-        : { value: data[keyName] })}
+      {...(multiline ? { defaultValue: data[keyName] } : { value: data[keyName] })}
       onChange={handleInput}
       label={placeholder}
       placeholder={placeholder}

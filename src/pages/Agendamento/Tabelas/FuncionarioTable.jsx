@@ -53,6 +53,8 @@ export default function FuncionarioTable() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados';
 
+  // Obtendo os horários
+  // TODO: Obter os horários de acordo com cada funcionário
   useEffect(() => {
     dispatch(getHorarios());
   }, [dispatch]);

@@ -45,6 +45,8 @@ export default function ClienteTable() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados';
 
+  // Obtendo os horários
+  // TODO: Obter os horários de acordo com cada cliente
   useEffect(() => {
     dispatch(getHorarios());
   }, [dispatch]);
@@ -71,7 +73,7 @@ export default function ClienteTable() {
           {horarios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((horario) => (
             <>
               {/* Linha padrão - sempre visível */}
-              <TableRow key={horario.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow key={horario?.horarioAtedimento} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 {/* Ícone para expandir a linha oculta */}
                 <TableCell>
                   <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
