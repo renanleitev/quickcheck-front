@@ -1,13 +1,15 @@
-import Input, { InputType } from '../../Input/Input';
+import Input from '../../Input/Input';
 import { comorbidadesOptions, sexoOptions } from '../../../config/enums';
+import { numeroCartaoSUSRegex, numeroCartaoSUSFormat } from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
 StepSaude.propTypes = {
   data: PropTypes.object.isRequired,
-  setData: PropTypes.func.isRequired
+  setData: PropTypes.func.isRequired,
+  errors: PropTypes.object
 };
 
-export default function StepSaude({ data, setData }) {
+export default function StepSaude({ data, setData, errors }) {
   return (
     <>
       <Input
@@ -31,7 +33,10 @@ export default function StepSaude({ data, setData }) {
         setData={setData}
         keyName="numeroCartaoSUS"
         placeholder="Número do Cartão do SUS"
-        inputType={InputType.NUMBER}
+        error={errors?.errorSaude}
+        errorText={errors?.errorSaudeText}
+        regex={numeroCartaoSUSRegex}
+        format={numeroCartaoSUSFormat}
       />
     </>
   );

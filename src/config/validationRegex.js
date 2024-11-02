@@ -11,10 +11,21 @@ export const cnpjRegex =
 export const cpfFormat = 'XXX.XXX.XXX-XX';
 export const cnpjFormat = 'XX.XXX.XXX/XXXX-XX';
 
-// Regex para telefone 
+// Regex para telefone
 // Regex fixo (valida o valor completo)
 export const telefoneRegexFinal = /^(?:\(\d{2}\)\s?)?(?:\d{4,5}-?\d{4})$/;
 // Regex progressivo (valida conforme o usuário digita os números e os caracteres especiais)
 export const telefoneRegex = /^\(?\d{0,2}\)? ?\d{0,5}-?\d{0,4}$/;
 // Formato específico para telefone = DD (2 dígitos) + número completo (9 dígitos)
-export const telefoneFormat = "(XX) XXXXX-XXXX";
+export const telefoneFormat = '(XX) XXXXX-XXXX';
+
+// Regex para número do cartão do SUS
+// Regex fixo (valida o valor completo)
+export const numeroCartaoSUSRegexFinal = /^\d{3} \d{4} \d{4} \d{4}$/;
+// Regex progressivo (valida conforme o usuário digita os números e os caracteres especiais)
+export const numeroCartaoSUSRegex = /^(?:\d{0,3}\s?\d{0,4}\s?\d{0,4}\s?\d{0,4})?$/;
+// Formato específico para número do cartão do SUS
+export const numeroCartaoSUSFormat = 'XXX XXXX XXXX XXXX';
+
+// Regex para apenas letras
+export const onlyLettersRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;

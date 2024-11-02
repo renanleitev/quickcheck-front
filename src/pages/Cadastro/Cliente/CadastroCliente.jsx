@@ -5,9 +5,10 @@ import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
 import StepRender from './StepRender';
 import { formatCalendarDate } from '../../../hooks/formatDate';
-import PropTypes from 'prop-types';
 import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
 import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
+import useValidateSaude from '../../../components/Step/StepValidation/useValidateSaude';
+import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
   setUserRole: PropTypes.func.isRequired
@@ -54,7 +55,11 @@ export default function CadastroCliente({ setUserRole }) {
     telefone: data.telefone
   });
 
-  const errors = { ...errorsPessoal, ...errorsContato };
+  const { validateSaude, ...errorsSaude } = useValidateSaude({
+    numeroCartaoSUS: data.numeroCartaoSUS
+  });
+
+  const errors = { ...errorsPessoal, ...errorsContato, ...errorsSaude };
 
   const handleForm = useCallback(() => {
     if (activeStep === 0) {
@@ -63,8 +68,11 @@ export default function CadastroCliente({ setUserRole }) {
     if (activeStep === 1) {
       return validateContato();
     }
+    if (activeStep === 2) {
+      return validateSaude();
+    }
     return () => {};
-  }, [activeStep, validateContato, validatePessoal]);
+  }, [activeStep, validateContato, validatePessoal, validateSaude]);
 
   return (
     <VerticalContainer

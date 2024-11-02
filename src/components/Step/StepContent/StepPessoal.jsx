@@ -1,6 +1,12 @@
 import Input, { InputType } from '../../Input/Input';
 import { UserRoles } from '../../../config/enums';
-import { cpfRegex, cpfFormat, cnpjRegex, cnpjFormat } from '../../../config/validationRegex';
+import {
+  cpfRegex,
+  cpfFormat,
+  cnpjRegex,
+  cnpjFormat,
+  onlyLettersRegex
+} from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
 StepPessoal.propTypes = {
@@ -20,6 +26,7 @@ export default function StepPessoal({ data, setData, role, errors }) {
         placeholder="Nome"
         error={errors?.errorNome}
         errorText={errors?.errorNomeText}
+        regex={onlyLettersRegex}
       />
       {role === UserRoles.ESTABELECIMENTO ? (
         <Input

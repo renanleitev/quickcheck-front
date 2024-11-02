@@ -37,8 +37,10 @@ const useValidatePessoal = ({ nome, cpf, nascimento }) => {
       hasError = true;
     }
 
+    const idadePermitida = 18;
+
     // Validação da idade
-    if (idade < 18) {
+    if (idade < idadePermitida) {
       setErrorIdade(true);
       setErrorIdadeText('Idade inferior a 18 anos');
       hasError = true;
