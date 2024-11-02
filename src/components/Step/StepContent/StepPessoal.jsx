@@ -1,5 +1,6 @@
 import Input, { InputType } from '../../Input/Input';
 import { UserRoles } from '../../../config/enums';
+import { cpfRegex, cpfFormat, cnpjRegex, cnpjFormat } from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
 StepPessoal.propTypes = {
@@ -10,16 +11,6 @@ StepPessoal.propTypes = {
 };
 
 export default function StepPessoal({ data, setData, role, errors }) {
-  // Regex progressivo (valida conforme o usuário digita os números e os caracteres especiais)
-  const cpfRegex =
-    /^(\d{0,3}|\d{3}\.?\d{0,3}|\d{3}\.\d{3}\.?\d{0,3}|\d{3}\.\d{3}\.\d{3}-?\d{0,2})$/;
-  const cnpjRegex =
-    /^(\d{0,2}|\d{2}\.?\d{0,3}|\d{2}\.\d{3}\.?\d{0,3}|\d{2}\.\d{3}\.\d{3}\/?\d{0,4}|\d{2}\.\d{3}\.\d{3}\/\d{4}-?\d{0,2})$/;
-
-  // Formato específico para CPF e CNPJ
-  const cpfFormat = "XXX.XXX.XXX-XX";
-  const cnpjFormat = "XX.XXX.XXX/XXXX-XX";
-
   return (
     <>
       <Input

@@ -8,15 +8,21 @@ const useValidateContato = ({ endereco, telefone }) => {
   const [errorTelefoneText, setErrorTelefoneText] = useState('');
 
   const validateContato = () => {
+    let hasError = false;
+
     if (endereco === '') {
       setErrorEndereco(true);
       setErrorEnderecoText('Endereço não pode ser vazio');
+      hasError = true;
     }
+
     if (telefone === '') {
       setErrorTelefone(true);
       setErrorTelefoneText('Telefone não pode ser vazio');
+      hasError = true;
     }
-    if (endereco === '' || telefone === '') {
+
+    if (hasError) {
       throw new Error('Endereço ou Telefone vazios');
     }
   };

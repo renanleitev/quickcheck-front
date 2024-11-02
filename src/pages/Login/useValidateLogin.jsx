@@ -10,19 +10,30 @@ const useValidateLogin = ({ email, senha }) => {
   const [errorSenhaText, setErrorSenhaText] = useState('');
 
   const validateLogin = () => {
+    let hasError = false;
+
+    // Validação do email
     if (email === '') {
       setErrorEmail(true);
       setErrorEmailText('Email não pode ser vazio');
-    }
+      hasError = true;
+    } 
+    
     if (!validateEmail(email)) {
       setErrorEmail(true);
       setErrorEmailText('Email inválido');
+      hasError = true;
     }
+
+    // Validação da senha
     if (senha === '') {
       setErrorSenha(true);
       setErrorSenhaText('Senha não pode ser vazia');
+      hasError = true;
     }
-    if (email === '' || !validateEmail(email) || senha === '') {
+
+    // Lança erro se houver alguma validação falha
+    if (hasError) {
       throw new Error('Email ou senha inválidos');
     }
   };
