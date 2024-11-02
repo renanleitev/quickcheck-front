@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import colors from '../../config/colors';
+import { textMarshal } from 'text-marshal';
 
 const inputBorderRadius = '10px';
 
@@ -60,7 +61,9 @@ Input.propTypes = {
   multiline: PropTypes.bool,
   rows: PropTypes.number,
   error: PropTypes.bool,
-  errorText: PropTypes.string
+  errorText: PropTypes.string,
+  regex: PropTypes.shape(RegExp),
+  format: PropTypes.string
 };
 
 function Input({
@@ -75,30 +78,32 @@ function Input({
   selectList = [],
   multiline = false,
   rows = 2,
-  error,
-  errorText
+  error = false,
+  errorText,
+  regex,
+  format
 }) {
   const handleInput = useCallback(
     (e) => {
+      // Se houver um regex, bloqueia o input do usuário quando o valor não corresponde ao regex
+      if (regex && e.target.value !== '' && !regex.test(e.target.value)) {
+        return;
+      }
+      // Formata o input no padrão desejado
+      if (format) {
+        const { marshaltext } = textMarshal({
+          input: e.target.value,
+          template: format
+        });
+        e.target.value = String(marshaltext);
+      }
       setData({
         ...data,
         [keyName]: e.target.value
       });
     },
-    [data, keyName, setData]
+    [data, format, keyName, regex, setData]
   );
-
-  // const isError = () => {
-  //   if (typeof data[keyName] === 'string' && data[keyName] === '') {
-  //     return true;
-  //   }
-  //   if (typeof data[keyName] === 'number' && data[keyName] === 0) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
-  // const error = isError();
-  // const errorText = `${placeholder} não pode ser vazio`;
 
   return (
     <TextFieldStyled
@@ -110,7 +115,7 @@ function Input({
       disabled={disabled}
       select={select}
       autoComplete="new-password"
-      // Fix placeholder on top of input
+      // Deixa o placeholder fixo no topo do input
       slotProps={{
         inputplaceholder: { shrink: true },
         htmlInput: {
@@ -134,7 +139,7 @@ function Input({
       sx={{
         width: inputWidth
       }}
-      // Error text
+      // Mensagens de erro
       error={error}
       helperText={error && errorText}
     >

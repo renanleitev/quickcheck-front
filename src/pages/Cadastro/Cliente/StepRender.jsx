@@ -14,7 +14,7 @@ StepRender.propTypes = {
 export default function StepRender({ step, data, setData, errors }) {
   switch (step) {
     case 1:
-      return <StepContato data={data} setData={setData} />;
+      return <StepContato data={data} setData={setData} errors={errors} />;
     case 2:
       return <StepSaude data={data} setData={setData} />;
     case 3:
