@@ -7,10 +7,11 @@ import PropTypes from 'prop-types';
 StepRender.propTypes = {
   step: PropTypes.number.isRequired,
   data: PropTypes.object.isRequired,
-  setData: PropTypes.func.isRequired
+  setData: PropTypes.func.isRequired,
+  errors: PropTypes.object
 };
 
-export default function StepRender({ step, data, setData }) {
+export default function StepRender({ step, data, setData, errors }) {
   switch (step) {
     case 1:
       return <StepContato data={data} setData={setData} />;
@@ -20,6 +21,6 @@ export default function StepRender({ step, data, setData }) {
       return <StepLogin data={data} setData={setData} />;
     case 0:
     default:
-      return <StepPessoal data={data} setData={setData} />;
+      return <StepPessoal data={data} setData={setData} errors={errors} />;
   }
 }

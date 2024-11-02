@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Box, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import colors from '../../config/colors';
@@ -9,7 +10,8 @@ StepButtons.propTypes = {
   stepsNumber: PropTypes.number.isRequired,
   nextStepLabel: PropTypes.string,
   disableNextButton: PropTypes.bool,
-  isSetupFinished: PropTypes.bool
+  isSetupFinished: PropTypes.bool,
+  onValidateForm: PropTypes.func,
 };
 
 export default function StepButtons({
@@ -19,11 +21,13 @@ export default function StepButtons({
   stepsNumber,
   nextStepLabel = 'Avançar',
   disableNextButton = false,
-  isSetupFinished = false
+  isSetupFinished = false,
+  onValidateForm
 }) {
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
+    onValidateForm();
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  }, [onValidateForm, setActiveStep]);
 
   const handleBack = () => {
     if (activeStep === 0 || isSetupFinished) {

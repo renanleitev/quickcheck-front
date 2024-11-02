@@ -22,6 +22,9 @@ const useValidateLogin = ({ email, senha }) => {
       setErrorSenha(true);
       setErrorSenhaText('Senha não pode ser vazia');
     }
+    if (email === '' || !validateEmail(email) || senha === '') {
+      throw new Error('Email ou senha inválidos');
+    }
   };
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import StepButtons from '../../../components/Step/StepButtons';
 import StepRender from './StepRender';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
+import useValidatePessoal from './useValidatePessoal';
 
 CadastroCliente.propTypes = {
   setUserRole: PropTypes.func.isRequired
@@ -40,6 +41,12 @@ export default function CadastroCliente({ setUserRole }) {
 
   const widthContainer = '20rem';
 
+  // Validando os steps
+  const { validatePessoal, ...errors } = useValidatePessoal({
+    nome: data.nome,
+    cpf: data.cpf
+  });
+
   return (
     <VerticalContainer
       style={{
@@ -47,12 +54,13 @@ export default function CadastroCliente({ setUserRole }) {
       }}
     >
       <StepCount steps={steps} activeStep={activeStep} />
-      <StepRender step={activeStep} data={data} setData={setData} />
+      <StepRender step={activeStep} data={data} setData={setData} errors={errors} />
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}
         onReset={() => setUserRole('')}
         stepsNumber={steps.length}
+        onValidateForm={validatePessoal}
       />
     </VerticalContainer>
   );

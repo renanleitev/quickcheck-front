@@ -8,6 +8,7 @@ import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { roleOptions } from '../../config/enums';
 import useValidateLogin from './useValidateLogin';
+import { RoutesList } from '../../routes/enums';
 
 export default function Login() {
   const initialUser = {
@@ -28,11 +29,8 @@ export default function Login() {
 
   const handleLogin = useCallback(() => {
     validateLogin();
-    if (!errorEmail && !errorSenha) {
-      return;
-    }
     dispatch(loginUsuario(data));
-  }, [validateLogin, errorEmail, errorSenha, dispatch, data]);
+  }, [validateLogin, dispatch, data]);
 
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
@@ -61,10 +59,10 @@ export default function Login() {
           sx={{ width: '15rem', padding: '1rem' }}
           onClick={() => handleLogin()}
         >
-          Entrar
+          <Link to={RoutesList.Home}>Entrar</Link>
         </Button>
         <Typography>
-          Primeiro acesso? <Link to="/cadastro">Cadastre-se!</Link>
+          Primeiro acesso? <Link to={RoutesList.Cadastro}>Cadastre-se!</Link>
         </Typography>
       </VerticalContainer>
     </VerticalContainer>

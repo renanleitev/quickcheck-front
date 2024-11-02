@@ -10,6 +10,7 @@ import EditarPerfil from '../pages/Perfil/Pages/EditarPerfil';
 import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
 import Agendamento from '../pages/Agendamento/Agendamento';
 import history from '../services/history';
+import { RoutesList } from './enums';
 
 export default function RoutesController() {
   const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
@@ -17,28 +18,31 @@ export default function RoutesController() {
   // Obtendo a URL anterior que o usuário tentou acessar (caso não esteja autenticado)
   const location = useLocation();
 
+  // Rotas desprotegidas
+  const allowedRoutes = [RoutesList.Cadastro];
+
   // Protegendo as rotas, caso o usuário não esteja logado
-  function handleAuth(children){
+  function handleAuth(children) {
     if (isLoggedIn) {
       history.push(location);
       return children;
-    } else {
-      history.push('/login');
+    } else if (!allowedRoutes.includes(location.pathname)) {
+      history.push(RoutesList.Login);
       return <Login />;
     }
   }
 
   return (
     <Routes>
-      <Route path="/" element={handleAuth(<Home />)} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="/perfil" element={handleAuth(<Perfil />)} />
-      <Route path="/ver-perfil" element={handleAuth(<VerPerfil />)} />
-      <Route path="/editar-perfil" element={handleAuth(<EditarPerfil />)} />
-      <Route path="/alterar-senha" element={handleAuth(<AlterarSenha />)} />
-      <Route path="/agendamentos" element={handleAuth(<Agendamento />)} />
-      <Route path="*" element={<Page404 />} />
+      <Route path={RoutesList.Home} element={handleAuth(<Home />)} />
+      <Route path={RoutesList.Login} element={<Login />} />
+      <Route path={RoutesList.Cadastro} element={<Cadastro />} />
+      <Route path={RoutesList.Perfil} element={handleAuth(<Perfil />)} />
+      <Route path={RoutesList.VerPerfil} element={handleAuth(<VerPerfil />)} />
+      <Route path={RoutesList.EditarPerfil} element={handleAuth(<EditarPerfil />)} />
+      <Route path={RoutesList.AlterarSenha} element={handleAuth(<AlterarSenha />)} />
+      <Route path={RoutesList.Agendamentos} element={handleAuth(<Agendamento />)} />
+      <Route path={RoutesList.NotFound} element={<Page404 />} />
     </Routes>
   );
 }

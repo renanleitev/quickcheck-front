@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
+import { RoutesList } from '../../routes/enums';
 
 export default function Page404() {
   return (
@@ -10,7 +11,7 @@ export default function Page404() {
         Erro. Página não encontrada.
       </Typography>
       <Button variant="contained" sx={{ height: '4rem', width: '15rem' }}>
-        <Link to="/">Página Inicial</Link>
+        <Link to={RoutesList.Home}>Página Inicial</Link>
       </Button>
     </VerticalContainer>
   );

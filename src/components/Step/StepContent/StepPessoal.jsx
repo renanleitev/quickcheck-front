@@ -5,13 +5,21 @@ import PropTypes from 'prop-types';
 StepPessoal.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
-  role: PropTypes.string
+  role: PropTypes.string,
+  errors: PropTypes.object
 };
 
-export default function StepPessoal({ data, setData, role }) {
+export default function StepPessoal({ data, setData, role, errors }) {
   return (
     <>
-      <Input data={data} setData={setData} keyName="nome" placeholder="Nome" />
+      <Input
+        data={data}
+        setData={setData}
+        keyName="nome"
+        placeholder="Nome"
+        error={errors?.errorNome}
+        errorText={errors?.errorNomeText}
+      />
       {role === UserRoles.ESTABELECIMENTO ? (
         <Input data={data} setData={setData} keyName="cnpj" placeholder="CNPJ" />
       ) : (
@@ -22,6 +30,8 @@ export default function StepPessoal({ data, setData, role }) {
             keyName="cpf"
             placeholder="CPF"
             inputType={InputType.NUMBER}
+            error={errors?.errorCpf}
+            errorText={errors?.errorCpfText}
           />
           <Input
             data={data}
