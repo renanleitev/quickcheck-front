@@ -1,20 +1,20 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import colors from '../../../config/colors';
+import { alterarSenha } from '../../../store/modules/usuarios/reducer';
 
 export default function AlterSenha() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+  const usuario = useSelector((state) => state?.usuarios?.entidade?.usuario) || undefined;
 
-  const [data, setData] = useState({
-    senha: entidade?.usuario?.senha,
-    email: entidade?.usuario?.email
-  });
+  const [data, setData] = useState({ ...usuario, repetirSenha: usuario?.senha });
 
   const color = colors.primaryDarkColor;
 
@@ -31,7 +31,7 @@ export default function AlterSenha() {
         <Button
           variant="contained"
           color="success"
-          onClick={() => {}}
+          onClick={() => dispatch(alterarSenha(data))}
           sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Confirmar

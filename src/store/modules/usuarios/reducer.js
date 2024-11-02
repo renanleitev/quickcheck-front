@@ -11,7 +11,8 @@ export const initialEntidade = {
   role: '',
   telefone: '',
   endereco: '',
-  imagem: ''
+  imagem: '',
+  usuario: undefined
 };
 
 export const initialState = {
@@ -42,6 +43,20 @@ export const loginUsuario = createAsyncThunk('usuarios/loginUsuario', async (log
   } catch (error) {
     console.log(error);
     throw new Error('Usuário e/ou senha inválidos');
+  }
+});
+
+export const alterarSenha = createAsyncThunk('usuarios/alterarSenha', async (loginUsuario) => {
+  try {
+    if (loginUsuario?.senha !== loginUsuario?.repetirSenha) {
+      throw new Error('As senhas estão diferentes');
+    }
+    const url = `${baseUsuariosURL}/${loginUsuario?.id}`;
+    await axiosInstance.put(url, loginUsuario);
+    return loginUsuario;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível atualizar a senha');
   }
 });
 
@@ -83,6 +98,20 @@ export const usuariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(loginUsuario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // alterarSenha
+      .addCase(alterarSenha.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.entidade.usuario = { ...action.payload };
+        toast.success('Senha atualizada com sucesso');
+      })
+      .addCase(alterarSenha.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(alterarSenha.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
