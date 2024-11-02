@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { cpfRegexFinal } from '../../../config/validationRegex';
+import dayjs from 'dayjs';
 
-const useValidatePessoal = ({ nome, cpf }) => {
+const useValidatePessoal = ({ nome, cpf, nascimento }) => {
   const [errorNome, setErrorNome] = useState(false);
   const [errorNomeText, setErrorNomeText] = useState('');
 
   const [errorCpf, setErrorCpf] = useState(false);
   const [errorCpfText, setErrorCpfText] = useState('');
+
+  const [errorIdade, setErrorIdade] = useState(false);
+  const [errorIdadeText, setErrorIdadeText] = useState('');
+
+  const idade = dayjs(new Date()).diff(nascimento, 'year');
 
   const validatePessoal = () => {
     let hasError = false;
@@ -31,6 +37,13 @@ const useValidatePessoal = ({ nome, cpf }) => {
       hasError = true;
     }
 
+    // Validação da idade
+    if (idade < 18) {
+      setErrorIdade(true);
+      setErrorIdadeText('Idade inferior a 18 anos');
+      hasError = true;
+    }
+
     // Lança erro se alguma validação falhar
     if (hasError) {
       throw new Error('Nome ou CPF vazios ou inválidos');
@@ -44,13 +57,18 @@ const useValidatePessoal = ({ nome, cpf }) => {
     if (cpf !== '') {
       setErrorCpfText(false);
     }
-  }, [nome, cpf]);
+    if (nascimento !== '') {
+      setErrorIdade(false);
+    }
+  }, [nome, cpf, nascimento]);
 
   return {
     errorNome,
     errorNomeText,
     errorCpf,
     errorCpfText,
+    errorIdade,
+    errorIdadeText,
     validatePessoal
   };
 };

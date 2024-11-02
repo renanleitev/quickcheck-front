@@ -45,7 +45,8 @@ export default function CadastroCliente({ setUserRole }) {
   // Validando os steps
   const { validatePessoal, ...errorsPessoal } = useValidatePessoal({
     nome: data.nome,
-    cpf: data.cpf
+    cpf: data.cpf,
+    nascimento: data.nascimento
   });
 
   const { validateContato, ...errorsContato } = useValidateContato({

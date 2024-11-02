@@ -50,6 +50,8 @@ export default function StepPessoal({ data, setData, role, errors }) {
             keyName="nascimento"
             inputType={InputType.DATE}
             placeholder="Data de Nascimento"
+            error={errors?.errorIdade}
+            errorText={errors?.errorIdadeText}
           />
         </>
       )}
