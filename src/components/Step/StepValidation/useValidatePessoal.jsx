@@ -46,7 +46,7 @@ const useValidatePessoal = ({ nome, cpf, nascimento }) => {
 
     // Lança erro se alguma validação falhar
     if (hasError) {
-      throw new Error('Nome ou CPF vazios ou inválidos');
+      throw new Error('Nome, CPF ou Idade vazios ou inválidos');
     }
   };
 

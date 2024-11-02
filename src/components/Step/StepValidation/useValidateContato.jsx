@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { telefoneRegexFinal } from '../../../config/validationRegex';
 
 const useValidateContato = ({ endereco, telefone }) => {
   const [errorEndereco, setErrorEndereco] = useState(false);
@@ -22,8 +23,14 @@ const useValidateContato = ({ endereco, telefone }) => {
       hasError = true;
     }
 
+    if (!telefoneRegexFinal.test(telefone)) {
+      setErrorTelefone(true);
+      setErrorTelefoneText('Telefone inválido');
+      hasError = true;
+    }
+
     if (hasError) {
-      throw new Error('Endereço ou Telefone vazios');
+      throw new Error('Endereço ou Telefone vazios ou inválidos');
     }
   };
 

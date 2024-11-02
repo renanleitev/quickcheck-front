@@ -1,4 +1,5 @@
 import Input from '../../Input/Input';
+import { telefoneFormat, telefoneRegex } from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
 StepContato.propTypes = {
@@ -17,6 +18,8 @@ export default function StepContato({ data, setData, errors }) {
         placeholder="Telefone"
         error={errors?.errorTelefone}
         errorText={errors?.errorTelefoneText}
+        regex={telefoneRegex}
+        format={telefoneFormat}
       />
       <Input
         data={data}
