@@ -48,7 +48,9 @@ Input.propTypes = {
   disabled: PropTypes.bool,
   inputWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   select: PropTypes.bool,
-  selectList: PropTypes.arrayOf(PropTypes.object)
+  selectList: PropTypes.arrayOf(PropTypes.object),
+  multiline: PropTypes.bool,
+  rows: PropTypes.number
 };
 
 function Input({
@@ -60,7 +62,9 @@ function Input({
   disabled = false,
   inputWidth,
   select = false,
-  selectList = []
+  selectList = [],
+  multiline = false,
+  rows = 2
 }) {
   const handleInput = useCallback(
     (e) => {
@@ -87,8 +91,9 @@ function Input({
   return (
     <TextFieldStyled
       type={select ? null : inputType}
-      value={data[keyName]}
-      defaultValue={data[keyName]}
+      {...(multiline
+        ? { defaultValue: data[keyName] }
+        : { value: data[keyName] })}
       onChange={handleInput}
       label={placeholder}
       placeholder={placeholder}
@@ -112,8 +117,8 @@ function Input({
         }
       }}
       // Textarea
-      multiline={inputType === InputType.TEXTAREA}
-      rows={2}
+      multiline={multiline}
+      rows={rows}
       // Style
       fullWidth
       sx={{

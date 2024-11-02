@@ -11,7 +11,7 @@ export const initialEntidade = {
   role: '',
   telefone: '',
   endereco: '',
-  imagem: '',
+  imagem: ''
 };
 
 export const initialState = {
@@ -30,7 +30,7 @@ export const getUsuario = createAsyncThunk('usuarios/getUsuario', async (id) => 
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Não foi possível obter os dados");
+    throw new Error('Não foi possível obter os dados');
   }
 });
 
@@ -41,7 +41,7 @@ export const loginUsuario = createAsyncThunk('usuarios/loginUsuario', async (log
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Usuário e/ou senha inválidos");
+    throw new Error('Usuário e/ou senha inválidos');
   }
 });
 
@@ -62,7 +62,7 @@ export const usuariosSlice = createSlice({
       // getUsuario
       .addCase(getUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.entidade = action.payload;
+        state.entidade = { ...action.payload };
       })
       .addCase(getUsuario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
@@ -75,7 +75,7 @@ export const usuariosSlice = createSlice({
       // loginUsuario
       .addCase(loginUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.entidade = action.payload;
+        state.entidade = { ...action.payload };
         state.isLoggedIn = true;
         toast.success('Usuário autenticado com sucesso. Redirecionando...');
       })

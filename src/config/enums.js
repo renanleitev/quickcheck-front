@@ -6,6 +6,14 @@ export const especialidadesOptions = especialidades.map((especialidade) => {
   return { value: especialidade, label: especialidade };
 });
 
+export const AgendamentoStatus = {
+  DISPONÍVEL: 'DISPONÍVEL',
+  AGENDADO: 'AGENDADO',
+  CONCLUÍDO: 'CONCLUÍDO',
+  CANCELADO: 'CANCELADO',
+  PENDENTE: 'PENDENTE'
+};
+
 export const UserRoles = {
   CLIENTE: 'CLIENTE',
   FUNCIONARIO: 'FUNCIONARIO',

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance, { baseClientesURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
+// Atributos exclusivos de cliente
 export const initialCliente = {
   id: '',
   cpf: '',

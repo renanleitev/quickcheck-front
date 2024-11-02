@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance, { baseFuncionariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
+// Atributos exclusivos de funcionario
 export const initialFuncionario = {
   id: '',
   cpf: '',

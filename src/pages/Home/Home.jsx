@@ -1,24 +1,10 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getEstabelecimentos } from '../../store/modules/estabelecimentos/reducer';
-import { VerticalContainer } from '../../config/GlobalStyle';
-import MapDisplay from '../../components/Map/MapDisplay';
+import { useSelector } from 'react-redux';
+import Mapa from '../Mapa/Mapa';
+import Agendamento from '../Agendamento/Agendamento';
+import { UserRoles } from '../../config/enums';
 
 export default function Home() {
-  // Sobe para o topo da página quando carrega o mapa
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getEstabelecimentos());
-  }, [dispatch]);
-
-  return (
-    <VerticalContainer style={{ justifyContent: 'space-between', height: '90%' }}>
-      <MapDisplay />
-    </VerticalContainer>
-  );
+  return <>{entidade?.usuario?.role === UserRoles.FUNCIONARIO ? <Agendamento /> : <Mapa />}</>;
 }

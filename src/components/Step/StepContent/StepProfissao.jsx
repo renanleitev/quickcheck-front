@@ -1,4 +1,4 @@
-import Input, { InputType } from '../../Input/Input';
+import Input from '../../Input/Input';
 import { especialidadesOptions, sexoOptions } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
@@ -31,7 +31,6 @@ export default function StepProfissao({ data, setData }) {
         setData={setData}
         keyName="crm"
         placeholder="CRM"
-        inputType={InputType.NUMBER}
       />
     </>
   );

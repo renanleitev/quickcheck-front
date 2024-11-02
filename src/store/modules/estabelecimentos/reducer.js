@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance, { baseEstabelecimentosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
+// Atributos exclusivos de estabelecimento
 export const initialEstabelecimento = {
   id: '',
   cnpj: '',

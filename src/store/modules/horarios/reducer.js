@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axiosInstance, { baseHorariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
+// Atributos exclusivos de horario
 export const initialHorario = {
   id: '',
   descricao: '',

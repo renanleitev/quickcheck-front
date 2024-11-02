@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import Cliente from '../Content/Cliente';
-import Estabelecimento from '../Content/Estabelecimento';
-import Funcionario from '../Content/Funcionario';
+import Cliente from '../Entidades/Cliente';
+import Estabelecimento from '../Entidades/Estabelecimento';
+import Funcionario from '../Entidades/Funcionario';
 import colors from '../../../config/colors';
 import { UserRoles } from '../../../config/enums';
 

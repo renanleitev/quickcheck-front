@@ -19,7 +19,7 @@ MenuList.propTypes = {
 };
 
 function MenuList({ open, setOpen }) {
-  const entidade = useSelector((state) => state?.usuarios?.entidade?.usuario) || undefined;
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
 
@@ -66,7 +66,7 @@ function MenuList({ open, setOpen }) {
         {isLoggedIn ? (
           <Box p="1rem">
             <Typography variant="h5">{entidade?.usuario?.nome}</Typography>
-            <Typography>{userLabels[entidade?.usuario?.role]}</Typography>{' '}
+            <Typography>{userLabels[entidade?.usuario?.role]}</Typography>
           </Box>
         ) : (
           <Typography variant="h5" padding="1rem">
