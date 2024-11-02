@@ -7,6 +7,7 @@ import Input, { InputType } from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { roleOptions } from '../../config/enums';
+import useValidateLogin from './useValidateLogin';
 
 export default function Login() {
   const initialUser = {
@@ -17,23 +18,42 @@ export default function Login() {
 
   const [data, setData] = useState(initialUser);
 
+  const { errorEmail, errorEmailText, errorSenha, errorSenhaText, validateLogin } =
+    useValidateLogin({
+      email: data.email,
+      senha: data.senha
+    });
+
   const dispatch = useDispatch();
 
   const handleLogin = useCallback(() => {
+    validateLogin();
+    if (!errorEmail && !errorSenha) {
+      return;
+    }
     dispatch(loginUsuario(data));
-  }, [dispatch, data]);
+  }, [validateLogin, errorEmail, errorSenha, dispatch, data]);
 
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
       <VerticalContainer style={{ width: '15rem' }}>
         <Typography variant="h3">Login</Typography>
-        <Input data={data} setData={setData} keyName="email" placeholder="Email" />
+        <Input
+          data={data}
+          setData={setData}
+          keyName="email"
+          placeholder="Email"
+          error={errorEmail}
+          errorText={errorEmailText}
+        />
         <Input
           data={data}
           setData={setData}
           keyName="senha"
           placeholder="Senha"
           inputType={InputType.PASSWORD}
+          error={errorSenha}
+          errorText={errorSenhaText}
         />
         <Input data={data} setData={setData} keyName="role" select selectList={roleOptions} />
         <Button

@@ -21,6 +21,12 @@ const TextFieldStyled = styled(TextField)(() => ({
     backgroundColor: colors.primaryWhiteColor,
     borderRadius: inputBorderRadius,
     padding: '0 10px'
+  },
+  '& .MuiFormLabel-root.Mui-error': {
+    color: colors.warningColor
+  },
+  '& .MuiFormHelperText-root.Mui-error': {
+    color: colors.warningColor
   }
 }));
 
@@ -48,9 +54,13 @@ Input.propTypes = {
   disabled: PropTypes.bool,
   inputWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   select: PropTypes.bool,
-  selectList: PropTypes.arrayOf([PropTypes.object, PropTypes.string, PropTypes.number]),
+  selectList: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.number])
+  ),
   multiline: PropTypes.bool,
-  rows: PropTypes.number
+  rows: PropTypes.number,
+  error: PropTypes.bool,
+  errorText: PropTypes.string
 };
 
 function Input({
@@ -64,7 +74,9 @@ function Input({
   select = false,
   selectList = [],
   multiline = false,
-  rows = 2
+  rows = 2,
+  error,
+  errorText
 }) {
   const handleInput = useCallback(
     (e) => {
@@ -123,8 +135,8 @@ function Input({
         width: inputWidth
       }}
       // Error text
-      // error={error}
-      // helperText={error && errorText}
+      error={error}
+      helperText={error && errorText}
     >
       {selectList.map((selectItem) => {
         return (

@@ -9,7 +9,9 @@ StepButtons.propTypes = {
   stepsNumber: PropTypes.number.isRequired,
   nextStepLabel: PropTypes.string,
   disableNextButton: PropTypes.bool,
-  isSetupFinished: PropTypes.bool
+  isSetupFinished: PropTypes.bool,
+  onValidateForm: PropTypes.func,
+  isFormValid: PropTypes.bool
 };
 
 export default function StepButtons({
@@ -19,10 +21,15 @@ export default function StepButtons({
   stepsNumber,
   nextStepLabel = 'Avançar',
   disableNextButton = false,
-  isSetupFinished = false
+  isSetupFinished = false,
+  onValidateForm,
+  isFormValid
 }) {
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    onValidateForm();
+    if (isFormValid) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
