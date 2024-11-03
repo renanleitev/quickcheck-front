@@ -12,10 +12,10 @@ import useValidateLogin from '../../../components/Step/StepValidation/useValidat
 import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
-  setUserRole: PropTypes.func.isRequired
+  setStartCadastro: PropTypes.func.isRequired
 };
 
-export default function CadastroCliente({ setUserRole }) {
+export default function CadastroCliente({ setStartCadastro }) {
   const initialData = {
     // StepPessoal
     nome: '',
@@ -99,7 +99,7 @@ export default function CadastroCliente({ setUserRole }) {
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}
-        onReset={() => setUserRole('')}
+        onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
       />

@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { cpfRegexFinal } from '../../../config/validationRegex';
+import { cpfRegexFinal, cnpjRegexFinal } from '../../../config/validationRegex';
 import dayjs from 'dayjs';
 
-const useValidatePessoal = ({ nome, cpf, nascimento }) => {
+const useValidatePessoal = ({ nome, cpf, cnpj, nascimento }) => {
   const [errorNome, setErrorNome] = useState(false);
   const [errorNomeText, setErrorNomeText] = useState('');
 
   const [errorCpf, setErrorCpf] = useState(false);
   const [errorCpfText, setErrorCpfText] = useState('');
+
+  const [errorCnpj, setErrorCnpj] = useState(false);
+  const [errorCnpjText, setErrorCnpjText] = useState('');
 
   const [errorIdade, setErrorIdade] = useState(false);
   const [errorIdadeText, setErrorIdadeText] = useState('');
@@ -25,28 +28,44 @@ const useValidatePessoal = ({ nome, cpf, nascimento }) => {
     }
 
     // Validação do CPF
-    if (cpf === '') {
-      setErrorCpf(true);
-      setErrorCpfText('CPF não pode ser vazio');
-      hasError = true;
-    } else if (!cpfRegexFinal.test(cpf)) {
-      setErrorCpf(true);
-      setErrorCpfText('CPF inválido');
-      hasError = true;
+    if (cpf !== undefined) {
+      if (cpf === '') {
+        setErrorCpf(true);
+        setErrorCpfText('CPF não pode ser vazio');
+        hasError = true;
+      } else if (!cpfRegexFinal.test(cpf)) {
+        setErrorCpf(true);
+        setErrorCpfText('CPF inválido');
+        hasError = true;
+      }
     }
 
-    const idadePermitida = 18;
+    // Validação do CNPJ
+    if (cnpj !== undefined) {
+      if (cnpj === '') {
+        setErrorCnpj(true);
+        setErrorCnpjText('CNPJ não pode ser vazio');
+        hasError = true;
+      } else if (!cnpjRegexFinal.test(cnpj)) {
+        setErrorCnpj(true);
+        setErrorCnpjText('CNPJ inválido');
+        hasError = true;
+      }
+    }
 
-    // Validação da idade
-    if (idade < idadePermitida) {
-      setErrorIdade(true);
-      setErrorIdadeText('Idade inferior a 18 anos');
-      hasError = true;
+    if (nascimento !== undefined) {
+      const idadePermitida = 18;
+      // Validação da idade
+      if (idade < idadePermitida) {
+        setErrorIdade(true);
+        setErrorIdadeText('Idade inferior a 18 anos');
+        hasError = true;
+      }
     }
 
     // Lança erro se alguma validação falhar
     if (hasError) {
-      throw new Error('Nome, CPF ou Idade vazios ou inválidos');
+      throw new Error('Dados pessoais vazios ou inválidos');
     }
   };
 
@@ -55,18 +74,23 @@ const useValidatePessoal = ({ nome, cpf, nascimento }) => {
       setErrorNome(false);
     }
     if (cpf !== '') {
-      setErrorCpfText(false);
+      setErrorCpf(false);
+    }
+    if (cnpj !== '') {
+      setErrorCnpj(false);
     }
     if (nascimento !== '') {
       setErrorIdade(false);
     }
-  }, [nome, cpf, nascimento]);
+  }, [nome, cpf, cnpj, nascimento]);
 
   return {
     errorNome,
     errorNomeText,
     errorCpf,
     errorCpfText,
+    errorCnpj,
+    errorCnpjText,
     errorIdade,
     errorIdadeText,
     validatePessoal

@@ -13,10 +13,10 @@ import PropTypes from 'prop-types';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
 
 CadastroFuncionario.propTypes = {
-  setUserRole: PropTypes.func.isRequired
+  setStartCadastro: PropTypes.func.isRequired
 };
 
-export default function CadastroFuncionario({ setUserRole }) {
+export default function CadastroFuncionario({ setStartCadastro }) {
   const initialData = {
     // StepPessoal
     nome: '',
@@ -101,7 +101,7 @@ export default function CadastroFuncionario({ setUserRole }) {
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}
-        onReset={() => setUserRole('')}
+        onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
       />

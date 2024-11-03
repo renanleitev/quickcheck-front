@@ -7,6 +7,7 @@ import {
   cnpjFormat,
   onlyLettersRegex
 } from '../../../config/validationRegex';
+import { estabelecimentoOptions } from '../../../config/enums';
 import PropTypes from 'prop-types';
 
 StepPessoal.propTypes = {
@@ -29,16 +30,26 @@ export default function StepPessoal({ data, setData, role, errors }) {
         regex={onlyLettersRegex}
       />
       {role === UserRoles.ESTABELECIMENTO ? (
-        <Input
-          data={data}
-          setData={setData}
-          keyName="cnpj"
-          placeholder="CNPJ"
-          error={errors?.errorCnpj}
-          errorText={errors?.errorCnpjText}
-          regex={cnpjRegex}
-          format={cnpjFormat}
-        />
+        <>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="cnpj"
+            placeholder="CNPJ"
+            error={errors?.errorCnpj}
+            errorText={errors?.errorCnpjText}
+            regex={cnpjRegex}
+            format={cnpjFormat}
+          />
+          <Input
+            data={data}
+            setData={setData}
+            keyName="tipo"
+            placeholder="Tipo"
+            select
+            selectList={estabelecimentoOptions}
+          />
+        </>
       ) : (
         <>
           <Input

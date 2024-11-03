@@ -6,17 +6,17 @@ import { UserRoles } from '../../config/enums';
 
 CadastroRender.propTypes = {
   userRole: PropTypes.string.isRequired,
-  setUserRole: PropTypes.func.isRequired
+  setStartCadastro: PropTypes.func.isRequired
 };
 
-export default function CadastroRender({ userRole, setUserRole }) {
+export default function CadastroRender({ userRole, setStartCadastro }) {
   switch (userRole) {
     case UserRoles.ESTABELECIMENTO:
-      return <CadastroEstabelecimento setUserRole={setUserRole} />;
+      return <CadastroEstabelecimento setStartCadastro={setStartCadastro} />;
     case UserRoles.FUNCIONARIO:
-      return <CadastroFuncionario setUserRole={setUserRole} />;
+      return <CadastroFuncionario setStartCadastro={setStartCadastro} />;
     case UserRoles.CLIENTE:
     default:
-      return <CadastroCliente setUserRole={setUserRole} />;
+      return <CadastroCliente setStartCadastro={setStartCadastro} />;
   }
 }

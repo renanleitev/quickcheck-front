@@ -34,18 +34,19 @@ const useValidateLogin = ({ email, senha, repetirSenha }) => {
     }
 
     // Validação da repetição da senha
-    if (repetirSenha === '') {
-      setErrorRepetirSenha(true);
-      setErrorRepetirSenhaText('Senha não pode ser vazia');
-      hasError = true;
-    }
-
-    if (senha !== repetirSenha) {
-      setErrorSenha(true);
-      setErrorSenhaText('Senhas precisam ser iguais');
-      setErrorRepetirSenha(true);
-      setErrorRepetirSenhaText('Senhas precisam ser iguais');
-      hasError = true;
+    if (repetirSenha !== undefined) {
+      if (repetirSenha === '') {
+        setErrorRepetirSenha(true);
+        setErrorRepetirSenhaText('Senha não pode ser vazia');
+        hasError = true;
+      }
+      if (senha !== repetirSenha) {
+        setErrorSenha(true);
+        setErrorSenhaText('Senhas precisam ser iguais');
+        setErrorRepetirSenha(true);
+        setErrorRepetirSenhaText('Senhas precisam ser iguais');
+        hasError = true;
+      }
     }
 
     // Lança erro se houver alguma validação falha
