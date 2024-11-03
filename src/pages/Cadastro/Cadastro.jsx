@@ -44,9 +44,11 @@ export default function Cadastro() {
           </>
         )}
       </VerticalContainer>
-      <Typography>
-        Já possui uma conta? <Link to={RoutesList.Login}>Entrar</Link>
-      </Typography>
+      {!startCadastro && (
+        <Typography>
+          Já possui uma conta? <Link to={RoutesList.Login}>Entrar</Link>
+        </Typography>
+      )}
     </VerticalContainer>
   );
 }
