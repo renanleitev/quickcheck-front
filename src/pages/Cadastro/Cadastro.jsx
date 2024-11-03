@@ -4,8 +4,10 @@ import { Typography, Button } from '@mui/material';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { styled } from '@mui/material/styles';
-import CadastroRender from './CadastroRender';
 import CadastroOptions from './CadastroOptions';
+import CadastroCliente from './Cliente/CadastroCliente';
+import CadastroFuncionario from './Funcionario/CadastroFuncionario';
+import CadastroEstabelecimento from './Estabelecimento/CadastroEstabelecimento';
 import { UserRoles } from '../../config/enums';
 import { RoutesList } from '../../routes/enums';
 
@@ -29,12 +31,24 @@ export default function Cadastro() {
     }
   }, [startCadastro]);
 
+  function cadastroRender() {
+    switch (role) {
+      case UserRoles.ESTABELECIMENTO:
+        return <CadastroEstabelecimento setStartCadastro={setStartCadastro} />;
+      case UserRoles.FUNCIONARIO:
+        return <CadastroFuncionario setStartCadastro={setStartCadastro} />;
+      case UserRoles.CLIENTE:
+      default:
+        return <CadastroCliente setStartCadastro={setStartCadastro} />;
+    }
+  }
+
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
       <VerticalContainer style={{ width: '15rem' }}>
         <Typography variant="h3">Cadastro</Typography>
         {startCadastro ? (
-          <CadastroRender userRole={role} setStartCadastro={setStartCadastro} />
+          cadastroRender()
         ) : (
           <>
             <CadastroOptions handleChange={handleChange} />
