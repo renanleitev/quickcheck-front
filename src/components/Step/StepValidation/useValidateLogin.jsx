@@ -20,9 +20,7 @@ const useValidateLogin = ({ email, senha, repetirSenha }) => {
       setErrorEmail(true);
       setErrorEmailText('Email não pode ser vazio');
       hasError = true;
-    }
-
-    if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(email)) {
       setErrorEmail(true);
       setErrorEmailText('Email inválido');
       hasError = true;

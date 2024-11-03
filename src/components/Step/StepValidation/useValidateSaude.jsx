@@ -8,13 +8,12 @@ const useValidateSaude = ({ numeroCartaoSUS }) => {
   const validateSaude = () => {
     let hasError = false;
 
+    // Validação do número do cartão do SUS
     if (numeroCartaoSUS === '') {
       setErrorSaude(true);
       setErrorSaudeText('Número do Cartão SUS não pode ser vazio');
       hasError = true;
-    }
-
-    if (!numeroCartaoSUSRegexFinal.test(numeroCartaoSUS)) {
+    } else if (!numeroCartaoSUSRegexFinal.test(numeroCartaoSUS)) {
       setErrorSaude(true);
       setErrorSaudeText('Número do Cartão SUS inválido');
       hasError = true;

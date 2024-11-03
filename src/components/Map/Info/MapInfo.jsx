@@ -124,7 +124,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
               stepsNumber={4}
               nextStepLabel="Agendar"
               disableNextButton={step === 1 && agendamento?.horario === undefined}
-              isSetupFinished={step === 3}
+              isSetupFinished={step === 3} // Omite o next button quando atinge o último step
             />
           </HorizontalContainer>
         </Card>

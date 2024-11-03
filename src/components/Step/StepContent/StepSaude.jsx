@@ -17,8 +17,8 @@ export default function StepSaude({ data, setData, errors }) {
         setData={setData}
         keyName="comorbidades"
         placeholder="Comorbidades"
-        selectList={comorbidadesOptions}
         select
+        selectList={comorbidadesOptions}
       />
       <Input
         data={data}

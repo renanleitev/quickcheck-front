@@ -27,6 +27,12 @@ export const numeroCartaoSUSRegex = /^(?:\d{0,3}\s?\d{0,4}\s?\d{0,4}\s?\d{0,4})?
 // Formato específico para número do cartão do SUS
 export const numeroCartaoSUSFormat = 'XXX XXXX XXXX XXXX';
 
+// Regex para validar CRM
+// Regex fixo (valida o valor completo)
+export const crmRegexFinal = /^.{5,10}$/;
+// Regex progressivo (valida conforme o usuário digita os números / não contando com a sigla do estado)
+export const crmRegex = /^.{0,10}$/;
+
 // Regex para apenas letras
 export const onlyLettersRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;
 

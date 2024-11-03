@@ -11,19 +11,19 @@ const useValidateContato = ({ endereco, telefone }) => {
   const validateContato = () => {
     let hasError = false;
 
+    // Validação do endereço
     if (endereco === '') {
       setErrorEndereco(true);
       setErrorEnderecoText('Endereço não pode ser vazio');
       hasError = true;
     }
 
+    // Validação do telefone
     if (telefone === '') {
       setErrorTelefone(true);
       setErrorTelefoneText('Telefone não pode ser vazio');
       hasError = true;
-    }
-
-    if (!telefoneRegexFinal.test(telefone)) {
+    } else if (!telefoneRegexFinal.test(telefone)) {
       setErrorTelefone(true);
       setErrorTelefoneText('Telefone inválido');
       hasError = true;

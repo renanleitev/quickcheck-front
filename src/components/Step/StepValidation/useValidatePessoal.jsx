@@ -29,9 +29,7 @@ const useValidatePessoal = ({ nome, cpf, nascimento }) => {
       setErrorCpf(true);
       setErrorCpfText('CPF não pode ser vazio');
       hasError = true;
-    } 
-    
-    if (!cpfRegexFinal.test(cpf)) {
+    } else if (!cpfRegexFinal.test(cpf)) {
       setErrorCpf(true);
       setErrorCpfText('CPF inválido');
       hasError = true;

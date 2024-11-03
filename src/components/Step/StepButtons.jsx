@@ -11,7 +11,7 @@ StepButtons.propTypes = {
   nextStepLabel: PropTypes.string,
   disableNextButton: PropTypes.bool,
   isSetupFinished: PropTypes.bool,
-  onValidateForm: PropTypes.func,
+  onValidateForm: PropTypes.func
 };
 
 export default function StepButtons({
@@ -26,8 +26,12 @@ export default function StepButtons({
 }) {
   const handleNext = useCallback(() => {
     onValidateForm();
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  }, [onValidateForm, setActiveStep]);
+    if (activeStep === stepsNumber - 1) {
+      // TODO: Chamada de API para cadastrar usuário
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  }, [activeStep, onValidateForm, setActiveStep, stepsNumber]);
 
   const handleBack = () => {
     if (activeStep === 0 || isSetupFinished) {
@@ -42,6 +46,7 @@ export default function StepButtons({
       <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
         Voltar
       </Button>
+      {/* Omite o next button quando atinge o último step */}
       {!isSetupFinished && (
         <Button
           variant="contained"

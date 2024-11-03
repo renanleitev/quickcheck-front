@@ -45,21 +45,25 @@ export default function CadastroCliente({ setUserRole }) {
   const widthContainer = '20rem';
 
   // Validando os steps
+  // Pessoal
   const { validatePessoal, ...errorsPessoal } = useValidatePessoal({
     nome: data.nome,
     cpf: data.cpf,
     nascimento: data.nascimento
   });
 
+  // Contato
   const { validateContato, ...errorsContato } = useValidateContato({
     endereco: data.endereco,
     telefone: data.telefone
   });
 
+  // Saude
   const { validateSaude, ...errorsSaude } = useValidateSaude({
     numeroCartaoSUS: data.numeroCartaoSUS
   });
 
+  // Login
   const { validateLogin, ...errorsLogin } = useValidateLogin({
     email: data.email,
     senha: data.senha,
