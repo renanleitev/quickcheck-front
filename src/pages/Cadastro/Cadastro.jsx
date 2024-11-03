@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, Button } from '@mui/material';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { styled } from '@mui/material/styles';
 import CadastroRender from './CadastroRender';
 import CadastroOptions from './CadastroOptions';
+import { UserRoles } from '../../config/enums';
 
 const StyledButton = styled(Button)(() => ({
   width: '15rem',
@@ -18,6 +19,13 @@ export default function Cadastro() {
   const handleChange = (event) => {
     setRole(event.target.value);
   };
+
+  // Sempre seleciona Cliente quando volta para a tela inicial
+  useEffect(() => {
+    if (!startCadastro) {
+      setRole(UserRoles.CLIENTE);
+    }
+  }, [startCadastro]);
 
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>

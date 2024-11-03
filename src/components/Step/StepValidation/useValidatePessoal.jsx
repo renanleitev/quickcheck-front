@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { cpfRegexFinal, cnpjRegexFinal } from '../../../config/validationRegex';
+import validateCPF from '../../../hooks/validateCpf';
+import validateCNPJ from '../../../hooks/validateCnpj';
 import dayjs from 'dayjs';
 
 const useValidatePessoal = ({ nome, cpf, cnpj, nascimento }) => {
@@ -33,7 +35,7 @@ const useValidatePessoal = ({ nome, cpf, cnpj, nascimento }) => {
         setErrorCpf(true);
         setErrorCpfText('CPF não pode ser vazio');
         hasError = true;
-      } else if (!cpfRegexFinal.test(cpf)) {
+      } else if (!cpfRegexFinal.test(cpf) || !validateCPF(cpf)) {
         setErrorCpf(true);
         setErrorCpfText('CPF inválido');
         hasError = true;
@@ -46,7 +48,7 @@ const useValidatePessoal = ({ nome, cpf, cnpj, nascimento }) => {
         setErrorCnpj(true);
         setErrorCnpjText('CNPJ não pode ser vazio');
         hasError = true;
-      } else if (!cnpjRegexFinal.test(cnpj)) {
+      } else if (!cnpjRegexFinal.test(cnpj) || !validateCNPJ(cnpj)) {
         setErrorCnpj(true);
         setErrorCnpjText('CNPJ inválido');
         hasError = true;

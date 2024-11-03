@@ -40,7 +40,7 @@ function MapSearch({ open, setOpen }) {
         <Input
           data={data}
           setData={setData}
-          placeholder="Tipo"
+          placeholder="Estabelecimento"
           keyName="tipo"
           inputWidth={inputWidth}
           select

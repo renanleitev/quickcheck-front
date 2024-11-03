@@ -45,7 +45,7 @@ export default function StepPessoal({ data, setData, role, errors }) {
             data={data}
             setData={setData}
             keyName="tipo"
-            placeholder="Tipo"
+            placeholder="Estabelecimento"
             select
             selectList={estabelecimentosOptions}
           />
