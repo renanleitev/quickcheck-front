@@ -8,6 +8,7 @@ import { formatCalendarDate } from '../../../hooks/formatDate';
 import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
 import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
 import useValidateSaude from '../../../components/Step/StepValidation/useValidateSaude';
+import useValidateLogin from '../../../components/Step/StepValidation/useValidateLogin';
 import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
@@ -59,7 +60,13 @@ export default function CadastroCliente({ setUserRole }) {
     numeroCartaoSUS: data.numeroCartaoSUS
   });
 
-  const errors = { ...errorsPessoal, ...errorsContato, ...errorsSaude };
+  const { validateLogin, ...errorsLogin } = useValidateLogin({
+    email: data.email,
+    senha: data.senha,
+    repetirSenha: data.repetirSenha
+  });
+
+  const errors = { ...errorsPessoal, ...errorsContato, ...errorsSaude, ...errorsLogin };
 
   const handleForm = useCallback(() => {
     if (activeStep === 0) {
@@ -71,8 +78,11 @@ export default function CadastroCliente({ setUserRole }) {
     if (activeStep === 2) {
       return validateSaude();
     }
+    if (activeStep === 3) {
+      return validateLogin();
+    }
     return () => {};
-  }, [activeStep, validateContato, validatePessoal, validateSaude]);
+  }, [activeStep, validateContato, validatePessoal, validateSaude, validateLogin]);
 
   return (
     <VerticalContainer

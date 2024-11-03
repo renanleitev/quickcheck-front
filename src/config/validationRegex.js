@@ -29,3 +29,12 @@ export const numeroCartaoSUSFormat = 'XXX XXXX XXXX XXXX';
 
 // Regex para apenas letras
 export const onlyLettersRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;
+
+// Regex para validar email
+export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Regex para aumentar a segurança da senha
+// https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+// Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+export const strongPasswordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$/;

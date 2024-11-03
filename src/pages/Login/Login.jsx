@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Typography, Button } from '@mui/material';
 import { loginUsuario } from '../../store/modules/usuarios/reducer';
-import Input, { InputType } from '../../components/Input/Input';
+import Input from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { roleOptions } from '../../config/enums';
-import useValidateLogin from './useValidateLogin';
+import useValidateLogin from '../../components/Step/StepValidation/useValidateLogin';
+import StepLogin from '../../components/Step/StepContent/StepLogin';
 import { RoutesList } from '../../routes/enums';
 
 export default function Login() {
@@ -19,7 +20,7 @@ export default function Login() {
 
   const [data, setData] = useState(initialUser);
 
-  const { errorEmail, errorEmailText, errorSenha, errorSenhaText, validateLogin } =
+  const { validateLogin, ...errorsLogin } =
     useValidateLogin({
       email: data.email,
       senha: data.senha
@@ -36,22 +37,11 @@ export default function Login() {
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
       <VerticalContainer style={{ width: '15rem' }}>
         <Typography variant="h3">Login</Typography>
-        <Input
+        <StepLogin 
           data={data}
           setData={setData}
-          keyName="email"
-          placeholder="Email"
-          error={errorEmail}
-          errorText={errorEmailText}
-        />
-        <Input
-          data={data}
-          setData={setData}
-          keyName="senha"
-          placeholder="Senha"
-          inputType={InputType.PASSWORD}
-          error={errorSenha}
-          errorText={errorSenhaText}
+          errors={errorsLogin}
+          hasRepetirSenha={false}
         />
         <Input data={data} setData={setData} keyName="role" select selectList={roleOptions} />
         <Button

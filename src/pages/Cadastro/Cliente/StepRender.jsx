@@ -18,7 +18,7 @@ export default function StepRender({ step, data, setData, errors }) {
     case 2:
       return <StepSaude data={data} setData={setData} errors={errors} />;
     case 3:
-      return <StepLogin data={data} setData={setData} />;
+      return <StepLogin data={data} setData={setData} errors={errors} />;
     case 0:
     default:
       return <StepPessoal data={data} setData={setData} errors={errors} />;
