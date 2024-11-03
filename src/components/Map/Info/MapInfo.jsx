@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Avatar, Box, Card, CardHeader, Drawer, IconButton } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Drawer } from '@mui/material';
 import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import StepFinalizar from './Steps/StepFinalizar';
 import StepButtons from '../../Step/StepButtons';
 import formatDate from '../../../hooks/formatDate';
 import { getHorarios } from '../../../store/modules/horarios/reducer';
+import PerfilCard from '../../Card/PerfilCard';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
@@ -93,31 +93,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
       }}
     >
       <VerticalContainer>
-        <Card sx={{ backgroundColor: colors.primaryColor, boxShadow: 'none' }}>
-          {/* Título do Estabelecimento + Endereço */}
-          <CardHeader
-            avatar={
-              <Avatar
-                sx={{ backgroundColor: colors.primaryWhiteColor, color: colors.primaryColor }}
-                aria-label="estabelecimento-nome"
-                src={entidade?.usuario?.imagem}
-              >
-                {entidade?.usuario?.nome.charAt(0).toUpperCase()}
-              </Avatar>
-            }
-            action={
-              <IconButton sx={{ color: colors.primaryWhiteColor }} aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={entidade?.usuario?.nome}
-            titleTypographyProps={{ color: colors.primaryWhiteColor }}
-            subheader={entidade?.usuario?.endereco}
-            subheaderTypographyProps={{ color: colors.primaryWhiteColor }}
-            sx={{
-              borderBottom: `1px solid ${colors.primaryWhiteColor}`
-            }}
-          />
+        <PerfilCard entidade={entidade}>
           {/* Steps */}
           {/* Definindo uma altura fixa para criar efeito scroll */}
           <Box sx={{ height: '23rem', overflow: 'auto' }}>{stepRender(step)}</Box>
@@ -133,7 +109,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
               isSetupFinished={step === 3} // Omite o next button quando atinge o último step
             />
           </HorizontalContainer>
-        </Card>
+        </PerfilCard>
       </VerticalContainer>
     </Drawer>
   );

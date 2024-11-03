@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,15 +7,12 @@ import { VerticalContainer } from '../../../config/GlobalStyle';
 import Cliente from '../Entidades/Cliente';
 import Estabelecimento from '../Entidades/Estabelecimento';
 import Funcionario from '../Entidades/Funcionario';
-import colors from '../../../config/colors';
 import { UserRoles } from '../../../config/enums';
 
 export default function VerPerfil() {
   const navigate = useNavigate();
 
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
-
-  const color = colors.primaryDarkColor;
 
   const buttonWidth = '100%';
   const buttonHeight = '3rem';
@@ -34,9 +31,6 @@ export default function VerPerfil() {
 
   return (
     <VerticalContainer style={{ padding: '2rem' }}>
-      <Typography variant="h4" color={color}>
-        Perfil
-      </Typography>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
         <VerticalContainer style={{ alignItems: 'flex-start' }}>{renderPerfil()}</VerticalContainer>
         <Button
