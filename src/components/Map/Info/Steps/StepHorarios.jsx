@@ -6,6 +6,7 @@ import { especialidadesOptions } from '../../../../config/enums';
 import colors from '../../../../config/colors';
 import PropTypes from 'prop-types';
 import formatDate from '../../../../hooks/formatDate';
+import EmptyState from '../../../EmptyState/EmptyState';
 import StepInfo from './StepInfo';
 
 StepHorarios.propTypes = {
@@ -35,6 +36,13 @@ export default function StepHorarios({ data, setData, horarios }) {
             selectList={especialidadesOptions}
             select
           />
+          {horarios.length === 0 && (
+            <Box p="2rem">
+              <EmptyState
+                title="Nenhum horário disponível"
+              />
+            </Box>
+          )}
           {horarios.map((horario) => {
             return (
               <HorizontalContainer

@@ -10,8 +10,9 @@ import StepConfirmar from './Steps/StepConfirmar';
 import StepFinalizar from './Steps/StepFinalizar';
 import StepButtons from '../../Step/StepButtons';
 import formatDate from '../../../hooks/formatDate';
-import { getHorarios } from '../../../store/modules/horarios/reducer';
+import { getHorariosByEstabelecimentoIdAndStatus } from '../../../store/modules/horarios/reducer';
 import PerfilCard from '../../Card/PerfilCard';
+import { AgendamentoStatus } from '../../../config/enums';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
@@ -37,10 +38,16 @@ export default function MapInfo({ entidade, open, setOpen }) {
   const [agendamento, setAgendamento] = useState(initialAgendamento);
 
   // Obtendo os horários
-  // TODO: Obter os horários de acordo com cada estabelecimento
   useEffect(() => {
-    dispatch(getHorarios());
-  }, [dispatch]);
+    if (entidade !== undefined) {
+      dispatch(
+        getHorariosByEstabelecimentoIdAndStatus({
+          estabelecimentoId: entidade?.id,
+          status: AgendamentoStatus.DISPONÍVEL
+        })
+      );
+    }
+  }, [dispatch, entidade]);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
