@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, comorbidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
@@ -14,7 +15,7 @@ import StepContato from '../../../components/Step/StepContent/StepContato';
 import StepSaude from '../../../components/Step/StepContent/StepSaude';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import { criarCliente } from '../../../store/modules/clientes/reducer';
-import { criarUsuario } from '../../../store/modules/usuarios/reducer';
+import { loginCadastro } from '../../../store/modules/usuarios/reducer';
 import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
@@ -107,6 +108,8 @@ export default function CadastroCliente({ setStartCadastro }) {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const handlecriarCliente = () => {
     const cliente = {
       usuario: {
@@ -119,16 +122,19 @@ export default function CadastroCliente({ setStartCadastro }) {
         role: UserRoles.CLIENTE
       },
       // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
-      latitude: "0",
-      longitude: "0",
-      numeroCartaoSus: data.numeroCartaoSUS,
+      latitude: '0',
+      longitude: '0',
+      numeroCartaoSUS: data.numeroCartaoSUS,
       nascimento: data.nascimento,
       sexo: data.sexo,
       cpf: data.cpf,
-      comorbidades: data.comorbidades
+      // O paciente pode ter uma ou mais comorbidades (array)
+      comorbidades: [data.comorbidades]
     };
-    dispatch(criarUsuario({ ...cliente.usuario }));
     dispatch(criarCliente({ ...cliente }));
+    dispatch(loginCadastro({ ...cliente }));
+    // Após o cadastro, redireciona para a página principal
+    navigate('/');
   };
 
   return (

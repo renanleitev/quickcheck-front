@@ -60,20 +60,15 @@ export const alterarSenha = createAsyncThunk('usuarios/alterarSenha', async (log
   }
 });
 
-export const criarUsuario = createAsyncThunk('usuarios/criarUsuario', async (usuario) => {
-  try {
-    await axiosInstance.post(baseUsuariosURL, usuario);
-    return loginUsuario;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Não foi possível criar o usuário');
-  }
-});
-
 export const usuariosSlice = createSlice({
   name: 'usuarios',
   initialState,
   reducers: {
+    loginCadastro: (state, action) => {
+      state.isLoggedIn = true;
+      state.entidade = action.payload;
+      state.fetchStatus = fetchStatus.SUCCESS;
+    },
     logoutUsuario: (state) => {
       state.isLoggedIn = false;
       state.entidade = initialEntidade;
@@ -126,23 +121,9 @@ export const usuariosSlice = createSlice({
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       })
-      // alterarSenha
-      .addCase(criarUsuario.fulfilled, (state, action) => {
-        state.fetchStatus = fetchStatus.SUCCESS;
-        state.entidade.usuario = { ...action.payload };
-        toast.success('Usuário criado com sucesso! Redirecionando...');
-      })
-      .addCase(criarUsuario.pending, (state) => {
-        state.fetchStatus = fetchStatus.PENDING;
-      })
-      .addCase(criarUsuario.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
-        state.error = action.error.message || errorMessage;
-        toast.error(state.error);
-      });
   }
 });
 
-export const { logoutUsuario } = usuariosSlice.actions;
+export const { logoutUsuario, loginCadastro } = usuariosSlice.actions;
 
 export const usuariosReducer = usuariosSlice.reducer;

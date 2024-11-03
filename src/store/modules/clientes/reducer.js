@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance, { baseClientesURL } from '../../../services/axios';
+import axiosInstance, { baseClientesURL, baseUsuariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
+import { toast } from 'react-toastify';
 
 // Atributos exclusivos de cliente
 export const initialCliente = {
@@ -35,11 +36,19 @@ export const getCliente = createAsyncThunk('clientes/getCliente', async (id) => 
 
 export const criarCliente = createAsyncThunk('clientes/criarCliente', async (cliente) => {
   try {
-    const response = await axiosInstance.post(baseClientesURL, cliente);
-    return response.data;
+    // Primeiro cadastra o usuário e obtém o id como retorno
+    const usuario = cliente?.usuario;
+    const responseUsuario = await axiosInstance.post(baseUsuariosURL, usuario);
+    const usuarioId = responseUsuario.data;
+    // Depois, cadastra o cliente (relacionando com o usuário)
+    const responseCliente = await axiosInstance.post(baseClientesURL, {
+      ...cliente,
+      usuario: { ...usuario, id: usuarioId }
+    });
+    return responseCliente.data;
   } catch (error) {
     console.log(error);
-    throw new Error(errorMessage);
+    throw new Error('Não foi possível cadastrar usuário');
   }
 });
 
@@ -64,7 +73,7 @@ export const clientesSlice = createSlice({
       .addCase(criarCliente.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         state.cliente = action.payload;
-
+        toast.success('Usuário cadastrado com sucesso! Redirecionando...');
       })
       .addCase(criarCliente.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
@@ -72,6 +81,7 @@ export const clientesSlice = createSlice({
       .addCase(criarCliente.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
+        toast.error(state.error);
       });
   }
 });
