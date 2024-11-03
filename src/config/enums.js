@@ -46,3 +46,6 @@ export const defaultCoords = [-8.062255486215344, -34.871117742328956];
 
 // Zoom padrão do mapa
 export const zoomLevel = 17;
+
+// Zoom out 
+export const zoomOutLevel = 14;

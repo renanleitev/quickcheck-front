@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ZoomControl, useMap } from 'react-leaflet';
+import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
 import { Search, Restore } from '@mui/icons-material';
 import Control from 'react-leaflet-custom-control';
-import { ZoomControl } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import { getEstabelecimentos } from '../../../store/modules/estabelecimentos/reducer';
-import { toast } from 'react-toastify';
+import { zoomOutLevel } from '../../../config/enums';
 
 MapButtons.propTypes = {
   setOpen: PropTypes.func.isRequired
@@ -15,11 +15,17 @@ MapButtons.propTypes = {
 export default function MapButtons({ setOpen }) {
   const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? [];
 
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+
   const dispatch = useDispatch();
+
+  const map = useMap();
 
   const handleReset = () => {
     dispatch(getEstabelecimentos());
     toast.success('Mapa redefinido com sucesso!');
+    // Voltando para a localização padrão do usuário
+    map.flyTo([entidade?.latitude, entidade?.longitude], zoomOutLevel);
   };
 
   return (

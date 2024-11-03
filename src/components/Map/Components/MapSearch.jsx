@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useMap } from 'react-leaflet';
 import { getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo } from '../../../store/modules/estabelecimentos/reducer';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import colors from '../../../config/colors';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import Input from '../../Input/Input';
-import { AgendamentoStatus, especialidadesOptions } from '../../../config/enums';
+import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
 
@@ -19,7 +20,11 @@ MapSearch.propTypes = {
 };
 
 function MapSearch({ open, setOpen }) {
+  const estabelecimentos = useSelector(state => state?.estabelecimentos?.estabelecimentos) ?? [];
+
   const dispatch = useDispatch();
+
+  const map = useMap();
 
   const initialData = {
     status: AgendamentoStatus.DISPONÍVEL,
@@ -53,6 +58,9 @@ function MapSearch({ open, setOpen }) {
     handleValidation();
     if (data.nome !== '') {
       dispatch(getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo({ ...data }));
+      // Navega até o primeiro resultado disponível (em destaque)
+      // TODO: Navegar até o primeiro estabelecimento pagante (propaganda?)
+      map.flyTo([estabelecimentos[0]?.latitude, estabelecimentos[0]?.longitude], zoomLevel);
       // Redefinindo o estado de pesquisa
       setOpen(false);
       setData(initialData);
