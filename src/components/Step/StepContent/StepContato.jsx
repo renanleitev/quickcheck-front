@@ -29,6 +29,8 @@ export default function StepContato({ data, setData, errors }) {
         error={errors?.errorEndereco}
         errorText={errors?.errorEnderecoText}
       />
+      {/* TODO: Substituir por upload de imagens BLOB */}
+      <Input data={data} setData={setData} keyName="imagem" placeholder="Imagem" />
     </>
   );
 }
