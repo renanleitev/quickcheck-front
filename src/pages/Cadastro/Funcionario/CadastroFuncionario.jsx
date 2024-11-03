@@ -1,4 +1,6 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, especialidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
@@ -14,6 +16,8 @@ import StepProfissao from '../../../components/Step/StepContent/StepProfissao';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import PropTypes from 'prop-types';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
+import { criarFuncionario } from '../../../store/modules/funcionarios/reducer';
+import { loginCadastro } from '../../../store/modules/usuarios/reducer';
 
 CadastroFuncionario.propTypes = {
   setStartCadastro: PropTypes.func.isRequired
@@ -30,7 +34,7 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     telefone: '',
     // StepProfissao
     crm: '',
-    estadoCrm: estadosBrasil.find(estado => estado.label === 'PE').value, // Pernambuco
+    estadoCrm: estadosBrasil.find((estado) => estado.label === 'PE').value, // Pernambuco (PE)
     sexo: sexoOptions[0].value,
     especialidade: especialidadesOptions[0].value,
     // StepFinal
@@ -104,6 +108,34 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     }
   }
 
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const handleCriarFuncionario = () => {
+    const funcionario = {
+      usuario: {
+        nome: data.nome,
+        email: data.email,
+        endereco: data.endereco,
+        telefone: data.telefone,
+        imagem: data.imagem,
+        senha: data.senha,
+        role: UserRoles.FUNCIONARIO
+      },
+      // TODO: Checar se o padrão CRM é XXXX/PE ou XXXX-PE
+      crm: `${data.crm}/${data.estadoCrm}`,
+      cpf: data.cpf,
+      sexo: data.sexo,
+      especialidade: data.especialidade,
+      nascimento: data.nascimento
+    };
+    dispatch(criarFuncionario({ ...funcionario }));
+    dispatch(loginCadastro({ ...funcionario }));
+    // Após o cadastro, redireciona para a página principal
+    navigate('/');
+  };
+
   return (
     <VerticalContainer
       style={{
@@ -118,6 +150,7 @@ export default function CadastroFuncionario({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
+        onCallApi={handleCriarFuncionario}
       />
     </VerticalContainer>
   );

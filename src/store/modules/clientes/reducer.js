@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 export const initialCliente = {
   id: '',
   cpf: '',
-  idade: 0,
   nascimento: new Date(),
   sexo: '',
   latitude: '',

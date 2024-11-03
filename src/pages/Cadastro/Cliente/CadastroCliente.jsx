@@ -110,7 +110,7 @@ export default function CadastroCliente({ setStartCadastro }) {
 
   const navigate = useNavigate();
 
-  const handlecriarCliente = () => {
+  const handleCriarCliente = () => {
     const cliente = {
       usuario: {
         nome: data.nome,
@@ -151,7 +151,7 @@ export default function CadastroCliente({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
-        onCallApi={handlecriarCliente}
+        onCallApi={handleCriarCliente}
       />
     </VerticalContainer>
   );
