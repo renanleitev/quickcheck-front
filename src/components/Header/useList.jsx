@@ -36,7 +36,7 @@ export default function useList() {
 
   const funcionarioList = useMemo(
     () => [
-      { name: 'Meus atendimentos', onClick: () => navigate('/agendamentos') },
+      { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
       { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
       { name: 'Sobre', onClick: () => navigate('/sobre') },

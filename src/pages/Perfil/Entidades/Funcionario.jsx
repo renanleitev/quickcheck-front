@@ -9,11 +9,11 @@ Funcionario.propTypes = {
 };
 
 export default function Funcionario({ entidade }) {
-  const color = colors.primaryDarkColor;
+  const color = colors.primaryWhiteColor;
   const textSize = 'subtitle1';
 
   return (
-    <PerfilCard entidade={entidade} hasSubtitle={false}>
+    <PerfilCard entidade={entidade} subtitle={entidade?.especialidade}>
       <Typography variant={textSize} color={color}>
         Nome: {entidade?.usuario?.nome}
       </Typography>

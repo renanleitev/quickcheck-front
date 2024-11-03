@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Drawer } from '@mui/material';
+import { Box, Drawer, MenuItem, Typography } from '@mui/material';
 import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import PropTypes from 'prop-types';
@@ -93,7 +93,37 @@ export default function MapInfo({ entidade, open, setOpen }) {
       }}
     >
       <VerticalContainer>
-        <PerfilCard entidade={entidade}>
+        <PerfilCard
+          entidade={entidade}
+          subtitle={entidade?.usuario?.endereco}
+          hasMenu
+          menu={
+            <Box width="20rem">
+              <MenuItem>
+                <Typography noWrap>
+                  Telefone:{' '}
+                  <a
+                    href={`tel:+55${entidade?.usuario?.telefone}`}
+                    style={{ color: colors.primaryDarkColor }}
+                  >
+                    {entidade?.usuario?.telefone}
+                  </a>
+                </Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography noWrap>
+                  Email:{' '}
+                  <a
+                    href={`mailto:${entidade?.usuario?.email}`}
+                    style={{ color: colors.primaryDarkColor }}
+                  >
+                    {entidade?.usuario?.email}
+                  </a>
+                </Typography>
+              </MenuItem>
+            </Box>
+          }
+        >
           {/* Steps */}
           {/* Definindo uma altura fixa para criar efeito scroll */}
           <Box sx={{ height: '23rem', overflow: 'auto' }}>{stepRender(step)}</Box>

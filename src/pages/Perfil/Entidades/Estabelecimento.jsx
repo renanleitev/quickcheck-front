@@ -8,7 +8,7 @@ Estabelecimento.propTypes = {
 };
 
 export default function Estabelecimento({ entidade }) {
-  const color = colors.primaryDarkColor;
+  const color = colors.primaryWhiteColor;
   const textSize = 'subtitle1';
 
   return (

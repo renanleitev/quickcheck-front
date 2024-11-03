@@ -16,7 +16,7 @@ StepHorarios.propTypes = {
 
 export default function StepHorarios({ data, setData, horarios }) {
   const [profile, setProfile] = useState(undefined);
-  
+
   return (
     <VerticalContainer style={{ rowGap: '0rem', padding: '1rem' }}>
       {profile !== undefined ? (
@@ -56,7 +56,7 @@ export default function StepHorarios({ data, setData, horarios }) {
                   subheader={formatDate(horario?.horarioAtendimento)}
                   subheaderTypographyProps={{ color: colors.primaryWhiteColor }}
                   onClick={() => setProfile(horario?.funcionario)}
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer', width: '80%' }}
                 />
                 <Box ml="auto">
                   <Checkbox
