@@ -1,6 +1,6 @@
 import { Avatar, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import colors from '../../../config/colors';
+import colors from '../../config/colors';
 import PropTypes from 'prop-types';
 
 PerfilCard.propTypes = {

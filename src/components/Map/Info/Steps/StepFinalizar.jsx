@@ -14,10 +14,10 @@ export default function StepFinalizar({ funcionarioNome, horarioAtendimento, des
       <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, mb: '2rem' }}>
         Consulta confirmada com sucesso!
       </Typography>
-      <Typography variant="h4" sx={{ color: colors.primaryWhiteColor }}>
+      <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, marginBottom: '1rem' }}>
         {funcionarioNome}
       </Typography>
-      <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, mb: '2rem' }}>
+      <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, mb: '1rem' }}>
         {horarioAtendimento}
       </Typography>
       <Typography variant="h6" sx={{ color: colors.primaryWhiteColor }}>

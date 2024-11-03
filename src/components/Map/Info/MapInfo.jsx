@@ -53,7 +53,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
       case 3:
         return (
           <StepFinalizar
-            funcionarioNome={agendamento?.horario?.funcionario?.nome}
+            funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
             horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
             descricao={agendamento?.horario?.descricao}
           />
@@ -61,7 +61,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
       case 2:
         return (
           <StepConfirmar
-            funcionarioNome={agendamento?.horario?.funcionario?.nome}
+            funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
             horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
             descricao={agendamento?.horario?.descricao}
           />
