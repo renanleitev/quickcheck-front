@@ -3,12 +3,15 @@ import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, comorbidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
-import StepRender from './StepRender';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
 import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
 import useValidateSaude from '../../../components/Step/StepValidation/useValidateSaude';
 import useValidateLogin from '../../../components/Step/StepValidation/useValidateLogin';
+import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
+import StepContato from '../../../components/Step/StepContent/StepContato';
+import StepSaude from '../../../components/Step/StepContent/StepSaude';
+import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
@@ -70,8 +73,6 @@ export default function CadastroCliente({ setStartCadastro }) {
     repetirSenha: data.repetirSenha
   });
 
-  const errors = { ...errorsPessoal, ...errorsContato, ...errorsSaude, ...errorsLogin };
-
   const handleForm = useCallback(() => {
     if (activeStep === 0) {
       return validatePessoal();
@@ -88,6 +89,20 @@ export default function CadastroCliente({ setStartCadastro }) {
     return () => {};
   }, [activeStep, validateContato, validatePessoal, validateSaude, validateLogin]);
 
+  function stepRender() {
+    switch (activeStep) {
+      case 1:
+        return <StepContato data={data} setData={setData} errors={errorsContato} />;
+      case 2:
+        return <StepSaude data={data} setData={setData} errors={errorsSaude} />;
+      case 3:
+        return <StepLogin data={data} setData={setData} errors={errorsLogin} />;
+      case 0:
+      default:
+        return <StepPessoal data={data} setData={setData} errors={errorsPessoal} />;
+    }
+  }
+
   return (
     <VerticalContainer
       style={{
@@ -95,7 +110,7 @@ export default function CadastroCliente({ setStartCadastro }) {
       }}
     >
       <StepCount steps={steps} activeStep={activeStep} />
-      <StepRender step={activeStep} data={data} setData={setData} errors={errors} />
+      {stepRender()}
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}

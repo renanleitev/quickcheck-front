@@ -8,7 +8,10 @@ import useValidatePessoal from '../../../components/Step/StepValidation/useValid
 import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
 import useValidateDescricao from '../../../components/Step/StepValidation/useValidateDescricao';
 import useValidateLogin from '../../../components/Step/StepValidation/useValidateLogin';
-import StepRender from './StepRender';
+import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
+import StepContato from '../../../components/Step/StepContent/StepContato';
+import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
+import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import PropTypes from 'prop-types';
 
 CadastroEstabelecimento.propTypes = {
@@ -68,8 +71,6 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     repetirSenha: data.repetirSenha
   });
 
-  const errors = { ...errorsPessoal, ...errorsContato, ...errorsDescricao, ...errorsLogin };
-
   const handleForm = useCallback(() => {
     if (activeStep === 0) {
       return validatePessoal();
@@ -86,6 +87,27 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     return () => {};
   }, [activeStep, validatePessoal, validateContato, validateDescricao, validateLogin]);
 
+  function stepRender() {
+    switch (activeStep) {
+      case 1:
+        return <StepContato data={data} setData={setData} errors={errorsContato} />;
+      case 2:
+        return <StepDescricao data={data} setData={setData} errors={errorsDescricao} />;
+      case 3:
+        return <StepLogin data={data} setData={setData} errors={errorsLogin} />;
+      case 0:
+      default:
+        return (
+          <StepPessoal
+            data={data}
+            setData={setData}
+            role={UserRoles.ESTABELECIMENTO}
+            errors={errorsPessoal}
+          />
+        );
+    }
+  }
+
   return (
     <VerticalContainer
       style={{
@@ -93,7 +115,7 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
       }}
     >
       <StepCount steps={steps} activeStep={activeStep} />
-      <StepRender step={activeStep} data={data} setData={setData} errors={errors} />
+      {stepRender()}
       <StepButtons
         activeStep={activeStep}
         setActiveStep={setActiveStep}
