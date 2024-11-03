@@ -25,7 +25,7 @@ export default function StepButtons({
   onValidateForm
 }) {
   const handleNext = useCallback(() => {
-    onValidateForm();
+    onValidateForm && onValidateForm();
     if (activeStep === stepsNumber - 1) {
       // TODO: Chamada de API para cadastrar usuário
     } else {

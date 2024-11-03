@@ -71,7 +71,12 @@ export default function MapInfo({ entidade, open, setOpen }) {
       case 0:
       default:
         return (
-          <StepInfo imagem={entidade?.usuario?.imagem} info={entidade?.horarioFuncionamento} />
+          <StepInfo
+            imagem={entidade?.usuario?.imagem}
+            info={entidade?.horarioFuncionamento}
+            subInfo={entidade?.descricao}
+            alignItems="flex-start"
+          />
         );
     }
   }
