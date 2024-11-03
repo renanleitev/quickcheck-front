@@ -28,7 +28,7 @@ export default function StepButtons({
 }) {
   const handleNext = useCallback(() => {
     onValidateForm && onValidateForm();
-    if (activeStep === stepsNumber - 1) {
+    if (onCallApi && activeStep === stepsNumber - 1) {
       onCallApi();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

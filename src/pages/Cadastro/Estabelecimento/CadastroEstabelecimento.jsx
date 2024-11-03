@@ -1,4 +1,6 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles } from '../../../config/enums';
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
@@ -12,6 +14,8 @@ import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
 import StepContato from '../../../components/Step/StepContent/StepContato';
 import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
+import { loginCadastro } from '../../../store/modules/usuarios/reducer';
+import { criarEstabelecimento } from '../../../store/modules/estabelecimentos/reducer';
 import PropTypes from 'prop-types';
 
 CadastroEstabelecimento.propTypes = {
@@ -27,6 +31,7 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     // StepContato
     endereco: '',
     telefone: '',
+    imagem: '', // Opcional
     // StepDescricao
     horarioFuncionamento: '',
     descricao: '',
@@ -34,7 +39,12 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     email: '',
     senha: '',
     repetirSenha: '',
-    role: UserRoles.ESTABELECIMENTO
+    role: UserRoles.ESTABELECIMENTO,
+    // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
+    latitude: '0',
+    longitude: '0',
+    // TODO: Gerenciamento de assinatura (usuários gratuitos X pagos)
+    assinante: false
   };
 
   const [data, setData] = useState(initialData);
@@ -108,6 +118,36 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     }
   }
 
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const handleCriarFuncionario = () => {
+    const estabelecimento = {
+      usuario: {
+        nome: data.nome,
+        email: data.email,
+        endereco: data.endereco,
+        telefone: data.telefone,
+        imagem: data.imagem,
+        senha: data.senha,
+        role: UserRoles.ESTABELECIMENTO
+      },
+      // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
+      latitude: data.latitude,
+      longitude: data.longitude,
+      cnpj: data.cnpj,
+      tipo: data.tipo,
+      descricao: data.descricao,
+      horarioFuncionamento: data.horarioFuncionamento,
+      assinante: data.assinante
+    };
+    dispatch(criarEstabelecimento({ ...estabelecimento }));
+    dispatch(loginCadastro({ ...estabelecimento }));
+    // Após o cadastro, redireciona para a página principal
+    navigate('/');
+  };
+
   return (
     <VerticalContainer
       style={{
@@ -122,6 +162,7 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
+        onCallApi={handleCriarFuncionario}
       />
     </VerticalContainer>
   );

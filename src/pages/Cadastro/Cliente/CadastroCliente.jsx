@@ -31,6 +31,7 @@ export default function CadastroCliente({ setStartCadastro }) {
     // StepContato
     endereco: '',
     telefone: '',
+    imagem: '', // Opcional
     // StepSaude
     numeroCartaoSUS: '',
     sexo: sexoOptions[0].value,
@@ -39,7 +40,10 @@ export default function CadastroCliente({ setStartCadastro }) {
     email: '',
     senha: '',
     repetirSenha: '',
-    role: UserRoles.CLIENTE
+    role: UserRoles.CLIENTE,
+    // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
+    latitude: '0',
+    longitude: '0'
   };
 
   const [data, setData] = useState(initialData);
@@ -121,9 +125,8 @@ export default function CadastroCliente({ setStartCadastro }) {
         senha: data.senha,
         role: UserRoles.CLIENTE
       },
-      // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
-      latitude: '0',
-      longitude: '0',
+      latitude: data.latitude,
+      longitude: data.longitude,
       numeroCartaoSUS: data.numeroCartaoSUS,
       nascimento: data.nascimento,
       sexo: data.sexo,

@@ -13,8 +13,8 @@ export default function HomeMarker() {
 
   useEffect(() => {
     if (entidade?.usuario?.role === UserRoles.ESTABELECIMENTO) {
-      const latitude = entidade?.latitude;
-      const longitude = entidade?.longitude;
+      const latitude = entidade?.latitude ?? defaultCoords[0];
+      const longitude = entidade?.longitude ?? defaultCoords[1];
       setCoords({ latitude, longitude });
       map.flyTo([latitude, longitude], zoomLevel);
     } else if (navigator.geolocation) {

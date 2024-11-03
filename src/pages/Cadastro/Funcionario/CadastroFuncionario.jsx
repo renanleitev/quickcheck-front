@@ -32,6 +32,7 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     // StepContato
     endereco: '',
     telefone: '',
+    imagem: '', // Opcional
     // StepProfissao
     crm: '',
     estadoCrm: estadosBrasil.find((estado) => estado.label === 'PE').value, // Pernambuco (PE)
