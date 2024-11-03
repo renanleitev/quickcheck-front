@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getEstabelecimentosByEspecialidadeAndNomeAndTipo } from '../../../store/modules/estabelecimentos/reducer';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import colors from '../../../config/colors';
@@ -17,6 +19,8 @@ MapSearch.propTypes = {
 };
 
 function MapSearch({ open, setOpen }) {
+  const dispatch = useDispatch();
+
   const initialData = {
     nome: '',
     especialidade: especialidadesOptions[0].value,
@@ -24,6 +28,42 @@ function MapSearch({ open, setOpen }) {
   };
 
   const [data, setData] = useState(initialData);
+
+  const [errorNome, setErrorNome] = useState(false);
+  const [errorNomeText, setErrorNomeText] = useState('');
+
+  const handleValidation = () => {
+    let hasError = false;
+
+    // Validação do nome
+    if (data.nome === '') {
+      setErrorNome(true);
+      setErrorNomeText('Nome não pode ser vazio');
+      hasError = true;
+    }
+
+    // Lança erro se alguma validação falhar
+    if (hasError) {
+      throw new Error('Erro durante a pesquisa');
+    }
+  };
+
+  const handleSearch = () => {
+    handleValidation();
+    if (data.nome !== '') {
+      dispatch(getEstabelecimentosByEspecialidadeAndNomeAndTipo({ ...data }));
+      // Redefinindo o estado de pesquisa
+      setOpen(false);
+      setData(initialData);
+    }
+  };
+
+  useEffect(() => {
+    // Se o usuário digitou algo ou abriu o modal de novo, redefine a mensagem de erro
+    if (data.nome !== '' || open) {
+      setErrorNome(false);
+    }
+  }, [data.nome, open]);
 
   return (
     <Drawer
@@ -52,6 +92,8 @@ function MapSearch({ open, setOpen }) {
           placeholder="Nome"
           keyName="nome"
           inputWidth={inputWidth}
+          error={errorNome}
+          errorText={errorNomeText}
         />
         <Input
           data={data}
@@ -62,7 +104,11 @@ function MapSearch({ open, setOpen }) {
           select
           selectList={especialidadesOptions}
         />
-        <Button variant="contained" sx={{ width: buttonWidth, padding: '1rem' }}>
+        <Button
+          variant="contained"
+          sx={{ width: buttonWidth, padding: '1rem' }}
+          onClick={handleSearch}
+        >
           Pesquisar
         </Button>
       </VerticalContainer>
