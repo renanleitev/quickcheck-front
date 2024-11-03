@@ -20,7 +20,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ChipStatus from '../../../components/Chip/ChipStatus';
 import formatDate from '../../../hooks/formatDate';
 import { getHorarios } from '../../../store/modules/horarios/reducer';
-import ProntuarioModal from '../Prontuario/ProntuarioModal';
+import EditModal from '../../../components/Modal/EditModal';
 
 export default function FuncionarioTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
@@ -28,7 +28,7 @@ export default function FuncionarioTable() {
   const dispatch = useDispatch();
 
   // Armazenar os dados do prontuário
-  const [prontuario, setProntuario] = useState('');
+  const [prontuario, setProntuario] = useState({ prontuario: '' });
 
   // Abrir o modal oculto
   const [openModal, setOpenModal] = useState(false);
@@ -114,16 +114,20 @@ export default function FuncionarioTable() {
                       <Button
                         variant="contained"
                         sx={{ marginRight: '0.5rem' }}
-                        color="success"
+                        color="info"
                         onClick={() => {
-                          setProntuario(horario?.prontuario);
+                          setProntuario({ ...prontuario, prontuario: horario?.prontuario });
                           setOpenModal(true);
                         }}
                       >
                         Prontuário
                       </Button>
-                      <Button variant="contained" sx={{ marginRight: '0.5rem' }}>
-                        Remarcar
+                      <Button
+                        variant="contained"
+                        sx={{ marginRight: '0.5rem' }}
+                        color="success"
+                      >
+                        Concluir
                       </Button>
                       <Button variant="contained" color="error">
                         Cancelar
@@ -160,10 +164,13 @@ export default function FuncionarioTable() {
         </TableFooter>
       </Table>
       {/* Prontuário Modal */}
-      <ProntuarioModal
+      <EditModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        prontuario={prontuario}
+        label="Prontuário"
+        data={prontuario}
+        setData={setProntuario}
+        keyName="prontuario"
       />
     </TableContainer>
   );

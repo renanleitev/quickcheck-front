@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import Input from '../../Input/Input';
+import { HorizontalContainer } from '../../../config/GlobalStyle';
+import EditModal from '../../Modal/EditModal';
 import PropTypes from 'prop-types';
 
 StepDescricao.propTypes = {
@@ -8,24 +13,54 @@ StepDescricao.propTypes = {
 };
 
 export default function StepDescricao({ data, setData, errors }) {
+  // Abrir o modal oculto
+  const [openHorarioModal, setOpenHorarioModal] = useState(false);
+  const [openDescricaoModal, setOpenDescricaoModal] = useState(false);
+
   return (
     <>
-      <Input
-        data={data}
-        setData={setData}
-        keyName="horarioFuncionamento"
-        placeholder="Horário de Funcionamento"
-        error={errors?.errorHorario}
-        errorText={errors?.errorHorarioText}
-      />
-      <Input
-        data={data}
-        setData={setData}
-        keyName="descricao"
-        placeholder="Informações Adicionais"
-        error={errors?.errorDescricao}
-        errorText={errors?.errorDescricaoText}
-      />
+      <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
+        <Input
+          data={data}
+          setData={setData}
+          keyName="horarioFuncionamento"
+          placeholder="Horário de Funcionamento"
+          error={errors?.errorHorario}
+          errorText={errors?.errorHorarioText}
+        />
+        <IconButton color="inherit" onClick={() => setOpenHorarioModal(true)}>
+          <EditIcon />
+        </IconButton>
+        <EditModal
+          data={data}
+          setData={setData}
+          keyName="horarioFuncionamento"
+          label="Horário de Funcionamento"
+          open={openHorarioModal}
+          onClose={() => setOpenHorarioModal(false)}
+        />
+      </HorizontalContainer>
+      <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
+        <Input
+          data={data}
+          setData={setData}
+          keyName="descricao"
+          placeholder="Informações Adicionais"
+          error={errors?.errorDescricao}
+          errorText={errors?.errorDescricaoText}
+        />
+        <IconButton color="inherit" onClick={() => setOpenDescricaoModal(true)}>
+          <EditIcon />
+        </IconButton>
+        <EditModal
+          data={data}
+          setData={setData}
+          keyName="descricao"
+          label="Informações Adicionais"
+          open={openDescricaoModal}
+          onClose={() => setOpenDescricaoModal(false)}
+        />
+      </HorizontalContainer>
     </>
   );
 }
