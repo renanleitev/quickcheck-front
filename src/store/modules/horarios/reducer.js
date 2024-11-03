@@ -43,6 +43,20 @@ export const getHorariosByEstabelecimentoIdAndStatus = createAsyncThunk(
   }
 );
 
+export const getHorariosByEstabelecimentoIdAndStatusAndEspecialidade = createAsyncThunk(
+  'horarios/getHorariosByEstabelecimentoIdAndStatusAndEspecialidade',
+  async ({ estabelecimentoId, status, especialidade }) => {
+    try {
+      const url = `${baseHorariosURL}/search?estabelecimentoId=${estabelecimentoId}&status=${status}&especialidade=${especialidade}`;
+      const response = await axiosInstance.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível obter os dados');
+    }
+  }
+);
+
 export const horariosSlice = createSlice({
   name: 'horarios',
   initialState,
@@ -70,6 +84,19 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getHorariosByEstabelecimentoIdAndStatus.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // getHorariosByEstabelecimentoIdAndStatusAndEspecialidade
+      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.horarios = action.payload;
+      })
+      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

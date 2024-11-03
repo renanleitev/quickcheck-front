@@ -30,7 +30,7 @@ export default function StepContato({ data, setData, errors }) {
         errorText={errors?.errorEnderecoText}
       />
       {/* TODO: Substituir por upload de imagens BLOB */}
-      <Input data={data} setData={setData} keyName="imagem" placeholder="Imagem" />
+      <Input data={data} setData={setData} keyName="imagem" placeholder="Imagem (Opcional)" />
     </>
   );
 }

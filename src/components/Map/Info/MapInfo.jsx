@@ -10,7 +10,10 @@ import StepConfirmar from './Steps/StepConfirmar';
 import StepFinalizar from './Steps/StepFinalizar';
 import StepButtons from '../../Step/StepButtons';
 import formatDate from '../../../hooks/formatDate';
-import { getHorariosByEstabelecimentoIdAndStatus } from '../../../store/modules/horarios/reducer';
+import {
+  getHorariosByEstabelecimentoIdAndStatus,
+  getHorariosByEstabelecimentoIdAndStatusAndEspecialidade
+} from '../../../store/modules/horarios/reducer';
 import PerfilCard from '../../Card/PerfilCard';
 import { AgendamentoStatus } from '../../../config/enums';
 
@@ -48,6 +51,19 @@ export default function MapInfo({ entidade, open, setOpen }) {
       );
     }
   }, [dispatch, entidade]);
+
+  // Quando muda a especialidade, realiza uma nova pesquisa
+  useEffect(() => {
+    if (agendamento.especialidade !== '') {
+      dispatch(
+        getHorariosByEstabelecimentoIdAndStatusAndEspecialidade({
+          estabelecimentoId: entidade?.id,
+          especialidade: agendamento.especialidade,
+          status: AgendamentoStatus.DISPONÍVEL
+        })
+      );
+    }
+  }, [agendamento.especialidade, dispatch, entidade?.id]);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {

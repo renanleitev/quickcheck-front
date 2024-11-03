@@ -38,9 +38,7 @@ export default function StepHorarios({ data, setData, horarios }) {
           />
           {horarios.length === 0 && (
             <Box p="2rem">
-              <EmptyState
-                title="Nenhum horário disponível"
-              />
+              <EmptyState title="Nenhum horário disponível" />
             </Box>
           )}
           {horarios.map((horario) => {
