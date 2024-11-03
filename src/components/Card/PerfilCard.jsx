@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 
 PerfilCard.propTypes = {
   children: PropTypes.object.isRequired,
-  entidade: PropTypes.object.isRequired
+  entidade: PropTypes.object.isRequired,
+  hasSubtitle: PropTypes.bool
 };
 
-export default function PerfilCard({ children, entidade }) {
+export default function PerfilCard({ children, entidade, hasSubtitle = true }) {
   return (
     <Card sx={{ backgroundColor: colors.primaryColor, boxShadow: 'none' }}>
       <CardHeader
@@ -28,7 +29,7 @@ export default function PerfilCard({ children, entidade }) {
         }
         title={entidade?.usuario?.nome}
         titleTypographyProps={{ color: colors.primaryWhiteColor }}
-        subheader={entidade?.usuario?.endereco}
+        subheader={hasSubtitle && entidade?.usuario?.endereco}
         subheaderTypographyProps={{ color: colors.primaryWhiteColor }}
         sx={{
           borderBottom: `1px solid ${colors.primaryWhiteColor}`

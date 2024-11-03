@@ -13,7 +13,7 @@ export default function Cliente({ entidade }) {
   const textSize = 'subtitle1';
 
   return (
-    <PerfilCard entidade={entidade}>
+    <PerfilCard entidade={entidade} hasSubtitle={false}>
       <Typography variant={textSize} color={color}>
         Nome: {entidade?.usuario?.nome}
       </Typography>
