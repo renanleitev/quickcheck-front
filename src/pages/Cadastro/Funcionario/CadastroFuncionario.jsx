@@ -25,7 +25,6 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     nome: '',
     cpf: '',
     nascimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-    idade: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
     // StepContato
     endereco: '',
     telefone: '',

@@ -11,7 +11,8 @@ StepButtons.propTypes = {
   nextStepLabel: PropTypes.string,
   disableNextButton: PropTypes.bool,
   isSetupFinished: PropTypes.bool,
-  onValidateForm: PropTypes.func
+  onValidateForm: PropTypes.func,
+  onCallApi: PropTypes.func
 };
 
 export default function StepButtons({
@@ -22,16 +23,17 @@ export default function StepButtons({
   nextStepLabel = 'Avançar',
   disableNextButton = false,
   isSetupFinished = false,
-  onValidateForm
+  onValidateForm,
+  onCallApi
 }) {
   const handleNext = useCallback(() => {
     onValidateForm && onValidateForm();
     if (activeStep === stepsNumber - 1) {
-      // TODO: Chamada de API para cadastrar usuário
+      onCallApi();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-  }, [activeStep, onValidateForm, setActiveStep, stepsNumber]);
+  }, [activeStep, onValidateForm, onCallApi, setActiveStep, stepsNumber]);
 
   const handleBack = () => {
     if (activeStep === 0 || isSetupFinished) {

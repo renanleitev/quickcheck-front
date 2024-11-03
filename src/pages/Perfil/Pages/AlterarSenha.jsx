@@ -27,7 +27,7 @@ export default function AlterSenha() {
         Alterar Senha
       </Typography>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
-        <StepLogin data={data} setData={setData} />
+        <StepLogin data={data} setData={setData} isEmailDisabled />
         <Button
           variant="contained"
           color="success"

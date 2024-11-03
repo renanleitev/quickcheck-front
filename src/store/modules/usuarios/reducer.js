@@ -60,6 +60,16 @@ export const alterarSenha = createAsyncThunk('usuarios/alterarSenha', async (log
   }
 });
 
+export const criarUsuario = createAsyncThunk('usuarios/criarUsuario', async (usuario) => {
+  try {
+    await axiosInstance.post(baseUsuariosURL, usuario);
+    return loginUsuario;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível criar o usuário');
+  }
+});
+
 export const usuariosSlice = createSlice({
   name: 'usuarios',
   initialState,
@@ -112,6 +122,20 @@ export const usuariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(alterarSenha.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // alterarSenha
+      .addCase(criarUsuario.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.entidade.usuario = { ...action.payload };
+        toast.success('Usuário criado com sucesso! Redirecionando...');
+      })
+      .addCase(criarUsuario.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(criarUsuario.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

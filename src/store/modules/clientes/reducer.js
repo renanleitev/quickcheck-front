@@ -12,7 +12,7 @@ export const initialCliente = {
   latitude: '',
   longitude: '',
   numeroCartaoSUS: '',
-  comorbidades: [],
+  comorbidades: []
 };
 
 export const initialState = {
@@ -29,7 +29,17 @@ export const getCliente = createAsyncThunk('clientes/getCliente', async (id) => 
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Não foi possível obter os dados");
+    throw new Error('Não foi possível obter os dados');
+  }
+});
+
+export const criarCliente = createAsyncThunk('clientes/criarCliente', async (cliente) => {
+  try {
+    const response = await axiosInstance.post(baseClientesURL, cliente);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(errorMessage);
   }
 });
 
@@ -47,6 +57,19 @@ export const clientesSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getCliente.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
+      // criarCliente
+      .addCase(criarCliente.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.cliente = action.payload;
+
+      })
+      .addCase(criarCliente.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(criarCliente.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       });

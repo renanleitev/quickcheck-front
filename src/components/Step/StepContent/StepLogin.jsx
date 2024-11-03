@@ -5,10 +5,17 @@ StepLogin.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   hasRepetirSenha: PropTypes.bool,
-  errors: PropTypes.object
+  errors: PropTypes.object,
+  isEmailDisabled: PropTypes.bool
 };
 
-export default function StepLogin({ data, setData, errors, hasRepetirSenha = true }) {
+export default function StepLogin({
+  data,
+  setData,
+  errors,
+  hasRepetirSenha = true,
+  isEmailDisabled = false
+}) {
   return (
     <>
       <Input
@@ -18,6 +25,7 @@ export default function StepLogin({ data, setData, errors, hasRepetirSenha = tru
         placeholder="Email"
         error={errors?.errorEmail}
         errorText={errors?.errorEmailText}
+        disabled={isEmailDisabled}
       />
       <Input
         data={data}

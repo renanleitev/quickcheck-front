@@ -25,6 +25,7 @@ export default function useList() {
 
   const clienteList = useMemo(
     () => [
+      { name: 'Página principal', onClick: () => navigate('/') },
       { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
       { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
@@ -36,6 +37,7 @@ export default function useList() {
 
   const funcionarioList = useMemo(
     () => [
+      { name: 'Página principal', onClick: () => navigate('/') },
       { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
       { name: 'Meu perfil', onClick: () => navigate('/perfil') },
       { name: 'Ajuda', onClick: () => navigate('/ajuda') },
@@ -47,6 +49,7 @@ export default function useList() {
 
   const estabelecimentoList = useMemo(
     () => [
+      { name: 'Página principal', onClick: () => navigate('/') },
       { name: 'Horários', onClick: () => navigate('/horarios') },
       { name: 'Atendimentos', onClick: () => navigate('/agendamentos') },
       { name: 'Pacientes', onClick: () => navigate('/pacientes') },

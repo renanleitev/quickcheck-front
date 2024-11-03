@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import colors from '../../../config/colors';
 import { formatBirthDate } from '../../../hooks/formatDate';
 import PerfilCard from '../../../components/Card/PerfilCard';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
 Cliente.propTypes = {
@@ -24,7 +25,7 @@ export default function Cliente({ entidade }) {
         Sexo: {entidade?.sexo?.toUpperCase() === 'M' ? 'Masculino' : 'Feminino'}
       </Typography>
       <Typography variant={textSize} color={color}>
-        Idade: {entidade?.idade}
+        Idade: {dayjs(new Date()).diff(entidade?.nascimento, 'year')}
       </Typography>
       <Typography variant={textSize} color={color}>
         Data de Nascimento: {formatBirthDate(entidade?.nascimento)}

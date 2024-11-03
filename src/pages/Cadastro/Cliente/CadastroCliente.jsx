@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { UserRoles, sexoOptions, comorbidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
@@ -12,6 +13,8 @@ import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
 import StepContato from '../../../components/Step/StepContent/StepContato';
 import StepSaude from '../../../components/Step/StepContent/StepSaude';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
+import { criarCliente } from '../../../store/modules/clientes/reducer';
+import { criarUsuario } from '../../../store/modules/usuarios/reducer';
 import PropTypes from 'prop-types';
 
 CadastroCliente.propTypes = {
@@ -24,7 +27,6 @@ export default function CadastroCliente({ setStartCadastro }) {
     nome: '',
     cpf: '',
     nascimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-    idade: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
     // StepContato
     endereco: '',
     telefone: '',
@@ -103,6 +105,32 @@ export default function CadastroCliente({ setStartCadastro }) {
     }
   }
 
+  const dispatch = useDispatch();
+
+  const handlecriarCliente = () => {
+    const cliente = {
+      usuario: {
+        nome: data.nome,
+        email: data.email,
+        endereco: data.endereco,
+        telefone: data.telefone,
+        imagem: data.imagem,
+        senha: data.senha,
+        role: UserRoles.CLIENTE
+      },
+      // Definindo como zero as coordenadas já que a localização será obtida quando o usuário acessar o mapa pela primeira vez
+      latitude: "0",
+      longitude: "0",
+      numeroCartaoSus: data.numeroCartaoSUS,
+      nascimento: data.nascimento,
+      sexo: data.sexo,
+      cpf: data.cpf,
+      comorbidades: data.comorbidades
+    };
+    dispatch(criarUsuario({ ...cliente.usuario }));
+    dispatch(criarCliente({ ...cliente }));
+  };
+
   return (
     <VerticalContainer
       style={{
@@ -117,6 +145,7 @@ export default function CadastroCliente({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
+        onCallApi={handlecriarCliente}
       />
     </VerticalContainer>
   );
