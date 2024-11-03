@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import { UserRoles, estabelecimentoOptions } from '../../../config/enums';
+import { UserRoles } from '../../../config/enums';
+import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
 import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
@@ -19,7 +20,7 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
     // StepPessoal
     nome: '',
     cnpj: '',
-    tipo: estabelecimentoOptions[0].value,
+    tipo: estabelecimentosOptions[0].value,
     // StepContato
     endereco: '',
     telefone: '',

@@ -32,27 +32,6 @@ export const roleOptions = [
   { value: UserRoles.ESTABELECIMENTO, label: userLabels[UserRoles.ESTABELECIMENTO] }
 ];
 
-export const EstabelecimentoRoles = {
-  HOSPITAL: 'HOSPITAL',
-  CLINICA: 'CLINICA'
-};
-
-export const estabelecimentoLabels = {
-  [EstabelecimentoRoles.HOSPITAL]: 'Hospital',
-  [EstabelecimentoRoles.CLINICA]: 'Clínica'
-};
-
-export const estabelecimentoOptions = [
-  {
-    value: EstabelecimentoRoles.HOSPITAL,
-    label: estabelecimentoLabels[EstabelecimentoRoles.HOSPITAL]
-  },
-  {
-    value: EstabelecimentoRoles.CLINICA,
-    label: estabelecimentoLabels[EstabelecimentoRoles.CLINICA]
-  }
-];
-
 export const sexoOptions = [
   { value: 'M', label: 'Masculino' },
   { value: 'F', label: 'Feminino' }

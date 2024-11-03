@@ -7,7 +7,7 @@ import {
   cnpjFormat,
   onlyLettersRegex
 } from '../../../config/validationRegex';
-import { estabelecimentoOptions } from '../../../config/enums';
+import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
 
 StepPessoal.propTypes = {
@@ -47,7 +47,7 @@ export default function StepPessoal({ data, setData, role, errors }) {
             keyName="tipo"
             placeholder="Tipo"
             select
-            selectList={estabelecimentoOptions}
+            selectList={estabelecimentosOptions}
           />
         </>
       ) : (

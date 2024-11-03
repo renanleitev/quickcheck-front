@@ -5,8 +5,8 @@ import colors from '../../../config/colors';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import Input from '../../Input/Input';
 import { especialidadesOptions } from '../../../config/enums';
+import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
-import { StyledTabs, StyledTab } from '../../Tab/Tab';
 
 const buttonWidth = '20rem';
 const inputWidth = '20rem';
@@ -19,16 +19,11 @@ MapSearch.propTypes = {
 function MapSearch({ open, setOpen }) {
   const initialData = {
     nome: '',
-    especialidade: especialidadesOptions[0].value
+    especialidade: especialidadesOptions[0].value,
+    tipo: estabelecimentosOptions[0].value
   };
 
   const [data, setData] = useState(initialData);
-
-  const [tab, setTab] = useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setTab(newValue);
-  };
 
   return (
     <Drawer
@@ -42,10 +37,15 @@ function MapSearch({ open, setOpen }) {
       }}
     >
       <VerticalContainer style={{ padding: '2rem' }}>
-        <StyledTabs value={tab} onChange={handleTabChange} aria-label="quickcheck-search-tabs">
-          <StyledTab label="Hospitais" value={0} />
-          <StyledTab label="Clínicas" value={1} />
-        </StyledTabs>
+        <Input
+          data={data}
+          setData={setData}
+          placeholder="Tipo"
+          keyName="tipo"
+          inputWidth={inputWidth}
+          select
+          selectList={estabelecimentosOptions}
+        />
         <Input
           data={data}
           setData={setData}
