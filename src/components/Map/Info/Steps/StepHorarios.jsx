@@ -46,6 +46,7 @@ export default function StepHorarios({ data, setData, horarios }) {
                     <Avatar
                       sx={{ backgroundColor: colors.primaryWhiteColor, color: colors.primaryColor }}
                       aria-label="estabelecimento-nome"
+                      src={horario?.funcionario?.usuario?.imagem}
                     >
                       {horario?.funcionario?.usuario?.nome.charAt(0).toUpperCase()}
                     </Avatar>

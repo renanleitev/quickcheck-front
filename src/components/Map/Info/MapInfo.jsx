@@ -100,6 +100,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
               <Avatar
                 sx={{ backgroundColor: colors.primaryWhiteColor, color: colors.primaryColor }}
                 aria-label="estabelecimento-nome"
+                src={entidade?.usuario?.imagem}
               >
                 {entidade?.usuario?.nome.charAt(0).toUpperCase()}
               </Avatar>
