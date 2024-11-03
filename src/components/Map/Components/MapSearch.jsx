@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getEstabelecimentosByEspecialidadeAndNomeAndTipo } from '../../../store/modules/estabelecimentos/reducer';
+import { getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo } from '../../../store/modules/estabelecimentos/reducer';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import colors from '../../../config/colors';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import Input from '../../Input/Input';
-import { especialidadesOptions } from '../../../config/enums';
+import { AgendamentoStatus, especialidadesOptions } from '../../../config/enums';
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
 
@@ -22,6 +22,7 @@ function MapSearch({ open, setOpen }) {
   const dispatch = useDispatch();
 
   const initialData = {
+    status: AgendamentoStatus.DISPONÍVEL,
     nome: '',
     especialidade: especialidadesOptions[0].value,
     tipo: estabelecimentosOptions[0].value
@@ -51,7 +52,7 @@ function MapSearch({ open, setOpen }) {
   const handleSearch = () => {
     handleValidation();
     if (data.nome !== '') {
-      dispatch(getEstabelecimentosByEspecialidadeAndNomeAndTipo({ ...data }));
+      dispatch(getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo({ ...data }));
       // Redefinindo o estado de pesquisa
       setOpen(false);
       setData(initialData);

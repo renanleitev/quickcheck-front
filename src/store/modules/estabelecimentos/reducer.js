@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import axiosInstance, {
   baseEstabelecimentosURL,
-  baseFuncionariosURL
+  baseHorariosURL
 } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
@@ -52,12 +52,12 @@ export const getEstabelecimentos = createAsyncThunk(
   }
 );
 
-export const getEstabelecimentosByEspecialidadeAndNomeAndTipo = createAsyncThunk(
-  'estabelecimentos/getEstabelecimentosByEspecialidadeAndNomeAndTipo',
-  async ({ especialidade, nome, tipo }) => {
+export const getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo = createAsyncThunk(
+  'estabelecimentos/getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo',
+  async ({ status, especialidade, nome, tipo }) => {
     try {
-      // Estamos usando a URL de funcionários pois a pesquisa irá retornar os médicos (especialidade) e os respectivos hospitais/clínicas (nome e tipo)
-      const url = `${baseFuncionariosURL}/search?especialidade=${especialidade}&estabelecimentoNome=${nome}&estabelecimentoTipo=${tipo}`;
+      // Estamos usando a URL de horários pois a pesquisa irá retornar os médicos (especialidade) e os respectivos hospitais/clínicas (nome e tipo)
+      const url = `${baseHorariosURL}/search/estabelecimentos?status=${status}&especialidade=${especialidade}&nome=${nome}&tipo=${tipo}`;
       const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {
@@ -97,21 +97,27 @@ export const estabelecimentosSlice = createSlice({
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })
-      // getEstabelecimentosByEspecialidadeAndNomeAndTipo
-      .addCase(getEstabelecimentosByEspecialidadeAndNomeAndTipo.fulfilled, (state, action) => {
-        const estabelecimentos = action.payload?.map(item => item?.estabelecimento) || [];
-        toast.success(`Encontrado(s) ${estabelecimentos.length} resultado(s)`);
-        state.fetchStatus = fetchStatus.SUCCESS;
-        state.estabelecimentos = estabelecimentos;
-        state.hasSearched = true;
-      })
-      .addCase(getEstabelecimentosByEspecialidadeAndNomeAndTipo.pending, (state) => {
+      // getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo
+      .addCase(
+        getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.fulfilled,
+        (state, action) => {
+          const estabelecimentos = action.payload?.map((item) => item?.estabelecimento) || [];
+          toast.success(`Encontrado(s) ${estabelecimentos.length} resultado(s)`);
+          state.fetchStatus = fetchStatus.SUCCESS;
+          state.estabelecimentos = estabelecimentos;
+          state.hasSearched = true;
+        }
+      )
+      .addCase(getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
-      .addCase(getEstabelecimentosByEspecialidadeAndNomeAndTipo.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
-        state.error = action.error.message || errorMessage;
-      });
+      .addCase(
+        getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.rejected,
+        (state, action) => {
+          state.fetchStatus = fetchStatus.FAILURE;
+          state.error = action.error.message || errorMessage;
+        }
+      );
   }
 });
 
