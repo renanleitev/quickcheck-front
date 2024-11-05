@@ -1,0 +1,33 @@
+import { useSelector } from 'react-redux';
+import { Typography } from '@mui/material';
+import ClienteTable from './Tabelas/ClienteTable';
+import FuncionarioTable from './Tabelas/FuncionarioTable';
+import { UserRoles } from '../../../config/enums';
+import { VerticalContainer } from '../../../config/GlobalStyle';
+import BackButton from '../../../components/Button/BackButton';
+import colors from '../../../config/colors';
+
+export default function AgendamentoLista() {
+  const entidade = useSelector((state) => state?.usuarios?.entidade) || [];
+
+  function renderAgendamentoLista() {
+    switch (entidade?.usuario?.role) {
+      case UserRoles.FUNCIONARIO:
+        return <FuncionarioTable />;
+      case UserRoles.ESTABELECIMENTO:
+      case UserRoles.CLIENTE:
+      default:
+        return <ClienteTable />;
+    }
+  }
+
+  return (
+    <VerticalContainer style={{ padding: '2rem' }}>
+      <Typography variant="h4" color={colors.primaryDarkColor}>
+        Minhas consultas
+      </Typography>
+      {renderAgendamentoLista()}
+      <BackButton />
+    </VerticalContainer>
+  );
+}

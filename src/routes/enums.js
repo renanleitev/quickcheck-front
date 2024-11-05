@@ -7,6 +7,8 @@ export const RoutesList = {
   VerPerfil: '/ver-perfil',
   EditarPerfil: '/editar-perfil',
   AlterarSenha: '/alterar-senha',
-  Agendamentos: '/agendamentos',
+  AgendamentosLista: '/agendamentos/lista',
+  Ajuda: '/ajuda',
+  Sobre: '/sobre',
   NotFound: '*'
 };

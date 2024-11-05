@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getEstabelecimentos } from '../../store/modules/estabelecimentos/reducer';
 import { VerticalContainer } from '../../config/GlobalStyle';
-import MapDisplay from '../../components/Map/MapDisplay';
+import MapDisplay from './Components/MapDisplay';
 
 export default function Mapa() {
   // Sobe para o topo da página quando carrega o mapa

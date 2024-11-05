@@ -2,6 +2,7 @@ import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUsuario } from '../../store/modules/usuarios/reducer';
+import { RoutesList } from '../../routes/enums';
 
 /** Hook para obter as listas de menu */
 export default function useList() {
@@ -15,21 +16,21 @@ export default function useList() {
 
   const defaultList = useMemo(
     () => [
-      { name: 'Login', onClick: () => navigate('/') },
-      { name: 'Cadastro', onClick: () => navigate('/cadastro') },
-      { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-      { name: 'Sobre', onClick: () => navigate('/sobre') }
+      { name: 'Login', onClick: () => navigate(RoutesList.Login) },
+      { name: 'Cadastro', onClick: () => navigate(RoutesList.Cadastro) },
+      { name: 'Ajuda', onClick: () => navigate(RoutesList.Ajuda) },
+      { name: 'Sobre', onClick: () => navigate(RoutesList.Sobre) }
     ],
     [navigate]
   );
 
   const clienteList = useMemo(
     () => [
-      { name: 'Página principal', onClick: () => navigate('/') },
-      { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
-      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
-      { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-      { name: 'Sobre', onClick: () => navigate('/sobre') },
+      { name: 'Página principal', onClick: () => navigate(RoutesList.Home) },
+      { name: 'Minhas consultas', onClick: () => navigate(RoutesList.AgendamentosLista) },
+      { name: 'Meu perfil', onClick: () => navigate(RoutesList.Perfil) },
+      { name: 'Ajuda', onClick: () => navigate(RoutesList.Ajuda) },
+      { name: 'Sobre', onClick: () => navigate(RoutesList.Sobre) },
       { name: 'Logout', onClick: () => handleLogout() }
     ],
     [navigate, handleLogout]
@@ -37,11 +38,11 @@ export default function useList() {
 
   const funcionarioList = useMemo(
     () => [
-      { name: 'Página principal', onClick: () => navigate('/') },
-      { name: 'Minhas consultas', onClick: () => navigate('/agendamentos') },
-      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
-      { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-      { name: 'Sobre', onClick: () => navigate('/sobre') },
+      { name: 'Página principal', onClick: () => navigate(RoutesList.Home) },
+      { name: 'Meus atendimentos', onClick: () => navigate(RoutesList.AgendamentosLista) },
+      { name: 'Meu perfil', onClick: () => navigate(RoutesList.Perfil) },
+      { name: 'Ajuda', onClick: () => navigate(RoutesList.Ajuda) },
+      { name: 'Sobre', onClick: () => navigate(RoutesList.Sobre) },
       { name: 'Logout', onClick: () => handleLogout() }
     ],
     [navigate, handleLogout]
@@ -49,14 +50,14 @@ export default function useList() {
 
   const estabelecimentoList = useMemo(
     () => [
-      { name: 'Página principal', onClick: () => navigate('/') },
+      { name: 'Página principal', onClick: () => navigate(RoutesList.Home) },
       { name: 'Horários', onClick: () => navigate('/horarios') },
       { name: 'Atendimentos', onClick: () => navigate('/agendamentos') },
       { name: 'Pacientes', onClick: () => navigate('/pacientes') },
       { name: 'Médicos', onClick: () => navigate('/medicos') },
-      { name: 'Meu perfil', onClick: () => navigate('/perfil') },
-      { name: 'Ajuda', onClick: () => navigate('/ajuda') },
-      { name: 'Sobre', onClick: () => navigate('/sobre') },
+      { name: 'Meu perfil', onClick: () => navigate(RoutesList.Perfil) },
+      { name: 'Ajuda', onClick: () => navigate(RoutesList.Ajuda) },
+      { name: 'Sobre', onClick: () => navigate(RoutesList.Sobre) },
       { name: 'Logout', onClick: () => handleLogout() }
     ],
     [navigate, handleLogout]

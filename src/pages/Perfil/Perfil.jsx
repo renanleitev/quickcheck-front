@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
@@ -5,7 +6,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import BackButton from '../../components/Button/BackButton';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
-import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../routes/enums';
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Perfil() {
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<SearchIcon />}
-        onClick={() => navigate('/ver-perfil')}
+        onClick={() => navigate(RoutesList.VerPerfil)}
       >
         Ver Perfil
       </Button>
@@ -30,7 +31,7 @@ export default function Perfil() {
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<KeyIcon />}
-        onClick={() => navigate('/alterar-senha')}
+        onClick={() => navigate(RoutesList.AlterarSenha)}
       >
         Alterar Senha
       </Button>
@@ -38,7 +39,7 @@ export default function Perfil() {
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<EditIcon />}
-        onClick={() => navigate('/editar-perfil')}
+        onClick={() => navigate(RoutesList.EditarPerfil)}
       >
         Editar Perfil
       </Button>

@@ -1,10 +1,19 @@
 import { useSelector } from 'react-redux';
-import Mapa from '../Mapa/Mapa';
-import Agendamento from '../Agendamento/Agendamento';
+import ClienteHome from './Pages/ClienteHome';
+import FuncionarioHome from './Pages/FuncionarioHome';
+import EstabelecimentoHome from './Pages/EstabelecimentoHome';
 import { UserRoles } from '../../config/enums';
 
 export default function Home() {
-  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+  const usuario = useSelector((state) => state?.usuarios?.entidade?.usuario) || undefined;
 
-  return <>{entidade?.usuario?.role === UserRoles.FUNCIONARIO ? <Agendamento /> : <Mapa />}</>;
+  switch (usuario?.role) {
+    case UserRoles.FUNCIONARIO:
+      return <FuncionarioHome />;
+    case UserRoles.ESTABELECIMENTO:
+      return <EstabelecimentoHome />;
+    case UserRoles.CLIENTE:
+    default:
+      return <ClienteHome />;
+  }
 }

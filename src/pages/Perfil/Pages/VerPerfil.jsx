@@ -8,6 +8,7 @@ import Cliente from '../Entidades/Cliente';
 import Estabelecimento from '../Entidades/Estabelecimento';
 import Funcionario from '../Entidades/Funcionario';
 import { UserRoles } from '../../../config/enums';
+import { RoutesList } from '../../../routes/enums';
 
 export default function VerPerfil() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function VerPerfil() {
           sx={{ width: buttonWidth, height: buttonHeight }}
           color="success"
           startIcon={<EditIcon />}
-          onClick={() => navigate('/editar-perfil')}
+          onClick={() => navigate(RoutesList.EditarPerfil)}
         >
           Editar Perfil
         </Button>
@@ -47,13 +48,14 @@ export default function VerPerfil() {
           sx={{ width: buttonWidth, height: buttonHeight }}
           color="error"
           startIcon={<DeleteIcon />}
-          onClick={() => navigate('/apagar-perfil')}
+          // TODO: Implementar página (ou modal) de apagar perfil
+          // onClick={() => navigate('/apagar-perfil')}
         >
           Apagar Perfil
         </Button>
         <Button
           variant="contained"
-          onClick={() => navigate('/perfil')}
+          onClick={() => navigate(RoutesList.Perfil)}
           sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Voltar

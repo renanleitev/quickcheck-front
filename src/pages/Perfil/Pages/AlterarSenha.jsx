@@ -7,6 +7,7 @@ import { VerticalContainer } from '../../../config/GlobalStyle';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import colors from '../../../config/colors';
 import { alterarSenha } from '../../../store/modules/usuarios/reducer';
+import { RoutesList } from '../../../routes/enums';
 
 export default function AlterSenha() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function AlterSenha() {
         </Button>
         <Button
           variant="contained"
-          onClick={() => navigate('/perfil')}
+          onClick={() => navigate(RoutesList.Perfil)}
           sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Voltar

@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import MapButtons from './Components/MapButtons';
-import MapSearch from './Components/MapSearch';
-import MapInfo from './Info/MapInfo';
-import HomeMarker from './Markers/HomeMarker';
-import HospitalMarker from './Markers/HospitalMarker';
-import { defaultCoords, zoomLevel } from '../../config/enums';
+import MapButtons from './MapButtons';
+import MapSearch from './MapSearch';
+import MapInfo from '../Info/MapInfo';
+import HomeMarker from '../Markers/HomeMarker';
+import HospitalMarker from '../Markers/HospitalMarker';
+import { defaultCoords, zoomLevel } from '../../../config/enums';
 
 export default function MapDisplay() {
-  const estabelecimentos = useSelector(state => state?.estabelecimentos?.estabelecimentos) ?? [];
+  const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
 
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);

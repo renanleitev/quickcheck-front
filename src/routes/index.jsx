@@ -8,7 +8,7 @@ import Perfil from '../pages/Perfil/Perfil';
 import VerPerfil from '../pages/Perfil/Pages/VerPerfil';
 import EditarPerfil from '../pages/Perfil/Pages/EditarPerfil';
 import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
-import Agendamento from '../pages/Agendamento/Agendamento';
+import AgendamentoLista from '../pages/Agendamento/Visualizar/AgendamentoLista';
 import history from '../services/history';
 import { RoutesList } from './enums';
 
@@ -41,7 +41,7 @@ export default function RoutesController() {
       <Route path={RoutesList.VerPerfil} element={handleAuth(<VerPerfil />)} />
       <Route path={RoutesList.EditarPerfil} element={handleAuth(<EditarPerfil />)} />
       <Route path={RoutesList.AlterarSenha} element={handleAuth(<AlterarSenha />)} />
-      <Route path={RoutesList.Agendamentos} element={handleAuth(<Agendamento />)} />
+      <Route path={RoutesList.AgendamentosLista} element={handleAuth(<AgendamentoLista />)} />
       <Route path={RoutesList.NotFound} element={<Page404 />} />
     </Routes>
   );

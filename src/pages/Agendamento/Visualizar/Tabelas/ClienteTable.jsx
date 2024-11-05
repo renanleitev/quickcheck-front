@@ -17,24 +17,16 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ChipStatus from '../../../components/Chip/ChipStatus';
-import formatDate from '../../../hooks/formatDate';
-import { getHorarios } from '../../../store/modules/horarios/reducer';
-import EditModal from '../../../components/Modal/EditModal';
+import formatDate from '../../../../hooks/formatDate';
+import { getHorarios } from '../../../../store/modules/horarios/reducer';
 
-export default function FuncionarioTable() {
+export default function ClienteTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
   const dispatch = useDispatch();
 
-  // Armazenar os dados do prontuário
-  const [prontuario, setProntuario] = useState({ prontuario: '' });
-
-  // Abrir o modal oculto
-  const [openModal, setOpenModal] = useState(false);
-
   // Expandir a linha oculta
-  const [openHiddenRow, setOpenHiddenRow] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // Paginação
   const [page, setPage] = useState(0);
@@ -54,7 +46,7 @@ export default function FuncionarioTable() {
   const labelRowsPerPage = 'Resultados';
 
   // Obtendo os horários
-  // TODO: Obter os horários de acordo com cada funcionário
+  // TODO: Obter os horários de acordo com cada cliente
   useEffect(() => {
     dispatch(getHorarios());
   }, [dispatch]);
@@ -68,8 +60,8 @@ export default function FuncionarioTable() {
             {/* Espaço reservado para o ícone de expandir a linha oculta */}
             <TableCell />
             <TableCell sx={{ minWidth: columnWidth }}>Horário</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Paciente</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Comorbidades</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Hospital/Clínica</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Telefone</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Endereço</TableCell>
@@ -81,14 +73,10 @@ export default function FuncionarioTable() {
           {horarios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((horario) => (
             <>
               {/* Linha padrão - sempre visível */}
-              <TableRow key={horario.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow key={horario?.horarioAtedimento} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 {/* Ícone para expandir a linha oculta */}
                 <TableCell>
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => setOpenHiddenRow(!openHiddenRow)}
-                  >
+                  <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
@@ -96,38 +84,20 @@ export default function FuncionarioTable() {
                 <TableCell component="th" scope="row">
                   {formatDate(horario?.horarioAtendimento)}
                 </TableCell>
-                <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
-                {/* Comorbidades é um array */}
-                <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
+                <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
+                <TableCell>{horario?.funcionario?.especialidade}</TableCell>
                 <TableCell>{horario?.estabelecimento?.usuario?.nome}</TableCell>
                 <TableCell>{horario.estabelecimento?.usuario?.telefone}</TableCell>
                 <TableCell>{horario.estabelecimento?.usuario?.endereco}</TableCell>
-                <TableCell>
-                  <ChipStatus status={horario?.status} />
-                </TableCell>
+                <TableCell>{horario?.status}</TableCell>
               </TableRow>
               {/* Linha oculta - expande quando o usuário clica no ícone */}
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Box p="2rem">
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        color="info"
-                        onClick={() => {
-                          setProntuario({ ...prontuario, prontuario: horario?.prontuario });
-                          setOpenModal(true);
-                        }}
-                      >
-                        Prontuário
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        color="success"
-                      >
-                        Concluir
+                    <Box width="80vw" p="2rem">
+                      <Button variant="contained" sx={{ marginRight: '0.5rem' }}>
+                        Remarcar
                       </Button>
                       <Button variant="contained" color="error">
                         Cancelar
@@ -163,15 +133,6 @@ export default function FuncionarioTable() {
           </TableRow>
         </TableFooter>
       </Table>
-      {/* Prontuário Modal */}
-      <EditModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        label="Prontuário"
-        data={prontuario}
-        setData={setProntuario}
-        keyName="prontuario"
-      />
     </TableContainer>
   );
 }

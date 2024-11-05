@@ -11,6 +11,7 @@ import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
 import colors from '../../../config/colors';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { UserRoles } from '../../../config/enums';
+import { RoutesList } from '../../../routes/enums';
 
 export default function EditarPerfil() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function EditarPerfil() {
     endereco: entidade?.usuario?.endereco,
     role: entidade?.usuario?.role,
     nascimento: formatCalendarDate(entidade?.nascimento),
+    imagem: entidade?.usuario?.imagem,
   });
 
   const color = colors.primaryDarkColor;
@@ -78,7 +80,7 @@ export default function EditarPerfil() {
         </Button>
         <Button
           variant="contained"
-          onClick={() => navigate('/perfil')}
+          onClick={() => navigate(RoutesList.Perfil)}
           sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Voltar

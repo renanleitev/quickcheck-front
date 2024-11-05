@@ -13,11 +13,11 @@ export default function ChipStatus({ status }) {
     case AgendamentoStatus.CANCELADO:
       return <Chip label={status} color="error" />;
     case AgendamentoStatus.AGENDADO:
-      return <Chip label={status} color="info" />;
+      return <Chip label={status} color="secondary" />;
     case AgendamentoStatus.PENDENTE:
       return <Chip label={status} color="warning" />;
     case AgendamentoStatus.DISPONÍVEL:
     default:
-      return <Chip label={status} color="secondary" />;
+      return <Chip label={status} color="info" />;
   }
 }
