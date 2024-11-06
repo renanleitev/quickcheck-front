@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import { Box, Drawer, MenuItem, Typography } from '@mui/material';
@@ -97,6 +97,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
           imagem={funcionario?.usuario?.imagem}
           info={funcionario?.usuario?.nome}
           subInfo={funcionario?.especialidade}
+          descricao={`CRM ${funcionario?.crm}`}
         />
       ) : (
         <StepHorarios
@@ -132,12 +133,18 @@ export default function MapInfo({ entidade, open, setOpen }) {
     }
   ];
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setOpen(false);
     setAgendamento(initialAgendamento);
     setFuncionario(undefined);
     setActiveStep(0);
-  };
+  }, [initialAgendamento, setOpen]);
+
+  useEffect(() => {
+    if (!open) {
+      handleReset();
+    }
+  }, [handleReset, open]);
 
   return (
     <Drawer

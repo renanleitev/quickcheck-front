@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import Input, { InputType } from '../../../Input/Input';
 import { especialidadesOptions } from '../../../../config/enums';
-import { VerticalContainer } from '../../../../config/GlobalStyle';
+import { HorizontalContainer, VerticalContainer } from '../../../../config/GlobalStyle';
 import colors from '../../../../config/colors';
 import PropTypes from 'prop-types';
 
@@ -35,22 +35,22 @@ export default function StepFiltros({ data, setData }) {
           select
           inputWidth={inputWidth}
         />
-        <Input
-          data={data}
-          setData={setData}
-          keyName="dataInicial"
-          inputType={InputType.DATE}
-          placeholder="Data Inicial (Opcional)"
-          inputWidth={inputWidth}
-        />
-        <Input
-          data={data}
-          setData={setData}
-          keyName="dataFinal"
-          inputType={InputType.DATE}
-          placeholder="Data Final (Opcional)"
-          inputWidth={inputWidth}
-        />
+        <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="dataInicial"
+            inputType={InputType.DATE}
+            placeholder="Início (Opcional)"
+          />
+          <Input
+            data={data}
+            setData={setData}
+            keyName="dataFinal"
+            inputType={InputType.DATE}
+            placeholder="Fim (Opcional)"
+          />
+        </HorizontalContainer>
       </VerticalContainer>
     </VerticalContainer>
   );
