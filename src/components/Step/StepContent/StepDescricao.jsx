@@ -5,6 +5,7 @@ import Input from '../../Input/Input';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
 import EditModal from '../../Modal/EditModal';
 import PropTypes from 'prop-types';
+import colors from '../../../config/colors';
 
 StepDescricao.propTypes = {
   data: PropTypes.object.isRequired,
@@ -17,6 +18,14 @@ export default function StepDescricao({ data, setData, errors }) {
   const [openHorarioModal, setOpenHorarioModal] = useState(false);
   const [openDescricaoModal, setOpenDescricaoModal] = useState(false);
 
+  const editButtonStyle = {
+    backgroundColor: colors.infoColor,
+    color: colors.primaryWhiteColor,
+    ':hover': {
+      backgroundColor: colors.primaryColor
+    }
+  };
+
   return (
     <>
       <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
@@ -28,7 +37,10 @@ export default function StepDescricao({ data, setData, errors }) {
           error={errors?.errorHorario}
           errorText={errors?.errorHorarioText}
         />
-        <IconButton color="inherit" onClick={() => setOpenHorarioModal(true)}>
+        <IconButton
+          sx={editButtonStyle}
+          onClick={() => setOpenHorarioModal(true)}
+        >
           <EditIcon />
         </IconButton>
         <EditModal
@@ -49,7 +61,10 @@ export default function StepDescricao({ data, setData, errors }) {
           error={errors?.errorDescricao}
           errorText={errors?.errorDescricaoText}
         />
-        <IconButton color="inherit" onClick={() => setOpenDescricaoModal(true)}>
+        <IconButton
+          sx={editButtonStyle}
+          onClick={() => setOpenDescricaoModal(true)}
+        >
           <EditIcon />
         </IconButton>
         <EditModal

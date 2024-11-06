@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
-import { VerticalContainer } from '../../../config/GlobalStyle';
+import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import StepLogin from '../../../components/Step/StepContent/StepLogin';
 import colors from '../../../config/colors';
 import { alterarSenha } from '../../../store/modules/usuarios/reducer';
@@ -28,22 +28,24 @@ export default function AlterSenha() {
         Alterar Senha
       </Typography>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
-        <StepLogin data={data} setData={setData} isEmailDisabled />
-        <Button
-          variant="contained"
-          color="success"
-          onClick={() => dispatch(alterarSenha(data))}
-          sx={{ width: buttonWidth, height: buttonHeight }}
-        >
-          Confirmar
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate(RoutesList.Perfil)}
-          sx={{ width: buttonWidth, height: buttonHeight }}
-        >
-          Voltar
-        </Button>
+        <HorizontalContainer>
+          <StepLogin data={data} setData={setData} isEmailDisabled />
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => dispatch(alterarSenha(data))}
+            sx={{ width: buttonWidth, height: buttonHeight }}
+          >
+            Confirmar
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate(RoutesList.Perfil)}
+            sx={{ width: buttonWidth, height: buttonHeight }}
+          >
+            Voltar
+          </Button>
+        </HorizontalContainer>
       </VerticalContainer>
     </VerticalContainer>
   );

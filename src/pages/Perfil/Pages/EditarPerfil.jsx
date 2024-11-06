@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
-import { VerticalContainer } from '../../../config/GlobalStyle';
+import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
 import StepContato from '../../../components/Step/StepContent/StepContato';
 import StepSaude from '../../../components/Step/StepContent/StepSaude';
@@ -37,28 +37,28 @@ export default function EditarPerfil() {
     switch (data?.role) {
       case UserRoles.ESTABELECIMENTO:
         return (
-          <>
+          <HorizontalContainer>
             <StepPessoal data={data} setData={setData} role={UserRoles.ESTABELECIMENTO} />
             <StepContato data={data} setData={setData} />
             <StepDescricao data={data} setData={setData} />
-          </>
+          </HorizontalContainer>
         );
       case UserRoles.FUNCIONARIO:
         return (
-          <>
+          <HorizontalContainer>
             <StepPessoal data={data} setData={setData} />
             <StepContato data={data} setData={setData} />
             <StepProfissao data={data} setData={setData} />
-          </>
+          </HorizontalContainer>
         );
       case UserRoles.CLIENTE:
       default:
         return (
-          <>
+          <HorizontalContainer>
             <StepPessoal data={data} setData={setData} />
             <StepContato data={data} setData={setData} />
             <StepSaude data={data} setData={setData} />
-          </>
+          </HorizontalContainer>
         );
     }
   }

@@ -19,7 +19,7 @@ export default function RoutesController() {
   const location = useLocation();
 
   // Rotas desprotegidas
-  const allowedRoutes = [RoutesList.Cadastro];
+  const allowedRoutes = [RoutesList.Login, RoutesList.Cadastro];
 
   // Protegendo as rotas, caso o usuário não esteja logado
   function handleAuth(children) {

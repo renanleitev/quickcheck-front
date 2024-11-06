@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Typography, Button } from '@mui/material';
 import { loginUsuario } from '../../store/modules/usuarios/reducer';
@@ -28,10 +28,13 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const handleLogin = useCallback(() => {
     validateLogin();
     dispatch(loginUsuario(data));
-  }, [validateLogin, dispatch, data]);
+    navigate(RoutesList.Home);
+  }, [validateLogin, dispatch, data, navigate]);
 
   return (
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
@@ -49,7 +52,7 @@ export default function Login() {
           sx={{ width: '15rem', padding: '1rem' }}
           onClick={() => handleLogin()}
         >
-          <Link to={RoutesList.Home}>Entrar</Link>
+          Entrar
         </Button>
         <Typography>
           Primeiro acesso? <Link to={RoutesList.Cadastro}>Cadastre-se!</Link>
