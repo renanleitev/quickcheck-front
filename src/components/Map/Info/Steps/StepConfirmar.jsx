@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import colors from '../../../../config/colors';
 
 StepConfirmar.propTypes = {
+  title: PropTypes.string.isRequired,
   funcionarioNome: PropTypes.string.isRequired,
   horarioAtendimento: PropTypes.string.isRequired,
-  descricao: PropTypes.string
+  descricao: PropTypes.string,
+  hasComprovante: PropTypes.bool
 };
 
-export default function StepConfirmar({ funcionarioNome, horarioAtendimento, descricao }) {
+export default function StepConfirmar({ title, funcionarioNome, horarioAtendimento, descricao }) {
   return (
     <CardContent>
       <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, mb: '2rem' }}>
-        Deseja confirmar a consulta?
+        {title}
       </Typography>
       <Typography variant="h4" sx={{ color: colors.primaryWhiteColor, marginBottom: '1rem' }}>
         {funcionarioNome}

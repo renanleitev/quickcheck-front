@@ -9,7 +9,6 @@ import StepInfo from './Steps/StepInfo';
 import StepFiltros from './Steps/StepFiltros';
 import StepHorarios from './Steps/StepHorarios';
 import StepConfirmar from './Steps/StepConfirmar';
-import StepFinalizar from './Steps/StepFinalizar';
 import StepButtons from '../../Step/StepButtons';
 import formatDate from '../../../hooks/formatDate';
 import {
@@ -112,6 +111,7 @@ export default function MapInfo({ entidade, open, setOpen }) {
     {
       component: (
         <StepConfirmar
+          title="Deseja confirmar a consulta?"
           funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
           horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
           descricao={agendamento?.horario?.descricao}
@@ -121,10 +121,11 @@ export default function MapInfo({ entidade, open, setOpen }) {
     },
     {
       component: (
-        <StepFinalizar
+        <StepConfirmar
+          title="Consulta confirmada com sucesso!"
           funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
           horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-          descricao={agendamento?.horario?.descricao}
+          descricao="Lembre-se de chegar com 30 minutos de antecedência."
         />
       ),
       block: false
