@@ -12,7 +12,9 @@ StepButtons.propTypes = {
   disableNextButton: PropTypes.bool,
   isSetupFinished: PropTypes.bool,
   onValidateForm: PropTypes.func,
-  onCallApi: PropTypes.func
+  onCallApi: PropTypes.func,
+  hasCustomReturnStep: PropTypes.bool,
+  onCustomReturnStep: PropTypes.func
 };
 
 export default function StepButtons({
@@ -24,7 +26,9 @@ export default function StepButtons({
   disableNextButton = false,
   isSetupFinished = false,
   onValidateForm,
-  onCallApi
+  onCallApi,
+  hasCustomReturnStep,
+  onCustomReturnStep
 }) {
   const handleNext = useCallback(() => {
     onValidateForm && onValidateForm();
@@ -38,6 +42,8 @@ export default function StepButtons({
   const handleBack = () => {
     if (activeStep === 0 || isSetupFinished) {
       onReset();
+    } else if (hasCustomReturnStep && onCustomReturnStep) {
+      onCustomReturnStep();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }

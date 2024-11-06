@@ -16,7 +16,7 @@ export default function StepInfo({ imagem, info, subInfo, descricao, alignItems 
 
   return (
     <>
-      <CardMedia component="img" height="294" image={imagem ?? noImage} alt="Imagem" />
+      <CardMedia component="img" height="265" image={imagem ?? noImage} alt="Imagem" />
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: alignItems }}>
           {info && (

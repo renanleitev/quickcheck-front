@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import { Box, Drawer, MenuItem, Typography } from '@mui/material';
 import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import PropTypes from 'prop-types';
 import StepInfo from './Steps/StepInfo';
+import StepFiltros from './Steps/StepFiltros';
 import StepHorarios from './Steps/StepHorarios';
 import StepConfirmar from './Steps/StepConfirmar';
 import StepFinalizar from './Steps/StepFinalizar';
@@ -16,6 +18,7 @@ import {
 } from '../../../store/modules/horarios/reducer';
 import PerfilCard from '../../Card/PerfilCard';
 import { AgendamentoStatus } from '../../../config/enums';
+import { formatCalendarDate } from '../../../hooks/formatDate';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
@@ -28,17 +31,22 @@ export default function MapInfo({ entidade, open, setOpen }) {
 
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
-  const [step, setStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   const initialAgendamento = useMemo(() => {
     return {
       especialidade: '',
       horario: undefined,
+      dataInicial: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+      dataFinal: formatCalendarDate(dayjs().add(1, 'month').toISOString()), // Pesquisar agendamentos até o mês seguinte
       funcionario: undefined
     };
   }, []);
 
   const [agendamento, setAgendamento] = useState(initialAgendamento);
+
+  // Perfil do funcionario selecionadp
+  const [funcionario, setFuncionario] = useState(undefined);
 
   // Obtendo os horários
   useEffect(() => {
@@ -67,42 +75,68 @@ export default function MapInfo({ entidade, open, setOpen }) {
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
-    setStep(0);
+    setActiveStep(0);
     setAgendamento(initialAgendamento);
   }, [entidade, initialAgendamento]);
 
-  function stepRender() {
-    switch (step) {
-      case 3:
-        return (
-          <StepFinalizar
-            funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
-            horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-            descricao={agendamento?.horario?.descricao}
-          />
-        );
-      case 2:
-        return (
-          <StepConfirmar
-            funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
-            horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-            descricao={agendamento?.horario?.descricao}
-          />
-        );
-      case 1:
-        return <StepHorarios data={agendamento} setData={setAgendamento} horarios={horarios} />;
-      case 0:
-      default:
-        return (
-          <StepInfo
-            imagem={entidade?.usuario?.imagem}
-            info={entidade?.horarioFuncionamento}
-            subInfo={entidade?.descricao}
-            alignItems="flex-start"
-          />
-        );
+  const steps = [
+    {
+      component: (
+        <StepInfo
+          imagem={entidade?.usuario?.imagem}
+          info={entidade?.horarioFuncionamento}
+          subInfo={entidade?.descricao}
+          alignItems="flex-start"
+        />
+      ),
+      block: false
+    },
+    { component: <StepFiltros data={agendamento} setData={setAgendamento} />, block: false },
+    {
+      component: funcionario ? (
+        <StepInfo
+          imagem={funcionario?.usuario?.imagem}
+          info={funcionario?.usuario?.nome}
+          subInfo={funcionario?.especialidade}
+        />
+      ) : (
+        <StepHorarios
+          data={agendamento}
+          setData={setAgendamento}
+          setFuncionario={setFuncionario}
+          horarios={horarios}
+        />
+      ),
+      block: true // Bloqueia o next button para impedir que o usuário avance sem ter escolhido uma opção
+    },
+    {
+      component: (
+        <StepConfirmar
+          funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
+          horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+          descricao={agendamento?.horario?.descricao}
+        />
+      ),
+      block: false
+    },
+    {
+      component: (
+        <StepFinalizar
+          funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
+          horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+          descricao={agendamento?.horario?.descricao}
+        />
+      ),
+      block: false
     }
-  }
+  ];
+
+  const handleReset = () => {
+    setOpen(false);
+    setAgendamento(initialAgendamento);
+    setFuncionario(undefined);
+    setActiveStep(0);
+  };
 
   return (
     <Drawer
@@ -149,17 +183,19 @@ export default function MapInfo({ entidade, open, setOpen }) {
         >
           {/* Steps */}
           {/* Definindo uma altura fixa para criar efeito scroll */}
-          <Box sx={{ height: '23rem', overflow: 'auto' }}>{stepRender(step)}</Box>
+          <Box sx={{ height: '23rem', overflow: 'auto' }}>{steps[activeStep].component}</Box>
           {/* Steps Buttons */}
           <HorizontalContainer style={{ padding: '0.5rem', justifyContent: 'flex-end' }}>
             <StepButtons
-              activeStep={step}
-              setActiveStep={setStep}
-              onReset={() => setOpen(false)}
-              stepsNumber={4}
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+              onReset={handleReset}
+              stepsNumber={steps.length}
               nextStepLabel="Agendar"
-              disableNextButton={step === 1 && agendamento?.horario === undefined}
-              isSetupFinished={step === 3} // Omite o next button quando atinge o último step
+              disableNextButton={steps[activeStep].block && agendamento?.horario === undefined}
+              isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
+              hasCustomReturnStep={funcionario !== undefined} // Quando houver um funcionário selecionado, retorna para o mesmo step (horarios)
+              onCustomReturnStep={() => setFuncionario(undefined)} // Remove funcionário, mas mantém no mesmo step anterior (horarios)
             />
           </HorizontalContainer>
         </PerfilCard>
