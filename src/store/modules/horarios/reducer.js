@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import axiosInstance, { baseHorariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
+import { AgendamentoStatus } from '../../../config/enums';
 
 // Atributos exclusivos de horario
 export const initialHorario = {
@@ -141,7 +142,24 @@ export const horariosSlice = createSlice({
           }
         });
         state.fetchStatus = fetchStatus.SUCCESS;
-        toast.success('Consulta cancelada com sucesso!');
+        switch (action.payload?.status) {
+          case AgendamentoStatus.DISPONÍVEL:
+            toast.success('Consulta criada com sucesso!');
+            break;
+          case AgendamentoStatus.AGENDADO:
+            toast.success('Consulta agendada com sucesso!');
+            break;
+          case AgendamentoStatus.PENDENTE:
+            toast.success('Consulta remarcada com sucesso!');
+            break;
+          case AgendamentoStatus.CANCELADO:
+            toast.success('Consulta cancelada com sucesso!');
+            break;
+          case AgendamentoStatus.CONCLUÍDO:
+          default:
+            toast.success('Consulta concluída com sucesso!');
+            break;
+        }
       })
       .addCase(updateHorarioStatus.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
