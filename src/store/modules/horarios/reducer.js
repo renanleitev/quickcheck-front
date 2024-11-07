@@ -5,7 +5,6 @@ import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
 
 // Atributos exclusivos de horario
 export const initialHorario = {
-  id: '',
   descricao: '',
   horarioAtendimento: new Date(),
   horarioAgendamento: new Date(),
@@ -57,6 +56,34 @@ export const getHorariosByEstabelecimentoIdAndStatusAndEspecialidade = createAsy
   }
 );
 
+export const updateHorarioProntuario = createAsyncThunk(
+  'horarios/updateHorarioProntuario',
+  async ({ horario }) => {
+    try {
+      const url = `${baseHorariosURL}/${horario.id}`;
+      await axiosInstance.put(url, horario);
+      return horario;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível atualizar os dados');
+    }
+  }
+);
+
+export const updateHorarioStatus = createAsyncThunk(
+  'horarios/updateHorarioStatus',
+  async ({ horario }) => {
+    try {
+      const url = `${baseHorariosURL}/${horario.id}`;
+      await axiosInstance.put(url, horario);
+      return horario;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível atualizar os dados');
+    }
+  }
+);
+
 export const horariosSlice = createSlice({
   name: 'horarios',
   initialState,
@@ -88,15 +115,38 @@ export const horariosSlice = createSlice({
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       })
-      // getHorariosByEstabelecimentoIdAndStatusAndEspecialidade
-      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.fulfilled, (state, action) => {
+      // updateHorarioProntuario
+      .addCase(updateHorarioProntuario.fulfilled, (state, action) => {
+        state.horarios.forEach((horario, index) => {
+          if (horario.id === action.payload.id) {
+            state.horarios[index] = { ...action.payload };
+          }
+        });
         state.fetchStatus = fetchStatus.SUCCESS;
-        state.horarios = action.payload;
+        toast.success('Prontuário atualizado com sucesso!');
       })
-      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.pending, (state) => {
+      .addCase(updateHorarioProntuario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
-      .addCase(getHorariosByEstabelecimentoIdAndStatusAndEspecialidade.rejected, (state, action) => {
+      .addCase(updateHorarioProntuario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // updateHorarioStatus
+      .addCase(updateHorarioStatus.fulfilled, (state, action) => {
+        state.horarios.forEach((horario, index) => {
+          if (horario.id === action.payload.id) {
+            state.horarios[index] = { ...action.payload };
+          }
+        });
+        state.fetchStatus = fetchStatus.SUCCESS;
+        toast.success('Consulta cancelada com sucesso!');
+      })
+      .addCase(updateHorarioStatus.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(updateHorarioStatus.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

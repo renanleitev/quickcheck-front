@@ -4,13 +4,18 @@ import colors from '../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
 import Input from '../Input/Input';
 
-EditModal.propTypes = {
+ActionModal.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  onConfirm: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   keyName: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  confirmLabel: PropTypes.string,
+  readOnlyText: PropTypes.string,
+  readOnly: PropTypes.bool,
+  confirmColor: PropTypes.string
 };
 
 const style = {
@@ -24,7 +29,19 @@ const style = {
   p: 4
 };
 
-export default function EditModal({ data, setData, open, onClose, keyName, label }) {
+export default function ActionModal({
+  data,
+  setData,
+  open,
+  onClose,
+  onConfirm,
+  confirmLabel = 'Confirmar',
+  keyName,
+  label,
+  readOnly = false,
+  readOnlyText,
+  confirmColor = 'success'
+}) {
   return (
     <Modal
       open={open}
@@ -44,10 +61,17 @@ export default function EditModal({ data, setData, open, onClose, keyName, label
           {label}
         </Typography>
         <VerticalContainer style={{ rowGap: '2rem' }}>
-          <Input data={data} setData={setData} keyName={keyName} multiline rows={10} />
+          {readOnly ? (
+            <Typography color={colors.primaryDarkColor}>{readOnlyText}</Typography>
+          ) : (
+            <Input data={data} setData={setData} keyName={keyName} multiline rows={10} />
+          )}
           <HorizontalContainer>
-            <Button variant="contained" color="success" onClick={() => onClose()}>
-              Editar
+            <Button variant="contained" color="info" onClick={() => onClose()}>
+              Voltar
+            </Button>
+            <Button variant="contained" color={confirmColor} onClick={() => onConfirm()}>
+              {confirmLabel}
             </Button>
           </HorizontalContainer>
         </VerticalContainer>

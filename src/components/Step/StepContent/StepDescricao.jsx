@@ -3,7 +3,7 @@ import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import Input from '../../Input/Input';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
-import EditModal from '../../Modal/EditModal';
+import ActionModal from '../../Modal/ActionModal';
 import PropTypes from 'prop-types';
 import colors from '../../../config/colors';
 
@@ -37,18 +37,16 @@ export default function StepDescricao({ data, setData, errors }) {
           error={errors?.errorHorario}
           errorText={errors?.errorHorarioText}
         />
-        <IconButton
-          sx={editButtonStyle}
-          onClick={() => setOpenHorarioModal(true)}
-        >
+        <IconButton sx={editButtonStyle} onClick={() => setOpenHorarioModal(true)}>
           <EditIcon />
         </IconButton>
-        <EditModal
+        <ActionModal
           data={data}
           setData={setData}
           keyName="horarioFuncionamento"
           label="Horário de Funcionamento"
           open={openHorarioModal}
+          onConfirm={() => setOpenHorarioModal(false)}
           onClose={() => setOpenHorarioModal(false)}
         />
       </HorizontalContainer>
@@ -61,18 +59,16 @@ export default function StepDescricao({ data, setData, errors }) {
           error={errors?.errorDescricao}
           errorText={errors?.errorDescricaoText}
         />
-        <IconButton
-          sx={editButtonStyle}
-          onClick={() => setOpenDescricaoModal(true)}
-        >
+        <IconButton sx={editButtonStyle} onClick={() => setOpenDescricaoModal(true)}>
           <EditIcon />
         </IconButton>
-        <EditModal
+        <ActionModal
           data={data}
           setData={setData}
           keyName="descricao"
           label="Informações Adicionais"
           open={openDescricaoModal}
+          onConfirm={() => setOpenDescricaoModal(false)}
           onClose={() => setOpenDescricaoModal(false)}
         />
       </HorizontalContainer>
