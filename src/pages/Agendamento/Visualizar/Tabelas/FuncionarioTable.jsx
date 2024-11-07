@@ -105,15 +105,16 @@ export default function FuncionarioTable() {
                     aria-label="expand row"
                     size="small"
                     onClick={() => {
-                      setHorario({ ...horario });
-                      setRowId(horario?.id);
+                      if (rowId === horario?.id) {
+                        setHorario({ ...initialHorario });
+                        setRowId('');
+                      } else {
+                        setHorario({ ...horario });
+                        setRowId(horario?.id);
+                      }
                     }}
                   >
-                    {rowId === horario?.id ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
+                    {rowId === horario?.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
                 {/* Informações relevantes */}
