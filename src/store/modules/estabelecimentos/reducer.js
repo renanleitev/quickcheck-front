@@ -89,6 +89,20 @@ export const getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo = createA
   }
 );
 
+export const atualizarEstabelecimento = createAsyncThunk(
+  'estabelecimentos/atualizarEstabelecimentos',
+  async (estabelecimento) => {
+    try {
+      const url = `${baseEstabelecimentosURL}/${estabelecimento?.id}`;
+      await axiosInstance.put(url, estabelecimento);
+      return estabelecimento;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível atualizar usuário');
+    }
+  }
+);
+
 export const estabelecimentosSlice = createSlice({
   name: 'estabelecimentos',
   initialState,
@@ -150,6 +164,20 @@ export const estabelecimentosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(criarEstabelecimento.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // atualizarEstabelecimento
+      .addCase(atualizarEstabelecimento.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.cliente = action.payload;
+        toast.success('Dados atualizados com sucesso!');
+      })
+      .addCase(atualizarEstabelecimento.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(atualizarEstabelecimento.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

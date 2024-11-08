@@ -51,6 +51,17 @@ export const criarCliente = createAsyncThunk('clientes/criarCliente', async (cli
   }
 });
 
+export const atualizarCliente = createAsyncThunk('clientes/atualizarCliente', async (cliente) => {
+  try {
+    const url = `${baseClientesURL}/${cliente?.id}`;
+    await axiosInstance.put(url, cliente);
+    return cliente;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível atualizar usuário');
+  }
+});
+
 export const clientesSlice = createSlice({
   name: 'clientes',
   initialState,
@@ -78,6 +89,20 @@ export const clientesSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(criarCliente.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // atualizarCliente
+      .addCase(atualizarCliente.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.cliente = action.payload;
+        toast.success('Dados atualizados com sucesso!');
+      })
+      .addCase(atualizarCliente.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(atualizarCliente.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

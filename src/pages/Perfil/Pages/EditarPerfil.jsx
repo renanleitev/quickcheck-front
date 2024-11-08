@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
@@ -12,6 +12,10 @@ import colors from '../../../config/colors';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { UserRoles } from '../../../config/enums';
 import { RoutesList } from '../../../routes/enums';
+import { atualizarUsuario } from '../../../store/modules/usuarios/reducer';
+import { atualizarCliente } from '../../../store/modules/clientes/reducer';
+import { atualizarEstabelecimento } from '../../../store/modules/estabelecimentos/reducer';
+import { atualizarFuncionario } from '../../../store/modules/funcionarios/reducer';
 
 export default function EditarPerfil() {
   const navigate = useNavigate();
@@ -20,22 +24,58 @@ export default function EditarPerfil() {
 
   const usuarioRole = entidade?.usuario?.role;
 
+  // Dados alterados pelo formulário
   const [data, setData] = useState({
     ...entidade,
     crm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[0] : '',
     estadoCrm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[1] : '',
-    nome: entidade?.usuario?.nome,
-    telefone: entidade?.usuario?.telefone,
-    endereco: entidade?.usuario?.endereco,
-    role: entidade?.usuario?.role,
-    nascimento: formatCalendarDate(entidade?.nascimento),
-    imagem: entidade?.usuario?.imagem
+    nome: entidade?.usuario?.nome ?? '',
+    telefone: entidade?.usuario?.telefone ?? '',
+    endereco: entidade?.usuario?.endereco ?? '',
+    nascimento: formatCalendarDate(entidade?.nascimento) ?? '',
+    imagem: entidade?.usuario?.imagem ?? ''
   });
+
+  // Dados enviados para a API
+  const usuarioFinal = {
+    ...data,
+    id: data?.id,
+    usuario: {
+      id: data?.usuario?.id,
+      nome: data?.nome,
+      telefone: data?.telefone,
+      endereco: data?.endereco,
+      role: data?.usuario?.role, // Padrão, usuário não edita essa informação
+      senha: data?.usuario?.senha, // Padrão, usuário não edita essa informação
+      email: data?.usuario?.email, // Padrão, usuário não edita essa informação
+      imagem: data?.imagem
+    }
+  };
 
   const color = colors.primaryDarkColor;
 
   const buttonWidth = '100%';
   const buttonHeight = '3rem';
+
+  const dispatch = useDispatch();
+
+  const handleEdit = () => {
+    switch (data?.role) {
+      case UserRoles.ESTABELECIMENTO:
+        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarEstabelecimento(usuarioFinal));
+        break;
+      case UserRoles.FUNCIONARIO:
+        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarFuncionario(usuarioFinal));
+        break;
+      case UserRoles.CLIENTE:
+      default:
+        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarCliente(usuarioFinal));
+        break;
+    }
+  };
 
   function renderPerfil() {
     switch (data?.role) {
@@ -77,7 +117,7 @@ export default function EditarPerfil() {
         <Button
           variant="contained"
           color="success"
-          onClick={() => {}}
+          onClick={() => handleEdit()}
           sx={{ width: buttonWidth, height: buttonHeight }}
         >
           Editar

@@ -60,6 +60,17 @@ export const alterarSenha = createAsyncThunk('usuarios/alterarSenha', async (log
   }
 });
 
+export const atualizarUsuario = createAsyncThunk('usuarios/atualizarUsuario', async (usuario) => {
+  try {
+    const url = `${baseUsuariosURL}/${usuario?.id}`;
+    await axiosInstance.put(url, usuario);
+    return usuario;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível atualizar usuário');
+  }
+});
+
 export const usuariosSlice = createSlice({
   name: 'usuarios',
   initialState,
@@ -121,6 +132,19 @@ export const usuariosSlice = createSlice({
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       })
+      // atualizarCliente
+      .addCase(atualizarUsuario.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.entidade = action.payload;
+      })
+      .addCase(atualizarUsuario.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(atualizarUsuario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      });
   }
 });
 
