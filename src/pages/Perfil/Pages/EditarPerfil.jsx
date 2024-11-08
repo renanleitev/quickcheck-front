@@ -18,14 +18,18 @@ export default function EditarPerfil() {
 
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
+  const usuarioRole = entidade?.usuario?.role;
+
   const [data, setData] = useState({
     ...entidade,
+    crm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[0] : '',
+    estadoCrm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[1] : '',
     nome: entidade?.usuario?.nome,
     telefone: entidade?.usuario?.telefone,
     endereco: entidade?.usuario?.endereco,
     role: entidade?.usuario?.role,
     nascimento: formatCalendarDate(entidade?.nascimento),
-    imagem: entidade?.usuario?.imagem,
+    imagem: entidade?.usuario?.imagem
   });
 
   const color = colors.primaryDarkColor;
