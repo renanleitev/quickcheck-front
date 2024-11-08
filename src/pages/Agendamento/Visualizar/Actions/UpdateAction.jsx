@@ -4,6 +4,13 @@ import { Button } from '@mui/material';
 import ActionModal from '../../../../components/Modal/ActionModal';
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const UpdateActionCommonType = {
+  horario: PropTypes.object.isRequired,
+  setHorario: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired
+};
+
 UpdateAction.propTypes = {
   horario: PropTypes.object.isRequired,
   setHorario: PropTypes.func.isRequired,

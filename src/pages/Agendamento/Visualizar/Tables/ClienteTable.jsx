@@ -18,13 +18,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import formatDate from '../../../../hooks/formatDate';
 import ChipStatus from '../../../../components/Chip/ChipStatus';
-import {
-  getHorarios,
-  initialHorario,
-  updateHorarioStatus
-} from '../../../../store/modules/horarios/reducer';
-import UpdateAction from '../Actions/UpdateAction';
-import { AgendamentoStatus } from '../../../../config/enums';
+import { getHorarios, initialHorario } from '../../../../store/modules/horarios/reducer';
+import RemarcarAction from '../Actions/RemarcarAction';
+import CancelarAction from '../Actions/CancelarAction';
 
 export default function ClienteTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
@@ -121,37 +117,15 @@ export default function ClienteTable() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                     <Box p="2rem">
-                      <UpdateAction
+                      <RemarcarAction
                         horario={horarioData}
                         setHorario={setHorarioData}
-                        title="Remarcar a consulta?"
-                        onUpdate={updateHorarioStatus({
-                          horario: { ...horarioData, status: AgendamentoStatus.PENDENTE }
-                        })}
-                        confirmColor="warning"
-                        buttonLabel="Remarcar"
-                        confirmLabel="Remarcar"
-                        readOnlyText="Você deseja remarcar a consulta? O médico precisará confirmar o novo horário."
-                        disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                        keyName="status"
+                        status={horario?.status}
                       />
-                      <UpdateAction
+                      <CancelarAction
                         horario={horarioData}
                         setHorario={setHorarioData}
-                        title="Cancelar a consulta?"
-                        onUpdate={updateHorarioStatus({
-                          horario: { ...horarioData, status: AgendamentoStatus.CANCELADO }
-                        })}
-                        confirmColor="error"
-                        buttonLabel="Cancelar"
-                        confirmLabel="Cancelar"
-                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível agendar ou concluir a consulta."
-                        confirmActionColor="error"
-                        disabled={
-                          horario?.status === AgendamentoStatus.CANCELADO ||
-                          horario?.status === AgendamentoStatus.CONCLUÍDO
-                        }
-                        keyName="status"
+                        status={horario?.status}
                       />
                     </Box>
                   </Collapse>

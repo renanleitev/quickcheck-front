@@ -18,14 +18,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ChipStatus from '../../../../components/Chip/ChipStatus';
 import formatDate from '../../../../hooks/formatDate';
-import {
-  getHorarios,
-  updateHorarioProntuario,
-  updateHorarioStatus,
-  initialHorario
-} from '../../../../store/modules/horarios/reducer';
-import { AgendamentoStatus } from '../../../../config/enums';
-import UpdateAction from '../Actions/UpdateAction';
+import { getHorarios, initialHorario } from '../../../../store/modules/horarios/reducer';
+import ProntuarioAction from '../Actions/ProntuarioAction';
+import ConfirmarAction from '../Actions/ConfirmarAction';
+import ConcluirAction from '../Actions/ConcluirAction';
+import CancelarAction from '../Actions/CancelarAction';
 
 export default function FuncionarioTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
@@ -123,62 +120,25 @@ export default function FuncionarioTable() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                     <Box p="2rem">
-                      <UpdateAction
+                      <ProntuarioAction
                         horario={horarioData}
                         setHorario={setHorarioData}
-                        title="Prontuário"
-                        onUpdate={updateHorarioProntuario({ horario: horarioData })}
-                        buttonLabel="Prontuário"
-                        confirmLabel="Editar"
-                        readOnly={false}
-                        disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                        keyName="prontuario"
+                        status={horario?.status}
                       />
-                      <UpdateAction
+                      <ConfirmarAction
                         horario={horarioData}
                         setHorario={setHorarioData}
-                        title="Confirmar a consulta?"
-                        onUpdate={updateHorarioStatus({
-                          horario: { ...horarioData, status: AgendamentoStatus.AGENDADO }
-                        })}
-                        confirmColor="secondary"
-                        buttonLabel="Confirmar"
-                        confirmLabel="Confirmar"
-                        readOnlyText="Você deseja confirmar a consulta?"
-                        disabled={horario?.status !== AgendamentoStatus.PENDENTE}
-                        keyName="status"
+                        status={horario?.status}
                       />
-                      <UpdateAction
-                        horario={horarioData}
+                      <ConcluirAction
+                        horario={{ ...horarioData }}
                         setHorario={setHorarioData}
-                        title="Concluir a consulta?"
-                        onUpdate={updateHorarioStatus({
-                          horario: { ...horarioData, status: AgendamentoStatus.CONCLUÍDO }
-                        })}
-                        confirmColor="success"
-                        buttonLabel="Concluir"
-                        confirmLabel="Concluir"
-                        readOnlyText="Você deseja concluir a consulta? Uma vez concluída, não será possível editar o prontuário."
-                        disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                        keyName="status"
+                        status={horario?.status}
                       />
-                      <UpdateAction
+                      <CancelarAction
                         horario={horarioData}
                         setHorario={setHorarioData}
-                        title="Cancelar a consulta?"
-                        onUpdate={updateHorarioStatus({
-                          horario: { ...horarioData, status: AgendamentoStatus.CANCELADO }
-                        })}
-                        confirmColor="error"
-                        buttonLabel="Cancelar"
-                        confirmLabel="Cancelar"
-                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível agendar ou concluir a consulta."
-                        confirmActionColor="error"
-                        disabled={
-                          horario?.status === AgendamentoStatus.CANCELADO ||
-                          horario?.status === AgendamentoStatus.CONCLUÍDO
-                        }
-                        keyName="status"
+                        status={horario?.status}
                       />
                     </Box>
                   </Collapse>
