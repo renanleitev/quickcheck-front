@@ -6,14 +6,14 @@ import { UserRoles } from '../../../config/enums';
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
-import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
-import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
-import useValidateDescricao from '../../../components/Step/StepValidation/useValidateDescricao';
-import useValidateLogin from '../../../components/Step/StepValidation/useValidateLogin';
-import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
-import StepContato from '../../../components/Step/StepContent/StepContato';
-import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
-import StepLogin from '../../../components/Step/StepContent/StepLogin';
+import useValidatePessoal from '../../../components/Input/Validation/useValidatePessoal';
+import useValidateContato from '../../../components/Input/Validation/useValidateContato';
+import useValidateDescricao from '../../../components/Input/Validation/useValidateDescricao';
+import useValidateLogin from '../../../components/Input/Validation/useValidateLogin';
+import InputPessoal from '../../../components/Input/Content/InputPessoal';
+import InputContato from '../../../components/Input/Content/InputContato';
+import InputDescricao from '../../../components/Input/Content/InputDescricao';
+import InputLogin from '../../../components/Input/Content/InputLogin';
 import { loginCadastro } from '../../../store/modules/usuarios/reducer';
 import { criarEstabelecimento } from '../../../store/modules/estabelecimentos/reducer';
 import PropTypes from 'prop-types';
@@ -24,15 +24,15 @@ CadastroEstabelecimento.propTypes = {
 
 export default function CadastroEstabelecimento({ setStartCadastro }) {
   const initialData = {
-    // StepPessoal
+    // InputPessoal
     nome: '',
     cnpj: '',
     tipo: estabelecimentosOptions[0].value,
-    // StepContato
+    // InputContato
     endereco: '',
     telefone: '',
     imagem: '', // Opcional
-    // StepDescricao
+    // InputDescricao
     horarioFuncionamento: '',
     descricao: '',
     // StepFinal
@@ -100,15 +100,15 @@ export default function CadastroEstabelecimento({ setStartCadastro }) {
   function stepRender() {
     switch (activeStep) {
       case 1:
-        return <StepContato data={data} setData={setData} errors={errorsContato} />;
+        return <InputContato data={data} setData={setData} errors={errorsContato} />;
       case 2:
-        return <StepDescricao data={data} setData={setData} errors={errorsDescricao} />;
+        return <InputDescricao data={data} setData={setData} errors={errorsDescricao} />;
       case 3:
-        return <StepLogin data={data} setData={setData} errors={errorsLogin} />;
+        return <InputLogin data={data} setData={setData} errors={errorsLogin} />;
       case 0:
       default:
         return (
-          <StepPessoal
+          <InputPessoal
             data={data}
             setData={setData}
             role={UserRoles.ESTABELECIMENTO}

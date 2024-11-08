@@ -1,17 +1,17 @@
-import Input from '../../Input/Input';
+import Input from '../Input';
 import { especialidadesOptions, sexoOptions } from '../../../config/enums';
 import { crmRegex } from '../../../config/validationRegex';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
 import PropTypes from 'prop-types';
 
-StepProfissao.propTypes = {
+InputProfissao.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   errors: PropTypes.object
 };
 
-export default function StepProfissao({ data, setData, errors }) {
+export default function InputProfissao({ data, setData, errors }) {
   return (
     <>
       <Input

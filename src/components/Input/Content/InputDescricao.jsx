@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import Input from '../../Input/Input';
+import Input from '../Input';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
 import ActionModal from '../../Modal/ActionModal';
 import PropTypes from 'prop-types';
 import colors from '../../../config/colors';
 
-StepDescricao.propTypes = {
+InputDescricao.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   errors: PropTypes.object,
   hasHorarioFuncionamento: PropTypes.bool
 };
 
-export default function StepDescricao({ data, setData, errors, hasHorarioFuncionamento = true }) {
+export default function InputDescricao({ data, setData, errors, hasHorarioFuncionamento = true }) {
   // Abrir o modal oculto
   const [openHorarioModal, setOpenHorarioModal] = useState(false);
   const [openDescricaoModal, setOpenDescricaoModal] = useState(false);

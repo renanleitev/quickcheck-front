@@ -7,8 +7,8 @@ import Input from '../../components/Input/Input';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { roleOptions } from '../../config/enums';
-import useValidateLogin from '../../components/Step/StepValidation/useValidateLogin';
-import StepLogin from '../../components/Step/StepContent/StepLogin';
+import useValidateLogin from '../../components/Input/Validation/useValidateLogin';
+import InputLogin from '../../components/Input/Content/InputLogin';
 import { RoutesList } from '../../routes/enums';
 
 export default function Login() {
@@ -20,11 +20,10 @@ export default function Login() {
 
   const [data, setData] = useState(initialUser);
 
-  const { validateLogin, ...errorsLogin } =
-    useValidateLogin({
-      email: data.email,
-      senha: data.senha
-    });
+  const { validateLogin, ...errorsLogin } = useValidateLogin({
+    email: data.email,
+    senha: data.senha
+  });
 
   const dispatch = useDispatch();
 
@@ -40,12 +39,7 @@ export default function Login() {
     <VerticalContainer style={{ backgroundColor: colors.primaryColor, height: '90%' }}>
       <VerticalContainer style={{ width: '15rem' }}>
         <Typography variant="h3">Login</Typography>
-        <StepLogin 
-          data={data}
-          setData={setData}
-          errors={errorsLogin}
-          hasRepetirSenha={false}
-        />
+        <InputLogin data={data} setData={setData} errors={errorsLogin} hasRepetirSenha={false} />
         <Input data={data} setData={setData} keyName="role" select selectList={roleOptions} />
         <Button
           variant="contained"

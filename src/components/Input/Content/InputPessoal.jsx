@@ -1,4 +1,4 @@
-import Input, { InputType } from '../../Input/Input';
+import Input, { InputType } from '../Input';
 import { UserRoles } from '../../../config/enums';
 import {
   cpfRegex,
@@ -10,14 +10,14 @@ import {
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
 import PropTypes from 'prop-types';
 
-StepPessoal.propTypes = {
+InputPessoal.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   role: PropTypes.string,
   errors: PropTypes.object
 };
 
-export default function StepPessoal({ data, setData, role, errors }) {
+export default function InputPessoal({ data, setData, role, errors }) {
   return (
     <>
       <Input

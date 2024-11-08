@@ -13,7 +13,7 @@ import { AgendamentoStatus } from '../../../../config/enums';
 import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
 import { createHorario } from '../../../../store/modules/horarios/reducer';
-import StepDescricao from '../../../../components/Step/StepContent/StepDescricao';
+import InputDescricao from '../../../../components/Input/Content/InputDescricao';
 import { RoutesList } from '../../../../routes/enums';
 
 export default function AgendamentoCriar() {
@@ -116,7 +116,7 @@ export default function AgendamentoCriar() {
         </LocalizationProvider>
       </HorizontalContainer>
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
-        <StepDescricao data={data} setData={setData} hasHorarioFuncionamento={false} />
+        <InputDescricao data={data} setData={setData} hasHorarioFuncionamento={false} />
       </HorizontalContainer>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
         <Button

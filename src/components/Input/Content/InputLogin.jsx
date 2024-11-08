@@ -1,7 +1,7 @@
-import Input, { InputType } from '../../Input/Input';
+import Input, { InputType } from '../Input';
 import PropTypes from 'prop-types';
 
-StepLogin.propTypes = {
+InputLogin.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   hasRepetirSenha: PropTypes.bool,
@@ -9,7 +9,7 @@ StepLogin.propTypes = {
   isEmailDisabled: PropTypes.bool
 };
 
-export default function StepLogin({
+export default function InputLogin({
   data,
   setData,
   errors,

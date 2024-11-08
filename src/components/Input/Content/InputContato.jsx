@@ -1,14 +1,14 @@
-import Input from '../../Input/Input';
+import Input from '../Input';
 import { telefoneFormat, telefoneRegex } from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
-StepContato.propTypes = {
+InputContato.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   errors: PropTypes.object
 };
 
-export default function StepContato({ data, setData, errors }) {
+export default function InputContato({ data, setData, errors }) {
   return (
     <>
       <Input

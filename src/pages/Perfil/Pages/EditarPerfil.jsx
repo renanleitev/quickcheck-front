@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
-import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
-import StepContato from '../../../components/Step/StepContent/StepContato';
-import StepSaude from '../../../components/Step/StepContent/StepSaude';
-import StepProfissao from '../../../components/Step/StepContent/StepProfissao';
-import StepDescricao from '../../../components/Step/StepContent/StepDescricao';
+import InputPessoal from '../../../components/Input/Content/InputPessoal';
+import InputContato from '../../../components/Input/Content/InputContato';
+import InputSaude from '../../../components/Input/Content/InputSaude';
+import InputProfissao from '../../../components/Input/Content/InputProfissao';
+import InputDescricao from '../../../components/Input/Content/InputDescricao';
 import colors from '../../../config/colors';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { UserRoles } from '../../../config/enums';
@@ -83,26 +83,26 @@ export default function EditarPerfil() {
       case UserRoles.ESTABELECIMENTO:
         return (
           <HorizontalContainer>
-            <StepPessoal data={data} setData={setData} role={UserRoles.ESTABELECIMENTO} />
-            <StepContato data={data} setData={setData} />
-            <StepDescricao data={data} setData={setData} />
+            <InputPessoal data={data} setData={setData} role={UserRoles.ESTABELECIMENTO} />
+            <InputContato data={data} setData={setData} />
+            <InputDescricao data={data} setData={setData} />
           </HorizontalContainer>
         );
       case UserRoles.FUNCIONARIO:
         return (
           <HorizontalContainer>
-            <StepPessoal data={data} setData={setData} />
-            <StepContato data={data} setData={setData} />
-            <StepProfissao data={data} setData={setData} />
+            <InputPessoal data={data} setData={setData} />
+            <InputContato data={data} setData={setData} />
+            <InputProfissao data={data} setData={setData} />
           </HorizontalContainer>
         );
       case UserRoles.CLIENTE:
       default:
         return (
           <HorizontalContainer>
-            <StepPessoal data={data} setData={setData} />
-            <StepContato data={data} setData={setData} />
-            <StepSaude data={data} setData={setData} />
+            <InputPessoal data={data} setData={setData} />
+            <InputContato data={data} setData={setData} />
+            <InputSaude data={data} setData={setData} />
           </HorizontalContainer>
         );
     }

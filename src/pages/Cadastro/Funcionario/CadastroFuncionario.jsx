@@ -6,14 +6,14 @@ import { UserRoles, sexoOptions, especialidadesOptions } from '../../../config/e
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
 import { formatCalendarDate } from '../../../hooks/formatDate';
-import useValidatePessoal from '../../../components/Step/StepValidation/useValidatePessoal';
-import useValidateContato from '../../../components/Step/StepValidation/useValidateContato';
-import useValidateProfissao from '../../../components/Step/StepValidation/useValidateProfissao';
-import useValidateLogin from '../../../components/Step/StepValidation/useValidateLogin';
-import StepPessoal from '../../../components/Step/StepContent/StepPessoal';
-import StepContato from '../../../components/Step/StepContent/StepContato';
-import StepProfissao from '../../../components/Step/StepContent/StepProfissao';
-import StepLogin from '../../../components/Step/StepContent/StepLogin';
+import useValidatePessoal from '../../../components/Input/Validation/useValidatePessoal';
+import useValidateContato from '../../../components/Input/Validation/useValidateContato';
+import useValidateProfissao from '../../../components/Input/Validation/useValidateProfissao';
+import useValidateLogin from '../../../components/Input/Validation/useValidateLogin';
+import InputPessoal from '../../../components/Input/Content/InputPessoal';
+import InputContato from '../../../components/Input/Content/InputContato';
+import InputProfissao from '../../../components/Input/Content/InputProfissao';
+import InputLogin from '../../../components/Input/Content/InputLogin';
 import PropTypes from 'prop-types';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
 import { criarFuncionario } from '../../../store/modules/funcionarios/reducer';
@@ -25,15 +25,15 @@ CadastroFuncionario.propTypes = {
 
 export default function CadastroFuncionario({ setStartCadastro }) {
   const initialData = {
-    // StepPessoal
+    // InputPessoal
     nome: '',
     cpf: '',
     nascimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-    // StepContato
+    // InputContato
     endereco: '',
     telefone: '',
     imagem: '', // Opcional
-    // StepProfissao
+    // InputProfissao
     crm: '',
     estadoCrm: estadosBrasil.find((estado) => estado.label === 'PE').value, // Pernambuco (PE)
     sexo: sexoOptions[0].value,
@@ -98,14 +98,14 @@ export default function CadastroFuncionario({ setStartCadastro }) {
   function stepRender() {
     switch (activeStep) {
       case 1:
-        return <StepContato data={data} setData={setData} errors={errorsContato} />;
+        return <InputContato data={data} setData={setData} errors={errorsContato} />;
       case 2:
-        return <StepProfissao data={data} setData={setData} errors={errorsProfissao} />;
+        return <InputProfissao data={data} setData={setData} errors={errorsProfissao} />;
       case 3:
-        return <StepLogin data={data} setData={setData} errors={errorsLogin} />;
+        return <InputLogin data={data} setData={setData} errors={errorsLogin} />;
       case 0:
       default:
-        return <StepPessoal data={data} setData={setData} errors={errorsPessoal} />;
+        return <InputPessoal data={data} setData={setData} errors={errorsPessoal} />;
     }
   }
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
-import StepLogin from '../../../components/Step/StepContent/StepLogin';
+import InputLogin from '../../../components/Input/Content/InputLogin';
 import colors from '../../../config/colors';
 import { alterarSenha } from '../../../store/modules/usuarios/reducer';
 import { RoutesList } from '../../../routes/enums';
@@ -29,7 +29,7 @@ export default function AlterSenha() {
       </Typography>
       <VerticalContainer style={{ paddingBottom: '2rem' }}>
         <HorizontalContainer>
-          <StepLogin data={data} setData={setData} isEmailDisabled />
+          <InputLogin data={data} setData={setData} isEmailDisabled />
           <Button
             variant="contained"
             color="success"

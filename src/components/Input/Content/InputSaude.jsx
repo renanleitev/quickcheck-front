@@ -1,15 +1,15 @@
-import Input from '../../Input/Input';
+import Input from '../Input';
 import { comorbidadesOptions, sexoOptions } from '../../../config/enums';
 import { numeroCartaoSUSRegex, numeroCartaoSUSFormat } from '../../../config/validationRegex';
 import PropTypes from 'prop-types';
 
-StepSaude.propTypes = {
+InputSaude.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   errors: PropTypes.object
 };
 
-export default function StepSaude({ data, setData, errors }) {
+export default function InputSaude({ data, setData, errors }) {
   return (
     <>
       <Input
