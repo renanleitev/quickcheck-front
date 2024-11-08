@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
-  Button,
   Collapse,
   IconButton,
   Table,
@@ -25,27 +24,15 @@ import {
   updateHorarioStatus,
   initialHorario
 } from '../../../../store/modules/horarios/reducer';
-import ActionModal from '../../../../components/Modal/ActionModal';
 import { AgendamentoStatus } from '../../../../config/enums';
+import UpdateAction from '../Actions/UpdateAction';
 
 export default function FuncionarioTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
   const dispatch = useDispatch();
 
-  const [horario, setHorario] = useState({ ...initialHorario });
-
-  // Abrir o modal oculto (Prontuário)
-  const [openProntuarioModal, setOpenProntuarioModal] = useState(false);
-
-  // Abrir o modal oculto (Concluir Horário)
-  const [openConcluirHorarioModal, setOpenConcluirHorarioModal] = useState(false);
-
-  // Abrir o modal oculto (Confirmar Horário)
-  const [openConfirmarHorarioModal, setOpenConfirmarHorarioModal] = useState(false);
-
-  // Abrir o modal oculto (Cancelar Horário)
-  const [openCancelarHorarioModal, setOpenCancelarHorarioModal] = useState(false);
+  const [horarioData, setHorarioData] = useState({ ...initialHorario });
 
   // Expandir a linha oculta quando o id da linha for igual ao horário selecionado
   const [rowId, setRowId] = useState('');
@@ -106,10 +93,10 @@ export default function FuncionarioTable() {
                     size="small"
                     onClick={() => {
                       if (rowId === horario?.id) {
-                        setHorario({ ...initialHorario });
+                        setHorarioData({ ...initialHorario });
                         setRowId('');
                       } else {
-                        setHorario({ ...horario });
+                        setHorarioData({ ...horario });
                         setRowId(horario?.id);
                       }
                     }}
@@ -136,41 +123,60 @@ export default function FuncionarioTable() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                     <Box p="2rem">
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        color="info"
-                        onClick={() => setOpenProntuarioModal(true)}
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Prontuário"
+                        onUpdate={updateHorarioProntuario({ horario: horarioData })}
+                        buttonLabel="Prontuário"
+                        confirmLabel="Editar"
+                        readOnly={false}
                         disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                      >
-                        Prontuário
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        color="success"
-                        onClick={() => setOpenConfirmarHorarioModal(true)}
+                        keyName="prontuario"
+                      />
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Confirmar a consulta?"
+                        onUpdate={updateHorarioStatus({
+                          horario: { ...horarioData, status: AgendamentoStatus.AGENDADO }
+                        })}
+                        confirmColor="secondary"
+                        buttonLabel="Confirmar"
+                        confirmLabel="Confirmar"
+                        readOnlyText="Você deseja confirmar a consulta?"
                         disabled={horario?.status !== AgendamentoStatus.PENDENTE}
-                      >
-                        Confirmar
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        color="success"
-                        onClick={() => setOpenConcluirHorarioModal(true)}
+                        keyName="status"
+                      />
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Concluir a consulta?"
+                        onUpdate={updateHorarioStatus({
+                          horario: { ...horarioData, status: AgendamentoStatus.CONCLUÍDO }
+                        })}
+                        confirmColor="success"
+                        buttonLabel="Concluir"
+                        confirmLabel="Concluir"
+                        readOnlyText="Você deseja concluir a consulta? Uma vez concluída, não será possível editar o prontuário."
                         disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                      >
-                        Concluir
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => setOpenCancelarHorarioModal(true)}
+                        keyName="status"
+                      />
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Cancelar a consulta?"
+                        onUpdate={updateHorarioStatus({
+                          horario: { ...horarioData, status: AgendamentoStatus.CANCELADO }
+                        })}
+                        confirmColor="error"
+                        buttonLabel="Cancelar"
+                        confirmLabel="Cancelar"
+                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível editar o prontuário."
+                        confirmActionColor="error"
                         disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                      >
-                        Cancelar
-                      </Button>
+                        keyName="status"
+                      />
                     </Box>
                   </Collapse>
                 </TableCell>
@@ -202,75 +208,6 @@ export default function FuncionarioTable() {
           </TableRow>
         </TableFooter>
       </Table>
-      {/* Prontuário Modal */}
-      <ActionModal
-        open={openProntuarioModal}
-        onClose={() => setOpenProntuarioModal(false)}
-        onConfirm={() => {
-          setOpenProntuarioModal(false);
-          dispatch(updateHorarioProntuario({ horario }));
-        }}
-        label="Prontuário"
-        data={horario}
-        setData={setHorario}
-        keyName="prontuario"
-        confirmLabel="Editar"
-      />
-      {/* Confirmar Horário Modal */}
-      <ActionModal
-        open={openConfirmarHorarioModal}
-        onClose={() => setOpenConfirmarHorarioModal(false)}
-        onConfirm={() => {
-          setOpenConfirmarHorarioModal(false);
-          dispatch(
-            updateHorarioStatus({ horario: { ...horario, status: AgendamentoStatus.AGENDADO } })
-          );
-        }}
-        label="Confirmar a consulta?"
-        data={horario}
-        setData={setHorario}
-        keyName="status"
-        confirmLabel="Confirmar"
-        readOnly
-        readOnlyText="Você deseja confirmar a consulta?"
-      />
-      {/* Concluir Horário Modal */}
-      <ActionModal
-        open={openConcluirHorarioModal}
-        onClose={() => setOpenConcluirHorarioModal(false)}
-        onConfirm={() => {
-          setOpenConcluirHorarioModal(false);
-          dispatch(
-            updateHorarioStatus({ horario: { ...horario, status: AgendamentoStatus.CONCLUÍDO } })
-          );
-        }}
-        label="Concluir a consulta?"
-        data={horario}
-        setData={setHorario}
-        keyName="status"
-        confirmLabel="Concluir"
-        readOnly
-        readOnlyText="Você deseja concluir a consulta? Uma vez concluída, não será possível editar o prontuário."
-      />
-      {/* Cencelar Horário Modal */}
-      <ActionModal
-        open={openCancelarHorarioModal}
-        onClose={() => setOpenCancelarHorarioModal(false)}
-        onConfirm={() => {
-          setOpenCancelarHorarioModal(false);
-          dispatch(
-            updateHorarioStatus({ horario: { ...horario, status: AgendamentoStatus.CANCELADO } })
-          );
-        }}
-        label="Cancelar a consulta?"
-        data={horario}
-        setData={setHorario}
-        keyName="status"
-        confirmLabel="Cancelar"
-        readOnly
-        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível editar o prontuário."
-        confirmColor="error"
-      />
     </TableContainer>
   );
 }

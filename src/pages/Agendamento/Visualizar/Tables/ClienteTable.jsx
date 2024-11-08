@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
-  Button,
   Collapse,
   IconButton,
   Table,
@@ -24,7 +23,7 @@ import {
   initialHorario,
   updateHorarioStatus
 } from '../../../../store/modules/horarios/reducer';
-import ActionModal from '../../../../components/Modal/ActionModal';
+import UpdateAction from '../Actions/UpdateAction';
 import { AgendamentoStatus } from '../../../../config/enums';
 
 export default function ClienteTable() {
@@ -32,13 +31,7 @@ export default function ClienteTable() {
 
   const dispatch = useDispatch();
 
-  const [horario, setHorario] = useState({ ...initialHorario });
-
-  // Abrir o modal oculto (Remarcar Horário)
-  const [openRemarcarHorarioModal, setOpenRemarcarHorarioModal] = useState(false);
-
-  // Abrir o modal oculto (Cancelar Horário)
-  const [openCancelarHorarioModal, setOpenCancelarHorarioModal] = useState(false);
+  const [horarioData, setHorarioData] = useState({ ...initialHorario });
 
   // Expandir a linha oculta quando o id da linha for igual ao horário selecionado
   const [rowId, setRowId] = useState('');
@@ -99,10 +92,10 @@ export default function ClienteTable() {
                     size="small"
                     onClick={() => {
                       if (rowId === horario?.id) {
-                        setHorario({ ...initialHorario });
+                        setHorarioData({ ...initialHorario });
                         setRowId('');
                       } else {
-                        setHorario({ ...horario });
+                        setHorarioData({ ...horario });
                         setRowId(horario?.id);
                       }
                     }}
@@ -128,23 +121,35 @@ export default function ClienteTable() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                     <Box p="2rem">
-                      <Button
-                        variant="contained"
-                        sx={{ marginRight: '0.5rem' }}
-                        onClick={() => setOpenRemarcarHorarioModal(true)}
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Remarcar a consulta?"
+                        onUpdate={updateHorarioStatus({
+                          horario: { ...horarioData, status: AgendamentoStatus.PENDENTE }
+                        })}
+                        confirmColor="warning"
+                        buttonLabel="Remarcar"
+                        confirmLabel="Remarcar"
+                        readOnlyText="Você deseja remarcar a consulta? O médico precisará confirmar o novo horário."
                         disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                      >
-                        Remarcar
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        sx={{ marginRight: '0.5rem' }}
-                        onClick={() => setOpenCancelarHorarioModal(true)}
+                        keyName="status"
+                      />
+                      <UpdateAction
+                        horario={horarioData}
+                        setHorario={setHorarioData}
+                        title="Cancelar a consulta?"
+                        onUpdate={updateHorarioStatus({
+                          horario: { ...horarioData, status: AgendamentoStatus.CANCELADO }
+                        })}
+                        confirmColor="error"
+                        buttonLabel="Cancelar"
+                        confirmLabel="Cancelar"
+                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, será necessário marcar novamente a consulta."
+                        confirmActionColor="error"
                         disabled={horario?.status !== AgendamentoStatus.AGENDADO}
-                      >
-                        Cancelar
-                      </Button>
+                        keyName="status"
+                      />
                     </Box>
                   </Collapse>
                 </TableCell>
@@ -176,43 +181,6 @@ export default function ClienteTable() {
           </TableRow>
         </TableFooter>
       </Table>
-      {/* Remarcar Horário Modal */}
-      <ActionModal
-        open={openRemarcarHorarioModal}
-        onClose={() => setOpenRemarcarHorarioModal(false)}
-        onConfirm={() => {
-          setOpenRemarcarHorarioModal(false);
-          dispatch(
-            updateHorarioStatus({ horario: { ...horario, status: AgendamentoStatus.PENDENTE } })
-          );
-        }}
-        label="Remarcar a consulta?"
-        data={horario}
-        setData={setHorario}
-        keyName="status"
-        confirmLabel="Remarcar"
-        readOnly
-        readOnlyText="Você deseja remarcar a consulta? O médico precisará confirmar o novo horário."
-      />
-      {/* Cencelar Horário Modal */}
-      <ActionModal
-        open={openCancelarHorarioModal}
-        onClose={() => setOpenCancelarHorarioModal(false)}
-        onConfirm={() => {
-          setOpenCancelarHorarioModal(false);
-          dispatch(
-            updateHorarioStatus({ horario: { ...horario, status: AgendamentoStatus.DISPONÍVEL } })
-          );
-        }}
-        label="Cancelar a consulta?"
-        data={horario}
-        setData={setHorario}
-        keyName="status"
-        confirmLabel="Cancelar"
-        readOnly
-        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, será necessário marcar novamente a consulta."
-        confirmColor="error"
-      />
     </TableContainer>
   );
 }

@@ -11,7 +11,7 @@ ActionModal.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   keyName: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   confirmLabel: PropTypes.string,
   readOnlyText: PropTypes.string,
   readOnly: PropTypes.bool,
@@ -37,7 +37,7 @@ export default function ActionModal({
   onConfirm,
   confirmLabel = 'Confirmar',
   keyName,
-  label,
+  title,
   readOnly = false,
   readOnlyText,
   confirmColor = 'success'
@@ -58,7 +58,7 @@ export default function ActionModal({
           textAlign="center"
           marginBottom="1rem"
         >
-          {label}
+          {title}
         </Typography>
         <VerticalContainer style={{ rowGap: '2rem' }}>
           {readOnly ? (

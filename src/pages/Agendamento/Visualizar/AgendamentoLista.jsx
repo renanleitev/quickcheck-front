@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
-import ClienteTable from './Tabelas/ClienteTable';
-import FuncionarioTable from './Tabelas/FuncionarioTable';
+import ClienteTable from './Tables/ClienteTable';
+import EstabelecimentoTable from './Tables/EstabelecimentoTable';
+import FuncionarioTable from './Tables/FuncionarioTable';
 import { UserRoles } from '../../../config/enums';
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import BackButton from '../../../components/Button/BackButton';
@@ -15,6 +16,7 @@ export default function AgendamentoLista() {
       case UserRoles.FUNCIONARIO:
         return <FuncionarioTable />;
       case UserRoles.ESTABELECIMENTO:
+        return <EstabelecimentoTable />;
       case UserRoles.CLIENTE:
       default:
         return <ClienteTable />;
