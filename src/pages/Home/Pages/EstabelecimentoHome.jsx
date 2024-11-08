@@ -30,7 +30,7 @@ export default function EstabelecimentoHome() {
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<EditIcon />}
-        // onClick={() => navigate('/apagar-perfil')}
+        onClick={() => navigate(RoutesList.AgendamentosGerenciar)}
       >
         Gerenciar Horários
       </Button>

@@ -8,10 +8,10 @@ import { VerticalContainer } from '../../../config/GlobalStyle';
 import BackButton from '../../../components/Button/BackButton';
 import colors from '../../../config/colors';
 
-export default function AgendamentoLista() {
+export default function AgendamentoVisualizar() {
   const entidade = useSelector((state) => state?.usuarios?.entidade) || [];
 
-  function renderAgendamentoLista() {
+  function renderAgendamentoVisualizar() {
     switch (entidade?.usuario?.role) {
       case UserRoles.FUNCIONARIO:
         return <FuncionarioTable />;
@@ -28,7 +28,7 @@ export default function AgendamentoLista() {
       <Typography variant="h4" color={colors.primaryDarkColor}>
         Minhas consultas
       </Typography>
-      {renderAgendamentoLista()}
+      {renderAgendamentoVisualizar()}
       <BackButton />
     </VerticalContainer>
   );

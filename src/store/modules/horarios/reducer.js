@@ -85,6 +85,16 @@ export const updateHorarioStatus = createAsyncThunk(
   }
 );
 
+export const createHorario = createAsyncThunk('horarios/createHorario', async ({ horario }) => {
+  try {
+    await axiosInstance.post(baseHorariosURL, horario);
+    return horario;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível criar o horário');
+  }
+});
+
 export const horariosSlice = createSlice({
   name: 'horarios',
   initialState,
@@ -112,6 +122,20 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getHorariosByEstabelecimentoIdAndStatus.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // createHorario
+      .addCase(createHorario.fulfilled, (state, action) => {
+        state.horarios = action.payload;
+        state.fetchStatus = fetchStatus.SUCCESS;
+        toast.success('Horário cadastrado com sucesso!');
+      })
+      .addCase(createHorario.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(createHorario.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

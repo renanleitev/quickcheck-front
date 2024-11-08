@@ -20,7 +20,7 @@ export const initialState = {
   funcionarios: []
 };
 
-export const getFuncionario = createAsyncThunk('Funcionarios/getFuncionario', async (id) => {
+export const getFuncionario = createAsyncThunk('funcionarios/getFuncionario', async (id) => {
   try {
     const url = `${baseFuncionariosURL}/${id}`;
     const response = await axiosInstance.get(url);
@@ -31,8 +31,22 @@ export const getFuncionario = createAsyncThunk('Funcionarios/getFuncionario', as
   }
 });
 
+export const getFuncionariosOptions = createAsyncThunk(
+  'funcionarios/getFuncionariosOptions',
+  async ({ especialidade, estabelecimentoNome, estabelecimentoTipo }) => {
+    try {
+      const url = `${baseFuncionariosURL}/search?especialidade=${especialidade}&estabelecimentoNome=${estabelecimentoNome}&estabelecimentoTipo=${estabelecimentoTipo}`;
+      const response = await axiosInstance.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível obter os dados');
+    }
+  }
+);
+
 export const criarFuncionario = createAsyncThunk(
-  'Funcionarios/criarFuncionario',
+  'funcionarios/criarFuncionario',
   async (funcionario) => {
     try {
       // Primeiro cadastra o usuário e obtém o id como retorno
@@ -80,6 +94,18 @@ export const funcionariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getFuncionario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
+      // getFuncionariosOptions
+      .addCase(getFuncionariosOptions.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.funcionarios = action.payload;
+      })
+      .addCase(getFuncionariosOptions.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(getFuncionariosOptions.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })

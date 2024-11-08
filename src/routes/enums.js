@@ -8,6 +8,10 @@ export const RoutesList = {
   EditarPerfil: '/perfil/editar-perfil',
   AlterarSenha: '/perfil/alterar-senha',
   AgendamentosLista: '/agendamentos/lista',
+  AgendamentosGerenciar: '/agendamentos/gerenciar',
+  AgendamentosCriar: '/agendamentos/gerenciar/criar',
+  AgendamentosEditar: '/agendamentos/gerenciar/editar',
+  AgendamentosApagar: '/agendamentos/gerenciar/apagar',
   Ajuda: '/ajuda',
   Sobre: '/sobre',
   NotFound: '*'

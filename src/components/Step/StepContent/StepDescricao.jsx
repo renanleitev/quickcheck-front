@@ -10,10 +10,11 @@ import colors from '../../../config/colors';
 StepDescricao.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
-  errors: PropTypes.object
+  errors: PropTypes.object,
+  hasHorarioFuncionamento: PropTypes.bool
 };
 
-export default function StepDescricao({ data, setData, errors }) {
+export default function StepDescricao({ data, setData, errors, hasHorarioFuncionamento = true }) {
   // Abrir o modal oculto
   const [openHorarioModal, setOpenHorarioModal] = useState(false);
   const [openDescricaoModal, setOpenDescricaoModal] = useState(false);
@@ -28,28 +29,30 @@ export default function StepDescricao({ data, setData, errors }) {
 
   return (
     <>
-      <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
-        <Input
-          data={data}
-          setData={setData}
-          keyName="horarioFuncionamento"
-          placeholder="Horário de Funcionamento"
-          error={errors?.errorHorario}
-          errorText={errors?.errorHorarioText}
-        />
-        <IconButton sx={editButtonStyle} onClick={() => setOpenHorarioModal(true)}>
-          <EditIcon />
-        </IconButton>
-        <ActionModal
-          data={data}
-          setData={setData}
-          keyName="horarioFuncionamento"
-          label="Horário de Funcionamento"
-          open={openHorarioModal}
-          onConfirm={() => setOpenHorarioModal(false)}
-          onClose={() => setOpenHorarioModal(false)}
-        />
-      </HorizontalContainer>
+      {hasHorarioFuncionamento && (
+        <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="horarioFuncionamento"
+            placeholder="Horário de Funcionamento"
+            error={errors?.errorHorario}
+            errorText={errors?.errorHorarioText}
+          />
+          <IconButton sx={editButtonStyle} onClick={() => setOpenHorarioModal(true)}>
+            <EditIcon />
+          </IconButton>
+          <ActionModal
+            data={data}
+            setData={setData}
+            keyName="horarioFuncionamento"
+            title="Horário de Funcionamento"
+            open={openHorarioModal}
+            onConfirm={() => setOpenHorarioModal(false)}
+            onClose={() => setOpenHorarioModal(false)}
+          />
+        </HorizontalContainer>
+      )}
       <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
         <Input
           data={data}
@@ -66,7 +69,7 @@ export default function StepDescricao({ data, setData, errors }) {
           data={data}
           setData={setData}
           keyName="descricao"
-          label="Informações Adicionais"
+          title="Informações Adicionais"
           open={openDescricaoModal}
           onConfirm={() => setOpenDescricaoModal(false)}
           onClose={() => setOpenDescricaoModal(false)}
