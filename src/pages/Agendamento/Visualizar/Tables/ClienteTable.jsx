@@ -145,9 +145,12 @@ export default function ClienteTable() {
                         confirmColor="error"
                         buttonLabel="Cancelar"
                         confirmLabel="Cancelar"
-                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, será necessário marcar novamente a consulta."
+                        readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível agendar ou concluir a consulta."
                         confirmActionColor="error"
-                        disabled={horario?.status !== AgendamentoStatus.AGENDADO}
+                        disabled={
+                          horario?.status === AgendamentoStatus.CANCELADO ||
+                          horario?.status === AgendamentoStatus.CONCLUÍDO
+                        }
                         keyName="status"
                       />
                     </Box>
