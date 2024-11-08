@@ -27,6 +27,7 @@ export default function EditarPerfil() {
   // Dados alterados pelo formulário
   const [data, setData] = useState({
     ...entidade,
+    role: entidade?.usuario?.role,
     crm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[0] : '',
     estadoCrm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[1] : '',
     nome: entidade?.usuario?.nome ?? '',
