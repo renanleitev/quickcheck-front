@@ -1,4 +1,4 @@
-import UpdateAction, { UpdateActionCommonType } from './UpdateAction';
+import UpdateModal, { UpdateActionCommonType } from '../../../../components/Modal/UpdateModal';
 import { AgendamentoStatus } from '../../../../config/enums';
 import { updateHorarioStatus } from '../../../../store/modules/horarios/reducer';
 
@@ -6,7 +6,7 @@ RemarcarAction.propTypes = UpdateActionCommonType;
 
 export default function RemarcarAction({ horario, setHorario, status }) {
   return (
-    <UpdateAction
+    <UpdateModal
       horario={horario}
       setHorario={setHorario}
       title="Remarcar a consulta?"

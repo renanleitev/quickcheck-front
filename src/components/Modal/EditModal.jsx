@@ -14,7 +14,7 @@ const style = {
 };
 
 EditModal.propTypes = {
-  open: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.object.isRequired
 };

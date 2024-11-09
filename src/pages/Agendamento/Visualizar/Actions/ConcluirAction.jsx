@@ -1,4 +1,4 @@
-import UpdateAction, { UpdateActionCommonType } from './UpdateAction';
+import UpdateModal, { UpdateActionCommonType } from '../../../../components/Modal/UpdateModal';
 import { AgendamentoStatus } from '../../../../config/enums';
 import { updateHorarioStatus } from '../../../../store/modules/horarios/reducer';
 
@@ -6,7 +6,7 @@ ConcluirAction.propTypes = UpdateActionCommonType;
 
 export default function ConcluirAction({ horario, setHorario, status }) {
   return (
-    <UpdateAction
+    <UpdateModal
       horario={horario}
       setHorario={setHorario}
       title="Concluir a consulta?"

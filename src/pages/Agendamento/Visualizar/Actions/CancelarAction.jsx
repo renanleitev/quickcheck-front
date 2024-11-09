@@ -1,4 +1,4 @@
-import UpdateAction, { UpdateActionCommonType } from './UpdateAction';
+import UpdateModal, { UpdateActionCommonType } from '../../../../components/Modal/UpdateModal';
 import { AgendamentoStatus } from '../../../../config/enums';
 import { updateHorarioStatus } from '../../../../store/modules/horarios/reducer';
 
@@ -6,7 +6,7 @@ CancelarAction.propTypes = UpdateActionCommonType;
 
 export default function CancelarAction({ horario, setHorario, status }) {
   return (
-    <UpdateAction
+    <UpdateModal
       horario={horario}
       setHorario={setHorario}
       title="Cancelar a consulta?"
@@ -18,10 +18,7 @@ export default function CancelarAction({ horario, setHorario, status }) {
       confirmLabel="Cancelar"
       readOnlyText="Você deseja cancelar a consulta? Uma vez cancelada, não será possível agendar ou concluir a consulta."
       confirmActionColor="error"
-      disabled={
-        status === AgendamentoStatus.CANCELADO ||
-        status === AgendamentoStatus.CONCLUÍDO
-      }
+      disabled={status === AgendamentoStatus.CANCELADO || status === AgendamentoStatus.CONCLUÍDO}
       keyName="status"
     />
   );

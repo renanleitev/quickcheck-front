@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
-import ActionModal from '../../../../components/Modal/ActionModal';
+import ActionModal from './ActionModal';
 import PropTypes from 'prop-types';
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -11,7 +11,7 @@ export const UpdateActionCommonType = {
   status: PropTypes.string.isRequired
 };
 
-UpdateAction.propTypes = {
+UpdateModal.propTypes = {
   horario: PropTypes.object.isRequired,
   setHorario: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
@@ -26,7 +26,7 @@ UpdateAction.propTypes = {
   confirmActionColor: PropTypes.string
 };
 
-export default function UpdateAction({
+export default function UpdateModal({
   horario,
   setHorario,
   disabled,

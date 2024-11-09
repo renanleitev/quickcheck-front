@@ -25,8 +25,6 @@ import CancelarAction from '../Actions/CancelarAction';
 export default function ClienteTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
-  console.log(horarios);
-
   const dispatch = useDispatch();
 
   const [horarioData, setHorarioData] = useState({ ...initialHorario });
