@@ -11,13 +11,21 @@ InputDescricao.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   errors: PropTypes.object,
-  hasHorarioFuncionamento: PropTypes.bool
+  hasHorarioFuncionamento: PropTypes.bool,
+  hasProntuario: PropTypes.bool
 };
 
-export default function InputDescricao({ data, setData, errors, hasHorarioFuncionamento = true }) {
+export default function InputDescricao({
+  data,
+  setData,
+  errors,
+  hasHorarioFuncionamento = true,
+  hasProntuario = false
+}) {
   // Abrir o modal oculto
   const [openHorarioModal, setOpenHorarioModal] = useState(false);
   const [openDescricaoModal, setOpenDescricaoModal] = useState(false);
+  const [openProntuarioModal, setOpenProntuarioModal] = useState(false);
 
   const editButtonStyle = {
     backgroundColor: colors.infoColor,
@@ -50,6 +58,30 @@ export default function InputDescricao({ data, setData, errors, hasHorarioFuncio
             open={openHorarioModal}
             onConfirm={() => setOpenHorarioModal(false)}
             onClose={() => setOpenHorarioModal(false)}
+          />
+        </HorizontalContainer>
+      )}
+      {hasProntuario && (
+        <HorizontalContainer style={{ flexWrap: 'nowrap', width: '100%' }}>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="prontuario"
+            placeholder="Prontuário"
+            error={errors?.errorHorario}
+            errorText={errors?.errorHorarioText}
+          />
+          <IconButton sx={editButtonStyle} onClick={() => setOpenProntuarioModal(true)}>
+            <EditIcon />
+          </IconButton>
+          <ActionModal
+            data={data}
+            setData={setData}
+            keyName="prontuario"
+            title="Prontuário"
+            open={openProntuarioModal}
+            onConfirm={() => setOpenProntuarioModal(false)}
+            onClose={() => setOpenProntuarioModal(false)}
           />
         </HorizontalContainer>
       )}

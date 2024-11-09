@@ -24,7 +24,7 @@ export default function EstabelecimentoHome() {
         startIcon={<SearchIcon />}
         onClick={() => navigate(RoutesList.AgendamentosLista)}
       >
-        Visualizar Horários
+        Visualizar Consultas
       </Button>
       <Button
         variant="contained"
@@ -32,7 +32,7 @@ export default function EstabelecimentoHome() {
         startIcon={<EditIcon />}
         onClick={() => navigate(RoutesList.AgendamentosGerenciar)}
       >
-        Gerenciar Horários
+        Gerenciar Consultas
       </Button>
       <Button
         variant="contained"

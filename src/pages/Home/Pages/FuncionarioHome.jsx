@@ -23,7 +23,7 @@ export default function FuncionarioHome() {
         startIcon={<SearchIcon />}
         onClick={() => navigate(RoutesList.AgendamentosLista)}
       >
-        Visualizar Horários
+        Visualizar Consultas
       </Button>
       <Button
         variant="contained"

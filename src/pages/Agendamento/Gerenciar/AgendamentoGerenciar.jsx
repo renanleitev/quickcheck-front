@@ -25,7 +25,7 @@ export default function AgendamentoGerenciar() {
         startIcon={<EventAvailableIcon />}
         onClick={() => navigate(RoutesList.AgendamentosCriar)}
       >
-        Criar Horário
+        Criar Consulta
       </Button>
       <Button
         variant="contained"
@@ -33,15 +33,16 @@ export default function AgendamentoGerenciar() {
         startIcon={<EventNoteIcon />}
         onClick={() => navigate(RoutesList.AgendamentosEditar)}
       >
-        Editar Horário
+        Editar Consulta
       </Button>
       <Button
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<EventBusyIcon />}
         onClick={() => navigate(RoutesList.AgendamentosApagar)}
+        disabled
       >
-        Apagar Horário
+        Apagar Consulta
       </Button>
       <BackButton />
     </VerticalContainer>

@@ -11,6 +11,7 @@ import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
 import AgendamentoVisualizar from '../pages/Agendamento/Visualizar/AgendamentoVisualizar';
 import AgendamentoGerenciar from '../pages/Agendamento/Gerenciar/AgendamentoGerenciar';
 import AgendamentoCriar from '../pages/Agendamento/Gerenciar/Criar/AgendamentoCriar';
+import AgendamentoEditar from '../pages/Agendamento/Gerenciar/Editar/AgendamentoEditar';
 import history from '../services/history';
 import { RoutesList } from './enums';
 
@@ -46,6 +47,7 @@ export default function RoutesController() {
       <Route path={RoutesList.AgendamentosLista} element={handleAuth(<AgendamentoVisualizar />)} />
       <Route path={RoutesList.AgendamentosGerenciar} element={handleAuth(<AgendamentoGerenciar />)} />
       <Route path={RoutesList.AgendamentosCriar} element={handleAuth(<AgendamentoCriar />)} />
+      <Route path={RoutesList.AgendamentosEditar} element={handleAuth(<AgendamentoEditar />)} />
       <Route path={RoutesList.NotFound} element={<Page404 />} />
     </Routes>
   );

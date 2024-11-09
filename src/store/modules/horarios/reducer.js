@@ -127,8 +127,7 @@ export const horariosSlice = createSlice({
         toast.error(state.error);
       })
       // createHorario
-      .addCase(createHorario.fulfilled, (state, action) => {
-        state.horarios = action.payload;
+      .addCase(createHorario.fulfilled, (state) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         toast.success('Horário cadastrado com sucesso!');
       })
