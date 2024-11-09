@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@mui/material';
-import AgendamentoCriar from '../../Gerenciar/Criar/AgendamentoCriar';
+import AgendamentoCadastrar from '../../Gerenciar/Cadastrar/AgendamentoCadastrar';
 import EditModal from '../../../../components/Modal/EditModal';
 
 export default function CadastrarAction() {
@@ -17,7 +17,7 @@ export default function CadastrarAction() {
         Cadastrar
       </Button>
       <EditModal open={open} onClose={() => setOpen(false)}>
-        <AgendamentoCriar setOpen={setOpen} />
+        <AgendamentoCadastrar setOpen={setOpen} />
       </EditModal>
     </>
   );

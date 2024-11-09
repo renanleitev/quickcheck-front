@@ -21,6 +21,7 @@ AgendamentoEditar.propTypes = {
 };
 
 export default function AgendamentoEditar({ horario, setOpen }) {
+  // A entidade aqui é o estabelecimento, já que somente ele pode cadastrar ou editar horários
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
   const funcionarios = useSelector((state) => state?.funcionarios?.funcionarios) || [];
 
@@ -50,7 +51,7 @@ export default function AgendamentoEditar({ horario, setOpen }) {
     cliente: horario?.cliente,
     clienteNome: horario?.cliente?.usuario?.nome,
     funcionario: horario?.funcionario,
-    funcionarioNome: horario?.funcionario?.usuario?.nome,
+    funcionarioNome: horario?.funcionario?.usuario?.nome
   };
 
   const [data, setData] = useState(initialData);
@@ -69,7 +70,7 @@ export default function AgendamentoEditar({ horario, setOpen }) {
     // Horário que será salvo no banco de dados
     const horaAtendimento = dayjs(data.horarioHoraAtendimento).format('HH:mm:ss');
     const horaAgendamento = dayjs(data.horarioHoraAgendamento).format('HH:mm:ss');
-    const funcionario = funcionariosOptions.find(f => f.value === data.funcionarioNome);
+    const funcionario = funcionariosOptions.find((f) => f.value === data.funcionarioNome);
     const dataHorario = {
       ...data,
       funcionario: funcionario.data,

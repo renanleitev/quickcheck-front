@@ -16,11 +16,12 @@ import { createHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
 import PropTypes from 'prop-types';
 
-AgendamentoCriar.propTypes = {
+AgendamentoCadastrar.propTypes = {
   setOpen: PropTypes.func.isRequired
 };
 
-export default function AgendamentoCriar({ setOpen }) {
+export default function AgendamentoCadastrar({ setOpen }) {
+  // A entidade aqui é o estabelecimento, já que somente ele pode cadastrar ou editar horários
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
   const funcionarios = useSelector((state) => state?.funcionarios?.funcionarios) || [];
 
@@ -28,7 +29,8 @@ export default function AgendamentoCriar({ setOpen }) {
 
   const funcionariosOptions = funcionarios.map((funcionario) => {
     return {
-      value: funcionario ?? undefined,
+      data: funcionario ?? undefined,
+      value: funcionario?.usuario?.nome ?? '',
       label: funcionario?.usuario?.nome ?? ''
     };
   });
@@ -44,7 +46,8 @@ export default function AgendamentoCriar({ setOpen }) {
     estabelecimento: entidade,
     especialidade: especialidadesOptions[0].value,
     cliente: undefined,
-    funcionario: funcionariosOptions[0]?.value ?? undefined
+    funcionario: undefined,
+    funcionarioNome: ''
   };
 
   const [data, setData] = useState(initialData);
@@ -62,12 +65,15 @@ export default function AgendamentoCriar({ setOpen }) {
   const handleCreateHorario = () => {
     // Horário que será salvo no banco de dados
     const hora = dayjs(data.horarioHora).format('HH:mm:ss');
+    const funcionario = funcionariosOptions.find(f => f.value === data.funcionarioNome);
     const dataHorario = {
       ...data,
+      funcionario: funcionario.data,
       horarioAtendimento: `${data.horarioAtendimento}T${hora}`
     };
     dispatch(createHorario({ horario: dataHorario }));
     setData({ ...initialData });
+    setOpen(false);
   };
 
   const inputWidth = '90%';
@@ -93,7 +99,7 @@ export default function AgendamentoCriar({ setOpen }) {
           data={data}
           setData={setData}
           placeholder="Médico"
-          keyName="funcionario"
+          keyName="funcionarioNome"
           inputWidth={inputWidth}
           select
           selectList={funcionariosOptions}
@@ -112,7 +118,7 @@ export default function AgendamentoCriar({ setOpen }) {
           <TimePicker
             label="Horário"
             onChange={(value) => {
-              setData({ ...data, horarioHora: dayjs(value.$d) });
+              setData({ ...data, horarioHora: value.$d });
             }}
           />
         </LocalizationProvider>

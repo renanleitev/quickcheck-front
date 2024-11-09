@@ -67,12 +67,12 @@ export default function EstabelecimentoTable() {
           <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
             {/* Espaço reservado para o ícone de expandir a linha oculta */}
             <TableCell />
-            <TableCell sx={{ minWidth: columnWidth }}>Horário</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Atendimento</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Agendamento</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Paciente</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Comorbidades</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Hospital/Clínica</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Telefone</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Endereço</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
+            <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Status</TableCell>
           </TableRow>
         </TableHead>
@@ -107,12 +107,14 @@ export default function EstabelecimentoTable() {
                 <TableCell component="th" scope="row">
                   {formatDate(horario?.horarioAtendimento)}
                 </TableCell>
+                <TableCell component="th" scope="row">
+                  {formatDate(horario?.horarioAgendamento)}
+                </TableCell>
                 <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
                 {/* Comorbidades é um array */}
                 <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
-                <TableCell>{horario?.estabelecimento?.usuario?.nome}</TableCell>
-                <TableCell>{horario.estabelecimento?.usuario?.telefone}</TableCell>
-                <TableCell>{horario.estabelecimento?.usuario?.endereco}</TableCell>
+                <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
+                <TableCell>{horario?.funcionario?.especialidade}</TableCell>
                 <TableCell>
                   <ChipStatus status={horario?.status} />
                 </TableCell>
