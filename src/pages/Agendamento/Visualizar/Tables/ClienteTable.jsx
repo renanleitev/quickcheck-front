@@ -14,6 +14,7 @@ import {
   TableRow,
   Paper
 } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import formatDate from '../../../../hooks/formatDate';
@@ -62,7 +63,11 @@ export default function ClienteTable() {
         <TableHead>
           <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
             {/* Espaço reservado para o ícone de expandir a linha oculta */}
-            <TableCell />
+            <TableCell>
+              <IconButton>
+                <SettingsIcon />
+              </IconButton>
+            </TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Horário</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>

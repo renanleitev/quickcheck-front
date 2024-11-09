@@ -102,7 +102,7 @@ export const createHorario = createAsyncThunk('horarios/createHorario', async ({
     return horario;
   } catch (error) {
     console.log(error);
-    throw new Error('Não foi possível criar o horário');
+    throw new Error('Não foi possível cadastrar a consulta');
   }
 });
 

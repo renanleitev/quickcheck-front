@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
-import ClienteTable from './Tables/ClienteTable';
-import EstabelecimentoTable from './Tables/EstabelecimentoTable';
-import FuncionarioTable from './Tables/FuncionarioTable';
-import { UserRoles } from '../../../config/enums';
-import { VerticalContainer } from '../../../config/GlobalStyle';
-import BackButton from '../../../components/Button/BackButton';
-import colors from '../../../config/colors';
+import ClienteTable from './Visualizar/Tables/ClienteTable';
+import EstabelecimentoTable from './Visualizar/Tables/EstabelecimentoTable';
+import FuncionarioTable from './Visualizar/Tables/FuncionarioTable';
+import { UserRoles } from '../../config/enums';
+import { VerticalContainer } from '../../config/GlobalStyle';
+import BackButton from '../../components/Button/BackButton';
+import colors from '../../config/colors';
 
-export default function AgendamentoVisualizar() {
+export default function Agendamento() {
   const entidade = useSelector((state) => state?.usuarios?.entidade) || [];
 
   function renderAgendamentoVisualizar() {

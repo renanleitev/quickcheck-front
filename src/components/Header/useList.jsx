@@ -51,10 +51,9 @@ export default function useList() {
   const estabelecimentoList = useMemo(
     () => [
       { name: 'Página principal', onClick: () => navigate(RoutesList.Home) },
-      { name: 'Horários', onClick: () => navigate('/horarios') },
-      { name: 'Atendimentos', onClick: () => navigate('/agendamentos') },
-      { name: 'Pacientes', onClick: () => navigate('/pacientes') },
-      { name: 'Médicos', onClick: () => navigate('/medicos') },
+      { name: 'Consultas', onClick: () => navigate(RoutesList.AgendamentosLista) },
+      { name: 'Pacientes', onClick: () => navigate(RoutesList.Clientes) },
+      { name: 'Médicos', onClick: () => navigate(RoutesList.Funcionarios) },
       { name: 'Meu perfil', onClick: () => navigate(RoutesList.Perfil) },
       { name: 'Ajuda', onClick: () => navigate(RoutesList.Ajuda) },
       { name: 'Sobre', onClick: () => navigate(RoutesList.Sobre) },

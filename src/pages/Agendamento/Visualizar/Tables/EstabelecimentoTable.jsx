@@ -14,6 +14,7 @@ import {
   TableRow,
   Paper
 } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ChipStatus from '../../../../components/Chip/ChipStatus';
@@ -66,7 +67,11 @@ export default function EstabelecimentoTable() {
         <TableHead>
           <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
             {/* Espaço reservado para o ícone de expandir a linha oculta */}
-            <TableCell />
+            <TableCell>
+              <IconButton>
+                <SettingsIcon />
+              </IconButton>
+            </TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Atendimento</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Agendamento</TableCell>
             <TableCell sx={{ minWidth: columnWidth }}>Paciente</TableCell>
