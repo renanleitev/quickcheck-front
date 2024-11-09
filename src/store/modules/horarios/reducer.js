@@ -57,6 +57,17 @@ export const getHorariosByEstabelecimentoIdAndStatusAndEspecialidade = createAsy
   }
 );
 
+export const updateHorario = createAsyncThunk('horarios/updateHorario', async ({ horario }) => {
+  try {
+    const url = `${baseHorariosURL}/${horario.id}`;
+    await axiosInstance.put(url, horario);
+    return horario;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Não foi possível atualizar os dados');
+  }
+});
+
 export const updateHorarioProntuario = createAsyncThunk(
   'horarios/updateHorarioProntuario',
   async ({ horario }) => {
@@ -135,6 +146,24 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(createHorario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // updateHorario
+      .addCase(updateHorario.fulfilled, (state, action) => {
+        state.horarios.forEach((horario, index) => {
+          if (horario.id === action.payload.id) {
+            state.horarios[index] = { ...action.payload };
+          }
+        });
+        state.fetchStatus = fetchStatus.SUCCESS;
+        toast.success('Prontuário atualizado com sucesso!');
+      })
+      .addCase(updateHorario.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(updateHorario.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

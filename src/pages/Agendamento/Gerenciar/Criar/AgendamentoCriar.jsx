@@ -4,6 +4,7 @@ import { Typography, Button } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+
 import Input, { InputType } from '../../../../components/Input/Input';
 import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import { formatCalendarDate } from '../../../../hooks/formatDate';
@@ -111,7 +112,7 @@ export default function AgendamentoCriar({ setOpen }) {
           <TimePicker
             label="Horário"
             onChange={(value) => {
-              setData({ ...data, horarioHora: value.$d });
+              setData({ ...data, horarioHora: dayjs(value.$d) });
             }}
           />
         </LocalizationProvider>

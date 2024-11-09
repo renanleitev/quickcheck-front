@@ -11,7 +11,7 @@ import { formatCalendarDate } from '../../../../hooks/formatDate';
 import colors from '../../../../config/colors';
 import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
-import { createHorario } from '../../../../store/modules/horarios/reducer';
+import { updateHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
 import PropTypes from 'prop-types';
 
@@ -28,23 +28,29 @@ export default function AgendamentoEditar({ horario, setOpen }) {
 
   const funcionariosOptions = funcionarios.map((funcionario) => {
     return {
-      value: funcionario ?? undefined,
+      id: funcionario?.id,
+      data: funcionario,
+      value: funcionario?.usuario?.nome ?? '',
       label: funcionario?.usuario?.nome ?? ''
     };
   });
 
   // Horário que é alterado pelo usuário antes de inserir no banco de dados
   const initialData = {
+    id: horario?.id,
     horarioAtendimento: formatCalendarDate(horario?.horarioAtendimento), // Convertendo para o formato yyyy-MM-dd
-    horarioHora: '',
+    horarioHoraAtendimento: dayjs(horario?.horarioAtendimento),
     horarioAgendamento: formatCalendarDate(horario?.horarioAgendamento),
+    horarioHoraAgendamento: dayjs(horario?.horarioAgendamento),
     prontuario: horario?.prontuario ?? '',
     descricao: horario?.descricao ?? '',
     status: horario?.status,
     estabelecimento: entidade,
-    especialidade: especialidadesOptions[0].value,
-    cliente: horario?.cliente?.usuario?.nome ?? '',
-    funcionario: funcionariosOptions[0]?.value ?? undefined
+    especialidade: horario?.funcionario?.especialidade,
+    cliente: horario?.cliente,
+    clienteNome: horario?.cliente?.usuario?.nome,
+    funcionario: horario?.funcionario,
+    funcionarioNome: horario?.funcionario?.usuario?.nome,
   };
 
   const [data, setData] = useState(initialData);
@@ -61,12 +67,16 @@ export default function AgendamentoEditar({ horario, setOpen }) {
 
   const handleCreateHorario = () => {
     // Horário que será salvo no banco de dados
-    const hora = dayjs(data.horarioHora).format('HH:mm:ss');
+    const horaAtendimento = dayjs(data.horarioHoraAtendimento).format('HH:mm:ss');
+    const horaAgendamento = dayjs(data.horarioHoraAgendamento).format('HH:mm:ss');
+    const funcionario = funcionariosOptions.find(f => f.value === data.funcionarioNome);
     const dataHorario = {
       ...data,
-      horarioAtendimento: `${data.horarioAtendimento}T${hora}`
+      funcionario: funcionario.data,
+      horarioAtendimento: `${data.horarioAtendimento}T${horaAtendimento}`,
+      horarioAgendamento: `${data.horarioAgendamento}T${horaAgendamento}`
     };
-    dispatch(createHorario({ horario: dataHorario }));
+    dispatch(updateHorario({ horario: dataHorario }));
     setData({ ...initialData });
   };
 
@@ -81,7 +91,13 @@ export default function AgendamentoEditar({ horario, setOpen }) {
       </Typography>
       {/* Paciente */}
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
-        <Input data={data} setData={setData} placeholder="Paciente" keyName="cliente" />
+        <Input
+          data={data}
+          setData={setData}
+          placeholder="Paciente"
+          keyName="clienteNome"
+          disabled
+        />
       </HorizontalContainer>
       {/* Médico */}
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
@@ -98,7 +114,7 @@ export default function AgendamentoEditar({ horario, setOpen }) {
           data={data}
           setData={setData}
           placeholder="Médico"
-          keyName="funcionario"
+          keyName="funcionarioNome"
           inputWidth={inputWidth}
           select
           selectList={funcionariosOptions}
@@ -117,8 +133,9 @@ export default function AgendamentoEditar({ horario, setOpen }) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             label="Horário"
+            value={data.horarioHoraAtendimento}
             onChange={(value) => {
-              setData({ ...data, horarioHora: value.$d });
+              setData({ ...data, horarioHoraAtendimento: dayjs(value.$d) });
             }}
           />
         </LocalizationProvider>
@@ -135,8 +152,9 @@ export default function AgendamentoEditar({ horario, setOpen }) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             label="Horário"
+            value={data.horarioHoraAgendamento}
             onChange={(value) => {
-              setData({ ...data, horarioHora: value.$d });
+              setData({ ...data, horarioHoraAgendamento: dayjs(value.$d) });
             }}
           />
         </LocalizationProvider>
