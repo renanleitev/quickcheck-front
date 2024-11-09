@@ -23,6 +23,8 @@ import ProntuarioAction from '../Actions/ProntuarioAction';
 import ConfirmarAction from '../Actions/ConfirmarAction';
 import ConcluirAction from '../Actions/ConcluirAction';
 import CancelarAction from '../Actions/CancelarAction';
+import CadastrarAction from '../Actions/CadastrarAction';
+import EditarAction from '../Actions/EditarAction';
 
 export default function EstabelecimentoTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
@@ -120,6 +122,8 @@ export default function EstabelecimentoTable() {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                   <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                     <Box p="2rem">
+                      <CadastrarAction />
+                      <EditarAction horario={horarioData} />
                       <ProntuarioAction
                         horario={horarioData}
                         setHorario={setHorarioData}

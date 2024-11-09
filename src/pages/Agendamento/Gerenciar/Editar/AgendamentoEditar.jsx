@@ -1,28 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+
 import Input, { InputType } from '../../../../components/Input/Input';
 import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import { formatCalendarDate } from '../../../../hooks/formatDate';
 import colors from '../../../../config/colors';
-import { AgendamentoStatus } from '../../../../config/enums';
 import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
 import { createHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
-import { RoutesList } from '../../../../routes/enums';
+import PropTypes from 'prop-types';
 
-export default function AgendamentoEditar() {
+AgendamentoEditar.propTypes = {
+  horario: PropTypes.object.isRequired,
+  setOpen: PropTypes.func.isRequired
+};
+
+export default function AgendamentoEditar({ horario, setOpen }) {
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
   const funcionarios = useSelector((state) => state?.funcionarios?.funcionarios) || [];
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const funcionariosOptions = funcionarios.map((funcionario) => {
     return {
@@ -33,15 +35,15 @@ export default function AgendamentoEditar() {
 
   // Horário que é alterado pelo usuário antes de inserir no banco de dados
   const initialData = {
-    horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+    horarioAtendimento: formatCalendarDate(horario?.horarioAtendimento), // Convertendo para o formato yyyy-MM-dd
     horarioHora: '',
-    horarioAgendamento: '',
-    prontuario: '',
-    descricao: '',
-    status: AgendamentoStatus.DISPONÍVEL,
+    horarioAgendamento: formatCalendarDate(horario?.horarioAgendamento),
+    prontuario: horario?.prontuario ?? '',
+    descricao: horario?.descricao ?? '',
+    status: horario?.status,
     estabelecimento: entidade,
     especialidade: especialidadesOptions[0].value,
-    cliente: undefined,
+    cliente: horario?.cliente?.usuario?.nome ?? '',
     funcionario: funcionariosOptions[0]?.value ?? undefined
   };
 
@@ -79,12 +81,7 @@ export default function AgendamentoEditar() {
       </Typography>
       {/* Paciente */}
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
-        <Input
-          data={data}
-          setData={setData}
-          placeholder="Paciente"
-          keyName="cliente"
-        />
+        <Input data={data} setData={setData} placeholder="Paciente" keyName="cliente" />
       </HorizontalContainer>
       {/* Médico */}
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
@@ -153,7 +150,15 @@ export default function AgendamentoEditar() {
           hasProntuario
         />
       </VerticalContainer>
-      <VerticalContainer style={{ paddingBottom: '2rem' }}>
+      <HorizontalContainer style={{ paddingBottom: '2rem' }}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => setOpen(false)}
+          sx={{ width: buttonWidth, height: buttonHeight }}
+        >
+          Fechar
+        </Button>
         <Button
           variant="contained"
           color="success"
@@ -162,14 +167,7 @@ export default function AgendamentoEditar() {
         >
           Editar
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate(RoutesList.AgendamentosGerenciar)}
-          sx={{ width: buttonWidth, height: buttonHeight }}
-        >
-          Voltar
-        </Button>
-      </VerticalContainer>
+      </HorizontalContainer>
     </VerticalContainer>
   );
 }

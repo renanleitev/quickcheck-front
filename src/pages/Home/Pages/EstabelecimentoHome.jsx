@@ -1,5 +1,4 @@
 import { Button, Typography } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
@@ -21,16 +20,8 @@ export default function EstabelecimentoHome() {
       <Button
         variant="contained"
         sx={{ width: buttonWidth, height: buttonHeight }}
-        startIcon={<SearchIcon />}
-        onClick={() => navigate(RoutesList.AgendamentosLista)}
-      >
-        Visualizar Consultas
-      </Button>
-      <Button
-        variant="contained"
-        sx={{ width: buttonWidth, height: buttonHeight }}
         startIcon={<EditIcon />}
-        onClick={() => navigate(RoutesList.AgendamentosGerenciar)}
+        onClick={() => navigate(RoutesList.AgendamentosLista)}
       >
         Gerenciar Consultas
       </Button>

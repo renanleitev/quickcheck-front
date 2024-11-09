@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,15 +13,17 @@ import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
 import { createHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
-import { RoutesList } from '../../../../routes/enums';
+import PropTypes from 'prop-types';
 
-export default function AgendamentoCriar() {
+AgendamentoCriar.propTypes = {
+  setOpen: PropTypes.func.isRequired
+};
+
+export default function AgendamentoCriar({ setOpen }) {
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
   const funcionarios = useSelector((state) => state?.funcionarios?.funcionarios) || [];
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const funcionariosOptions = funcionarios.map((funcionario) => {
     return {
@@ -118,23 +119,24 @@ export default function AgendamentoCriar() {
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
         <InputDescricao data={data} setData={setData} hasHorarioFuncionamento={false} />
       </HorizontalContainer>
-      <VerticalContainer style={{ paddingBottom: '2rem' }}>
+      <HorizontalContainer style={{ paddingBottom: '2rem' }}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => setOpen(false)}
+          sx={{ width: buttonWidth, height: buttonHeight }}
+        >
+          Fechar
+        </Button>
         <Button
           variant="contained"
           color="success"
           sx={{ width: buttonWidth, height: buttonHeight }}
           onClick={handleCreateHorario}
         >
-          Criar
+          Cadastrar
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate(RoutesList.AgendamentosGerenciar)}
-          sx={{ width: buttonWidth, height: buttonHeight }}
-        >
-          Voltar
-        </Button>
-      </VerticalContainer>
+      </HorizontalContainer>
     </VerticalContainer>
   );
 }
