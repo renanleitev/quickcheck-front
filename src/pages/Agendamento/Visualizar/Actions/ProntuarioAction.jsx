@@ -10,7 +10,10 @@ export default function ProntuarioAction({ horario, setHorario, status }) {
       horario={horario}
       setHorario={setHorario}
       title="Prontuário"
-      onUpdate={updateHorarioProntuario({ horario })}
+      onUpdate={updateHorarioProntuario({
+        ...horario,
+        mensagemSucesso: 'Prontuário atualizado com sucesso!'
+      })}
       buttonLabel="Prontuário"
       confirmLabel="Editar"
       readOnly={false}

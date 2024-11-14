@@ -49,7 +49,7 @@ export default function StepHorarios({ data, setData, setFuncionario, horarios }
             <Box ml="auto">
               <Checkbox
                 checked={horario?.id === data?.horario?.id}
-                onChange={() => setData({ ...data, horario })}
+                onChange={() => setData({ ...data, horario: { ...horario } })}
                 inputProps={{ 'aria-label': 'controlled' }}
                 sx={{
                   color: colors.primaryWhiteColor,

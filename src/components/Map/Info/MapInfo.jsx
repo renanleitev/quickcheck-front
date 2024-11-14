@@ -13,7 +13,8 @@ import StepButtons from '../../Step/StepButtons';
 import formatDate from '../../../hooks/formatDate';
 import {
   getHorariosByEstabelecimentoIdAndStatus,
-  getHorariosByEstabelecimentoIdAndStatusAndEspecialidade
+  getHorariosByEstabelecimentoIdAndStatusAndEspecialidade,
+  updateHorario
 } from '../../../store/modules/horarios/reducer';
 import PerfilCard from '../../Card/PerfilCard';
 import { AgendamentoStatus } from '../../../config/enums';
@@ -29,6 +30,8 @@ export default function MapInfo({ entidade, open, setOpen }) {
   const dispatch = useDispatch();
 
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
+
+  const cliente = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -119,18 +122,18 @@ export default function MapInfo({ entidade, open, setOpen }) {
         />
       ),
       block: false
-    },
-    {
-      component: (
-        <StepConfirmar
-          title="Consulta confirmada com sucesso!"
-          funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
-          horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-          descricao="Lembre-se de chegar com 30 minutos de antecedência."
-        />
-      ),
-      block: false
     }
+    // {
+    //   component: (
+    //     <StepConfirmar
+    //       title="Consulta confirmada com sucesso!"
+    //       funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
+    //       horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+    //       descricao="Lembre-se de chegar com 30 minutos de antecedência."
+    //     />
+    //   ),
+    //   block: false
+    // }
   ];
 
   const handleReset = useCallback(() => {
@@ -139,6 +142,18 @@ export default function MapInfo({ entidade, open, setOpen }) {
     setFuncionario(undefined);
     setActiveStep(0);
   }, [initialAgendamento, setOpen]);
+
+  const handleConfirm = useCallback(() => {
+    const horario = {
+      ...agendamento.horario,
+      cliente: { ...cliente },
+      status: AgendamentoStatus.AGENDADO,
+      horarioAgendamento: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
+      mensagemSucesso: 'Consulta agendada com sucesso!'
+    };
+    dispatch(updateHorario({ horario }));
+    handleReset();
+  }, [agendamento.horario, cliente, dispatch, handleReset]);
 
   useEffect(() => {
     if (!open) {
@@ -201,9 +216,10 @@ export default function MapInfo({ entidade, open, setOpen }) {
               stepsNumber={steps.length}
               nextStepLabel="Agendar"
               disableNextButton={steps[activeStep].block && agendamento?.horario === undefined}
-              isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
+              // isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
               hasCustomReturnStep={funcionario !== undefined} // Quando houver um funcionário selecionado, retorna para o mesmo step (horarios)
               onCustomReturnStep={() => setFuncionario(undefined)} // Remove funcionário, mas mantém no mesmo step anterior (horarios)
+              onCallApi={handleConfirm}
             />
           </HorizontalContainer>
         </PerfilCard>

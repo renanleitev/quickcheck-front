@@ -68,34 +68,6 @@ export const updateHorario = createAsyncThunk('horarios/updateHorario', async ({
   }
 });
 
-export const updateHorarioProntuario = createAsyncThunk(
-  'horarios/updateHorarioProntuario',
-  async ({ horario }) => {
-    try {
-      const url = `${baseHorariosURL}/${horario.id}`;
-      await axiosInstance.put(url, horario);
-      return horario;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Não foi possível atualizar os dados');
-    }
-  }
-);
-
-export const updateHorarioStatus = createAsyncThunk(
-  'horarios/updateHorarioStatus',
-  async ({ horario }) => {
-    try {
-      const url = `${baseHorariosURL}/${horario.id}`;
-      await axiosInstance.put(url, horario);
-      return horario;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Não foi possível atualizar os dados');
-    }
-  }
-);
-
 export const createHorario = createAsyncThunk('horarios/createHorario', async ({ horario }) => {
   try {
     await axiosInstance.post(baseHorariosURL, horario);
@@ -158,65 +130,33 @@ export const horariosSlice = createSlice({
           }
         });
         state.fetchStatus = fetchStatus.SUCCESS;
-        toast.success('Prontuário atualizado com sucesso!');
+        if (action.payload?.mensagemSucesso) {
+          toast.success(action.payload?.mensagemSucesso);
+        } else {
+          switch (action.payload?.status) {
+            case AgendamentoStatus.DISPONÍVEL:
+              toast.success('Consulta criada com sucesso!');
+              break;
+            case AgendamentoStatus.AGENDADO:
+              toast.success('Consulta agendada com sucesso!');
+              break;
+            case AgendamentoStatus.PENDENTE:
+              toast.success('Consulta remarcada com sucesso!');
+              break;
+            case AgendamentoStatus.CANCELADO:
+              toast.success('Consulta cancelada com sucesso!');
+              break;
+            case AgendamentoStatus.CONCLUÍDO:
+            default:
+              toast.success('Consulta atualizada com sucesso!');
+              break;
+          }
+        }
       })
       .addCase(updateHorario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(updateHorario.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
-        state.error = action.error.message || errorMessage;
-        toast.error(state.error);
-      })
-      // updateHorarioProntuario
-      .addCase(updateHorarioProntuario.fulfilled, (state, action) => {
-        state.horarios.forEach((horario, index) => {
-          if (horario.id === action.payload.id) {
-            state.horarios[index] = { ...action.payload };
-          }
-        });
-        state.fetchStatus = fetchStatus.SUCCESS;
-        toast.success('Prontuário atualizado com sucesso!');
-      })
-      .addCase(updateHorarioProntuario.pending, (state) => {
-        state.fetchStatus = fetchStatus.PENDING;
-      })
-      .addCase(updateHorarioProntuario.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
-        state.error = action.error.message || errorMessage;
-        toast.error(state.error);
-      })
-      // updateHorarioStatus
-      .addCase(updateHorarioStatus.fulfilled, (state, action) => {
-        state.horarios.forEach((horario, index) => {
-          if (horario.id === action.payload.id) {
-            state.horarios[index] = { ...action.payload };
-          }
-        });
-        state.fetchStatus = fetchStatus.SUCCESS;
-        switch (action.payload?.status) {
-          case AgendamentoStatus.DISPONÍVEL:
-            toast.success('Consulta criada com sucesso!');
-            break;
-          case AgendamentoStatus.AGENDADO:
-            toast.success('Consulta agendada com sucesso!');
-            break;
-          case AgendamentoStatus.PENDENTE:
-            toast.success('Consulta remarcada com sucesso!');
-            break;
-          case AgendamentoStatus.CANCELADO:
-            toast.success('Consulta cancelada com sucesso!');
-            break;
-          case AgendamentoStatus.CONCLUÍDO:
-          default:
-            toast.success('Consulta concluída com sucesso!');
-            break;
-        }
-      })
-      .addCase(updateHorarioStatus.pending, (state) => {
-        state.fetchStatus = fetchStatus.PENDING;
-      })
-      .addCase(updateHorarioStatus.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
