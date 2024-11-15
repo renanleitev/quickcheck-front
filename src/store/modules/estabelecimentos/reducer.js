@@ -74,12 +74,12 @@ export const getEstabelecimentos = createAsyncThunk(
   }
 );
 
-export const getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo = createAsyncThunk(
-  'estabelecimentos/getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo',
-  async ({ status, especialidade, nome, tipo }) => {
+export const getEstabelecimentosByStatusAndEspecialidadeAndHorario = createAsyncThunk(
+  'estabelecimentos/getEstabelecimentosByStatusAndEspecialidadeAndHorario',
+  async ({ horarioAtendimento, status, especialidade, nomeFuncionario, nomeEstabelecimento }) => {
     try {
-      // Estamos usando a URL de horários pois a pesquisa irá retornar os médicos (especialidade) e os respectivos hospitais/clínicas (nome e tipo)
-      const url = `${baseHorariosURL}/search/estabelecimentos?status=${status}&especialidade=${especialidade}&nome=${nome}&tipo=${tipo}`;
+      // Estamos usando a URL de horários pois a pesquisa irá retornar os médicos (especialidade) e os respectivos hospitais/clínicas (nome)
+      const url = `${baseHorariosURL}/search/estabelecimentos?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
       const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {
@@ -133,27 +133,26 @@ export const estabelecimentosSlice = createSlice({
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })
-      // getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo
-      .addCase(
-        getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.fulfilled,
-        (state, action) => {
-          const estabelecimentos = action.payload?.map((item) => item?.estabelecimento) || [];
+      // getEstabelecimentosByStatusAndEspecialidadeAndHorario
+      .addCase(getEstabelecimentosByStatusAndEspecialidadeAndHorario.fulfilled, (state, action) => {
+        const estabelecimentos = action.payload?.map((item) => item?.estabelecimento) || [];
+        if (estabelecimentos.length > 0) {
           toast.success(`Encontrado(s) ${estabelecimentos.length} resultado(s)`);
           state.fetchStatus = fetchStatus.SUCCESS;
           state.estabelecimentos = estabelecimentos;
           state.hasSearched = true;
+        } else {
+          toast.error('Não foi possível encontrar resultados');
+          state.fetchStatus = fetchStatus.FAILURE;
         }
-      )
-      .addCase(getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.pending, (state) => {
+      })
+      .addCase(getEstabelecimentosByStatusAndEspecialidadeAndHorario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
-      .addCase(
-        getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo.rejected,
-        (state, action) => {
-          state.fetchStatus = fetchStatus.FAILURE;
-          state.error = action.error.message || errorMessage;
-        }
-      )
+      .addCase(getEstabelecimentosByStatusAndEspecialidadeAndHorario.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
       // criarEstabelecimento
       .addCase(criarEstabelecimento.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;

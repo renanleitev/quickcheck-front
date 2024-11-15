@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
-import { getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo } from '../../../store/modules/estabelecimentos/reducer';
+
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
+
+import { getEstabelecimentosByStatusAndEspecialidadeAndHorario } from '../../../store/modules/estabelecimentos/reducer';
 import colors from '../../../config/colors';
 import { VerticalContainer } from '../../../config/GlobalStyle';
-import Input from '../../Input/Input';
+import Input, { InputType } from '../../Input/Input';
 import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
-import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
+import { formatCalendarDate } from '../../../hooks/formatDate';
+import fetchStatus from '../../../config/fetchStatus';
 import PropTypes from 'prop-types';
 
 const buttonWidth = '20rem';
@@ -20,7 +23,9 @@ MapSearch.propTypes = {
 };
 
 function MapSearch({ open, setOpen }) {
-  const estabelecimentos = useSelector(state => state?.estabelecimentos?.estabelecimentos) ?? [];
+  const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
+
+  const fetchStatusInfo = useSelector((state) => state?.estabelecimentos?.fetchStatus) ?? false;
 
   const dispatch = useDispatch();
 
@@ -28,36 +33,22 @@ function MapSearch({ open, setOpen }) {
 
   const initialData = {
     status: AgendamentoStatus.DISPONÍVEL,
-    nome: '',
-    especialidade: especialidadesOptions[0].value,
-    tipo: estabelecimentosOptions[0].value
+    nomeFuncionario: '',
+    nomeEstabelecimento: '',
+    horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+    especialidade: especialidadesOptions[0].value
   };
 
   const [data, setData] = useState(initialData);
 
-  const [errorNome, setErrorNome] = useState(false);
-  const [errorNomeText, setErrorNomeText] = useState('');
-
-  const handleValidation = () => {
-    let hasError = false;
-
-    // Validação do nome
-    if (data.nome === '') {
-      setErrorNome(true);
-      setErrorNomeText('Nome não pode ser vazio');
-      hasError = true;
-    }
-
-    // Lança erro se alguma validação falhar
-    if (hasError) {
-      throw new Error('Erro durante a pesquisa');
-    }
-  };
-
   const handleSearch = () => {
-    handleValidation();
-    if (data.nome !== '') {
-      dispatch(getEstabelecimentosByStatusAndEspecialidadeAndNomeAndTipo({ ...data }));
+    dispatch(
+      getEstabelecimentosByStatusAndEspecialidadeAndHorario({
+        ...data,
+        horarioAtendimento: `${data.horarioAtendimento}T00:00:00` // Pesquisando horários a partir dessa data
+      })
+    );
+    if (fetchStatusInfo === fetchStatus.SUCCESS) {
       // Navega até o primeiro resultado disponível (em destaque)
       // TODO: Navegar até o primeiro estabelecimento pagante (propaganda?)
       map.flyTo([estabelecimentos[0]?.latitude, estabelecimentos[0]?.longitude], zoomLevel);
@@ -66,13 +57,6 @@ function MapSearch({ open, setOpen }) {
       setData(initialData);
     }
   };
-
-  useEffect(() => {
-    // Se o usuário digitou algo ou abriu o modal de novo, redefine a mensagem de erro
-    if (data.nome !== '' || open) {
-      setErrorNome(false);
-    }
-  }, [data.nome, open]);
 
   return (
     <Drawer
@@ -89,20 +73,16 @@ function MapSearch({ open, setOpen }) {
         <Input
           data={data}
           setData={setData}
-          placeholder="Estabelecimento"
-          keyName="tipo"
+          placeholder="Hospital ou Clínica"
+          keyName="nomeEstabelecimento"
           inputWidth={inputWidth}
-          select
-          selectList={estabelecimentosOptions}
         />
         <Input
           data={data}
           setData={setData}
-          placeholder="Nome"
-          keyName="nome"
+          placeholder="Médico"
+          keyName="nomeFuncionario"
           inputWidth={inputWidth}
-          error={errorNome}
-          errorText={errorNomeText}
         />
         <Input
           data={data}
@@ -112,6 +92,13 @@ function MapSearch({ open, setOpen }) {
           inputWidth={inputWidth}
           select
           selectList={especialidadesOptions}
+        />
+        <Input
+          data={data}
+          setData={setData}
+          placeholder="Data"
+          keyName="horarioAtendimento"
+          inputType={InputType.DATE}
         />
         <Button
           variant="contained"
