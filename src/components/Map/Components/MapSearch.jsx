@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 
@@ -11,7 +11,6 @@ import { VerticalContainer } from '../../../config/GlobalStyle';
 import Input, { InputType } from '../../Input/Input';
 import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
-import fetchStatus from '../../../config/fetchStatus';
 import PropTypes from 'prop-types';
 
 const buttonWidth = '20rem';
@@ -25,19 +24,24 @@ MapSearch.propTypes = {
 function MapSearch({ open, setOpen }) {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
 
-  const fetchStatusInfo = useSelector((state) => state?.estabelecimentos?.fetchStatus) ?? false;
+  const latitude = estabelecimentos[0]?.latitude;
+  const longitude = estabelecimentos[0]?.longitude;
+
+  const hasResult = useSelector((state) => state?.estabelecimentos?.hasResult) ?? false;
 
   const dispatch = useDispatch();
 
   const map = useMap();
 
-  const initialData = {
-    status: AgendamentoStatus.DISPONÍVEL,
-    nomeFuncionario: '',
-    nomeEstabelecimento: '',
-    horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-    especialidade: especialidadesOptions[0].value
-  };
+  const initialData = useMemo(() => {
+    return {
+      status: AgendamentoStatus.DISPONÍVEL,
+      nomeFuncionario: '',
+      nomeEstabelecimento: '',
+      horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+      especialidade: especialidadesOptions[0].value
+    };
+  }, []);
 
   const [data, setData] = useState(initialData);
 
@@ -48,15 +52,18 @@ function MapSearch({ open, setOpen }) {
         horarioAtendimento: `${data.horarioAtendimento}T00:00:00` // Pesquisando horários a partir dessa data
       })
     );
-    if (fetchStatusInfo === fetchStatus.SUCCESS) {
-      // Navega até o primeiro resultado disponível (em destaque)
+  };
+
+  useEffect(() => {
+    // Navega até o primeiro resultado disponível (em destaque)
+    if (hasResult) {
       // TODO: Navegar até o primeiro estabelecimento pagante (propaganda?)
-      map.flyTo([estabelecimentos[0]?.latitude, estabelecimentos[0]?.longitude], zoomLevel);
+      map.flyTo([latitude, longitude], zoomLevel);
       // Redefinindo o estado de pesquisa
       setOpen(false);
       setData(initialData);
     }
-  };
+  }, [hasResult, initialData, latitude, longitude, map, setOpen]);
 
   return (
     <Drawer

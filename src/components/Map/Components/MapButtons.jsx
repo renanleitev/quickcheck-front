@@ -13,7 +13,7 @@ MapButtons.propTypes = {
 };
 
 export default function MapButtons({ setOpen }) {
-  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? [];
+  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? false;
 
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
