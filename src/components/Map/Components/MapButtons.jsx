@@ -1,78 +1,23 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { ZoomControl, useMap } from 'react-leaflet';
-import { toast } from 'react-toastify';
-import { Button } from '@mui/material';
-import { Search, Restore } from '@mui/icons-material';
+import { ZoomControl } from 'react-leaflet';
 import Control from 'react-leaflet-custom-control';
 import PropTypes from 'prop-types';
-import { getEstabelecimentos } from '../../../store/modules/estabelecimentos/reducer';
-import { zoomOutLevel } from '../../../config/enums';
+
+import ResetButton from '../../Button/ResetButton';
+import SearchButton from '../../Button/SearchButton';
 
 MapButtons.propTypes = {
   setOpen: PropTypes.func.isRequired,
-  setCoordenadas: PropTypes.func.isRequired
+  onReset: PropTypes.func.isRequired
 };
 
-export default function MapButtons({ setOpen, setCoordenadas }) {
-  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? false;
-
-  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
-
-  const dispatch = useDispatch();
-
-  const map = useMap();
-
-  const handleReset = () => {
-    dispatch(getEstabelecimentos());
-    toast.success('Mapa redefinido com sucesso!');
-    // Voltando para a localização padrão do usuário
-    map.flyTo([entidade?.latitude, entidade?.longitude], zoomOutLevel);
-    // Redefinindo a rota desenha
-    setCoordenadas([]);
-  };
-
+export default function MapButtons({ setOpen, onReset }) {
   return (
     <>
       <Control position="bottomright">
         {/* Reset Button */}
-        {hasSearched && (
-          <Button
-            variant="contained"
-            onClick={handleReset}
-            color="warning"
-            sx={{
-              borderRadius: '50%',
-              width: 50,
-              height: 50,
-              marginBottom: '12rem',
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              minWidth: 0,
-              padding: 0
-            }}
-          >
-            <Restore />
-          </Button>
-        )}
+        <ResetButton onReset={onReset} />
         {/* Search Button */}
-        <Button
-          variant="contained"
-          onClick={() => setOpen(true)}
-          sx={{
-            borderRadius: '50%',
-            width: 50,
-            height: 50,
-            marginBottom: '7rem',
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-            minWidth: 0,
-            padding: 0
-          }}
-        >
-          <Search />
-        </Button>
+        <SearchButton setOpen={setOpen} />
       </Control>
       {/* Zoom Buttons */}
       <ZoomControl position="bottomright" />

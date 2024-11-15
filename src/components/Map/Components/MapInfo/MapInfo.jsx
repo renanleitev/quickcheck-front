@@ -23,31 +23,31 @@ import { formatCalendarDate } from '../../../../hooks/formatDate';
 import RouteButton from '../../../Button/RouteButton';
 
 MapInfo.propTypes = {
-  entidade: PropTypes.object,
+  estabelecimento: PropTypes.object,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   setCoordenadas: PropTypes.func.isRequired
 };
 
-export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
+export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas }) {
   const dispatch = useDispatch();
 
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
-  const cliente = useSelector((state) => state?.usuarios?.entidade) || undefined;
+  const cliente = useSelector((state) => state?.usuarios?.estabelecimento) || undefined;
 
-  const latitudeEstabelecimento = entidade?.latitude;
-  const longitudeEstabelecimento = entidade?.longitude;
+  const latitudeEstabelecimento = estabelecimento?.latitude;
+  const longitudeEstabelecimento = estabelecimento?.longitude;
 
   const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
   const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
 
   // Coordenadas para calcular a rota entre o cliente e o estabelecimento
-  const coordenadas = {
-    latitudeEstabelecimento,
-    longitudeEstabelecimento,
-    latitudeCliente,
-    longitudeCliente
+  const coordenadasPesquisa = {
+    latitudeEstabelecimento: Number.parseFloat(latitudeEstabelecimento),
+    longitudeEstabelecimento: Number.parseFloat(longitudeEstabelecimento),
+    latitudeCliente: Number.parseFloat(latitudeCliente),
+    longitudeCliente: Number.parseFloat(longitudeCliente)
   };
 
   const [activeStep, setActiveStep] = useState(0);
@@ -69,42 +69,42 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
 
   // Obtendo os horários
   useEffect(() => {
-    if (entidade !== undefined) {
+    if (estabelecimento !== undefined) {
       dispatch(
         getHorariosByEstabelecimentoIdAndStatus({
-          estabelecimentoId: entidade?.id,
+          estabelecimentoId: estabelecimento?.id,
           status: AgendamentoStatus.DISPONÍVEL
         })
       );
     }
-  }, [dispatch, entidade]);
+  }, [dispatch, estabelecimento]);
 
   // Quando muda a especialidade, realiza uma nova pesquisa
   useEffect(() => {
     if (agendamento.especialidade !== '') {
       dispatch(
         getHorariosByEstabelecimentoIdAndStatusAndEspecialidade({
-          estabelecimentoId: entidade?.id,
+          estabelecimentoId: estabelecimento?.id,
           especialidade: agendamento.especialidade,
           status: AgendamentoStatus.DISPONÍVEL
         })
       );
     }
-  }, [agendamento.especialidade, dispatch, entidade?.id]);
+  }, [agendamento.especialidade, dispatch, estabelecimento?.id]);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
     setActiveStep(0);
     setAgendamento(initialAgendamento);
-  }, [entidade, initialAgendamento]);
+  }, [estabelecimento, initialAgendamento]);
 
   const steps = [
     {
       component: (
         <StepInfo
-          imagem={entidade?.usuario?.imagem}
-          info={entidade?.horarioFuncionamento}
-          subInfo={entidade?.descricao}
+          imagem={estabelecimento?.usuario?.imagem}
+          info={estabelecimento?.horarioFuncionamento}
+          subInfo={estabelecimento?.descricao}
           alignItems="flex-start"
         />
       ),
@@ -172,6 +172,7 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
     handleReset();
   }, [agendamento.horario, cliente, dispatch, handleReset]);
 
+  // Redefinindo quando fecha o drawer
   useEffect(() => {
     if (!open) {
       handleReset();
@@ -191,8 +192,8 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
     >
       <VerticalContainer>
         <PerfilCard
-          entidade={entidade}
-          subtitle={entidade?.usuario?.endereco}
+          estabelecimento={estabelecimento}
+          subtitle={estabelecimento?.usuario?.endereco}
           hasMenu
           menu={
             <Box width="20rem">
@@ -200,10 +201,10 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
                 <Typography noWrap>
                   Telefone:{' '}
                   <a
-                    href={`tel:+55${entidade?.usuario?.telefone}`}
+                    href={`tel:+55${estabelecimento?.usuario?.telefone}`}
                     style={{ color: colors.primaryDarkColor }}
                   >
-                    {entidade?.usuario?.telefone}
+                    {estabelecimento?.usuario?.telefone}
                   </a>
                 </Typography>
               </MenuItem>
@@ -211,10 +212,10 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
                 <Typography noWrap>
                   Email:{' '}
                   <a
-                    href={`mailto:${entidade?.usuario?.email}`}
+                    href={`mailto:${estabelecimento?.usuario?.email}`}
                     style={{ color: colors.primaryDarkColor }}
                   >
-                    {entidade?.usuario?.email}
+                    {estabelecimento?.usuario?.email}
                   </a>
                 </Typography>
               </MenuItem>
@@ -232,10 +233,8 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
             {activeStep === 0 && (
               <HorizontalContainer style={{ marginRight: 'auto' }}>
                 <RouteButton
-                  coordenadas={coordenadas}
-                  setCoordenadas={setCoordenadas}
                   onClick={() => {
-                    setCoordenadas([]);
+                    setCoordenadas({ ...coordenadasPesquisa });
                     setOpen(false);
                   }}
                 />

@@ -1,20 +1,50 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
+
 import MapButtons from './MapButtons';
 import MapSearch from './MapSearch';
 import MapInfo from './MapInfo/MapInfo';
 import HomeMarker from '../Markers/HomeMarker';
-import HospitalMarker from '../Markers/HospitalMarker';
+import EstabelecimentoMarker from '../Markers/EstabelecimentoMarker';
 import { defaultCoords, zoomLevel } from '../../../config/enums';
 
 export default function MapDisplay() {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
 
+  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
+  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
+
+  const hasEstabelecimentos = estabelecimentos?.length > 0;
+
+  const latitudeEstabelecimento = hasEstabelecimentos ? estabelecimentos[0]?.latitude : 0;
+  const longitudeEstabelecimento = hasEstabelecimentos ? estabelecimentos[0]?.longitude : 0;
+
+  // Para abrir o drawer de pesquisa (MapSearch)
   const [openSearch, setOpenSearch] = useState(false);
+  // Para abrir o drawer de informação (MapInfo)
   const [openInfo, setOpenInfo] = useState(false);
-  const [entidade, setEntidade] = useState(undefined);
-  const [coordenadas, setCoordenadas] = useState([]);
+
+  // Estabelecimento escolhido pelo usuário (quando clica no ícone e abre o drawer = MapInfo)
+  const [estabelecimento, setEstabelecimento] = useState(undefined);
+
+  // Coordenadas utilizadas para calcular o trajeto do cliente ao estabelecimento
+  const initialCoordenadas = {
+    latitudeCliente: Number.parseFloat(latitudeCliente),
+    longitudeCliente: Number.parseFloat(longitudeCliente),
+    latitudeEstabelecimento: Number.parseFloat(latitudeEstabelecimento),
+    longitudeEstabelecimento: Number.parseFloat(longitudeEstabelecimento)
+  };
+  const [coordenadas, setCoordenadas] = useState(initialCoordenadas);
+
+  // Coordenadas que desenham o trajeto do cliente ao estabelecimento
+  const [waypoints, setWaypoints] = useState([]);
+
+  // Redefinindo a rota desenhada
+  const handleResetSearch = () => {
+    setWaypoints([]);
+    setCoordenadas(initialCoordenadas);
+  };
 
   return (
     <MapContainer
@@ -30,23 +60,33 @@ export default function MapDisplay() {
       {/* Localização do Cliente */}
       <HomeMarker />
       {/* Localização dos Estabelecimentos */}
-      {estabelecimentos.map((hospital) => {
+      {estabelecimentos.map((estabelecimento) => {
         return (
-          <HospitalMarker
-            key={hospital.id}
-            latitude={hospital?.latitude}
-            longitude={hospital?.longitude}
+          <EstabelecimentoMarker
+            key={estabelecimento.id}
+            latitude={estabelecimento?.latitude}
+            longitude={estabelecimento?.longitude}
             onClick={() => {
-              setEntidade(hospital);
+              setEstabelecimento(estabelecimento);
               setOpenInfo(true);
             }}
           />
         );
       })}
-      <MapButtons setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
-      <MapSearch open={openSearch} setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
-      <MapInfo entidade={entidade} open={openInfo} setOpen={setOpenInfo} setCoordenadas={setCoordenadas}/>
-      {coordenadas.length > 0 && <Polyline positions={coordenadas} />}
+      <MapButtons setOpen={setOpenSearch} onReset={handleResetSearch} />
+      <MapSearch
+        open={openSearch}
+        setOpen={setOpenSearch}
+        setWaypoints={setWaypoints}
+        coordenadas={coordenadas}
+      />
+      <MapInfo
+        estabelecimento={estabelecimento}
+        open={openInfo}
+        setOpen={setOpenInfo}
+        setCoordenadas={setCoordenadas}
+      />
+      {waypoints.length > 0 && <Polyline positions={waypoints} />}
     </MapContainer>
   );
 }

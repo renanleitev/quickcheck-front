@@ -26,17 +26,14 @@ const inputWidth = '20rem';
 MapSearch.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-  setCoordenadas: PropTypes.func.isRequired
+  setWaypoints: PropTypes.func.isRequired,
+  coordenadas: PropTypes.object
 };
 
-function MapSearch({ open, setOpen, setCoordenadas }) {
+function MapSearch({ open, setOpen, setWaypoints, coordenadas }) {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) || [];
   const hasEstabelecimentos = estabelecimentos?.length > 0 || false;
-  const latitudeEstabelecimento = estabelecimentos[0]?.latitude;
-  const longitudeEstabelecimento = estabelecimentos[0]?.longitude;
 
-  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
-  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
   const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) || false;
 
   const dispatch = useDispatch();
@@ -67,42 +64,34 @@ function MapSearch({ open, setOpen, setCoordenadas }) {
     );
   };
 
+  // Calculando a rota do cliente até o estabelecimento
   useEffect(() => {
     if (hasEstabelecimentos && hasSearched) {
+      // Convertendo as coordenadas para o formato de pesquisa
+      const coordenadasPesquisa = [
+        { latitude: coordenadas.latitudeCliente, longitude: coordenadas.longitudeCliente },
+        {
+          latitude: coordenadas.latitudeEstabelecimento,
+          longitude: coordenadas.longitudeEstabelecimento
+        }
+      ];
       // Função para obter as rotas
       async function getCoords() {
-        const coords = await getRoute([
-          {
-            latitude: Number.parseFloat(latitudeCliente),
-            longitude: Number.parseFloat(longitudeCliente)
-          },
-          {
-            latitude: Number.parseFloat(latitudeEstabelecimento),
-            longitude: Number.parseFloat(longitudeEstabelecimento)
-          }
-        ]);
-        setCoordenadas(coords);
+        const waypoints = await getRoute(coordenadasPesquisa);
+        setWaypoints(waypoints);
       }
-      // TODO: Navegar até o primeiro estabelecimento pagante (propaganda?)
-      map.flyTo([latitudeEstabelecimento, longitudeEstabelecimento], zoomLevel);
+      // TODO: Navegar até o primeiro estabelecimento assinante (propaganda?)
+      map.flyTo(
+        [coordenadas.latitudeEstabelecimento, coordenadas.longitudeEstabelecimento],
+        zoomLevel
+      );
       // Redefinindo o estado de pesquisa
       setOpen(false);
       setData(initialData);
-      // Definindo a rota entre o cliente e o estabelecimento
+      // Definindo a rota do cliente até o estabelecimento
       getCoords();
     }
-  }, [
-    hasEstabelecimentos,
-    hasSearched,
-    initialData,
-    latitudeCliente,
-    longitudeCliente,
-    latitudeEstabelecimento,
-    longitudeEstabelecimento,
-    map,
-    setCoordenadas,
-    setOpen
-  ]);
+  }, [coordenadas, hasEstabelecimentos, hasSearched, initialData, map, setOpen, setWaypoints]);
 
   const handleClose = () => {
     // Fecha o drawer
