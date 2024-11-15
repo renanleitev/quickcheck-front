@@ -106,6 +106,11 @@ export const atualizarEstabelecimento = createAsyncThunk(
 export const estabelecimentosSlice = createSlice({
   name: 'estabelecimentos',
   initialState,
+  reducers: {
+    userHasSearched: (state) => {
+      state.hasSearched = true;
+    }
+  },
   extraReducers(builder) {
     builder
       // getEstabelecimento
@@ -183,5 +188,7 @@ export const estabelecimentosSlice = createSlice({
       });
   }
 });
+
+export const { userHasSearched } = estabelecimentosSlice.actions;
 
 export const estabelecimentosReducer = estabelecimentosSlice.reducer;

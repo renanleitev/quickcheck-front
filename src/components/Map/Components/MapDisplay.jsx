@@ -45,7 +45,7 @@ export default function MapDisplay() {
       })}
       <MapButtons setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
       <MapSearch open={openSearch} setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
-      <MapInfo entidade={entidade} open={openInfo} setOpen={setOpenInfo} />
+      <MapInfo entidade={entidade} open={openInfo} setOpen={setOpenInfo} setCoordenadas={setCoordenadas}/>
       {coordenadas.length > 0 && <Polyline positions={coordenadas} />}
     </MapContainer>
   );

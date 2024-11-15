@@ -13,7 +13,7 @@ function formatCoordinates(coordinates) {
 }
 
 // https://project-osrm.org/docs/v5.24.0/api/#
-
+// https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md
 export const getRoute = async (coordinates) => {
   const finalCoordinates = formatCoordinates(coordinates);
   const url = `https://router.project-osrm.org/route/v1/driving/${finalCoordinates}?overview=false&steps=true`;

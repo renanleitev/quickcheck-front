@@ -2,9 +2,10 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import { Box, Drawer, MenuItem, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+
 import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
-import PropTypes from 'prop-types';
 import StepInfo from './Steps/StepInfo';
 import StepFiltros from './Steps/StepFiltros';
 import StepHorarios from './Steps/StepHorarios';
@@ -19,19 +20,35 @@ import {
 import PerfilCard from '../../Card/PerfilCard';
 import { AgendamentoStatus } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
+import RouteButton from '../../Button/RouteButton';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
   open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired
+  setOpen: PropTypes.func.isRequired,
+  setCoordenadas: PropTypes.func.isRequired
 };
 
-export default function MapInfo({ entidade, open, setOpen }) {
+export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
   const dispatch = useDispatch();
 
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
   const cliente = useSelector((state) => state?.usuarios?.entidade) || undefined;
+
+  const latitudeEstabelecimento = entidade?.latitude;
+  const longitudeEstabelecimento = entidade?.longitude;
+
+  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
+  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
+
+  // Coordenadas para calcular a rota entre o cliente e o estabelecimento
+  const coordenadas = {
+    latitudeEstabelecimento,
+    longitudeEstabelecimento,
+    latitudeCliente,
+    longitudeCliente
+  };
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -208,7 +225,22 @@ export default function MapInfo({ entidade, open, setOpen }) {
           {/* Definindo uma altura fixa para criar efeito scroll */}
           <Box sx={{ height: '23rem', overflow: 'auto' }}>{steps[activeStep].component}</Box>
           {/* Steps Buttons */}
-          <HorizontalContainer style={{ padding: '0.5rem', justifyContent: 'flex-end' }}>
+          <HorizontalContainer
+            style={{ padding: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}
+          >
+            {/* Mostra o botão de rotas apenas quando exibe a informação do estabelecimento */}
+            {activeStep === 0 && (
+              <HorizontalContainer style={{ marginRight: 'auto' }}>
+                <RouteButton
+                  coordenadas={coordenadas}
+                  setCoordenadas={setCoordenadas}
+                  onClick={() => {
+                    setCoordenadas([]);
+                    setOpen(false);
+                  }}
+                />
+              </HorizontalContainer>
+            )}
             <StepButtons
               activeStep={activeStep}
               setActiveStep={setActiveStep}
