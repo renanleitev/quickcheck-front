@@ -1,14 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
+import dayjs from 'dayjs';
 
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 
 import { getEstabelecimentosByStatusAndEspecialidadeAndHorario } from '../../../store/modules/estabelecimentos/reducer';
 import colors from '../../../config/colors';
-import { VerticalContainer } from '../../../config/GlobalStyle';
+import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import Input, { InputType } from '../../Input/Input';
+import InputHora from '../../Input/InputHora';
 import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
@@ -38,6 +40,7 @@ function MapSearch({ open, setOpen }) {
       status: AgendamentoStatus.DISPONÍVEL,
       nomeFuncionario: '',
       nomeEstabelecimento: '',
+      horarioHora: dayjs(),
       horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
       especialidade: especialidadesOptions[0].value
     };
@@ -46,10 +49,12 @@ function MapSearch({ open, setOpen }) {
   const [data, setData] = useState(initialData);
 
   const handleSearch = () => {
+    // Horário que será salvo no banco de dados
+    const hora = dayjs(data.horarioHora).format('HH:mm:ss');
     dispatch(
       getEstabelecimentosByStatusAndEspecialidadeAndHorario({
         ...data,
-        horarioAtendimento: `${data.horarioAtendimento}T00:00:00` // Pesquisando horários a partir dessa data
+        horarioAtendimento: `${data.horarioAtendimento}T${hora}` // Pesquisando horários a partir dessa data
       })
     );
   };
@@ -100,13 +105,21 @@ function MapSearch({ open, setOpen }) {
           select
           selectList={especialidadesOptions}
         />
-        <Input
-          data={data}
-          setData={setData}
-          placeholder="Data"
-          keyName="horarioAtendimento"
-          inputType={InputType.DATE}
-        />
+        <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
+          <Input
+            data={data}
+            setData={setData}
+            placeholder="Data"
+            keyName="horarioAtendimento"
+            inputType={InputType.DATE}
+          />
+          <InputHora
+            data={data}
+            setData={setData}
+            hora={dayjs(data.horarioHora)}
+            keyName='horarioHora'
+          />
+        </HorizontalContainer>
         <Button
           variant="contained"
           sx={{ width: buttonWidth, padding: '1rem' }}

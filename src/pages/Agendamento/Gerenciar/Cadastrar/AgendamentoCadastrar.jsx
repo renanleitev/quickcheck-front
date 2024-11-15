@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Button } from '@mui/material';
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 import Input, { InputType } from '../../../../components/Input/Input';
+import InputHora from '../../../../components/Input/InputHora';
 import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import { formatCalendarDate } from '../../../../hooks/formatDate';
 import colors from '../../../../config/colors';
@@ -38,7 +37,7 @@ export default function AgendamentoCadastrar({ setOpen }) {
   // Horário que é alterado pelo usuário antes de inserir no banco de dados
   const initialData = {
     horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-    horarioHora: '',
+    horarioHora: dayjs(),
     horarioAgendamento: '',
     prontuario: '',
     descricao: '',
@@ -114,14 +113,12 @@ export default function AgendamentoCadastrar({ setOpen }) {
           inputType={InputType.DATE}
           placeholder="Data"
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
-            label="Horário"
-            onChange={(value) => {
-              setData({ ...data, horarioHora: value.$d });
-            }}
-          />
-        </LocalizationProvider>
+        <InputHora
+          data={data}
+          setData={setData}
+          hora={dayjs(data.horarioHora)}
+          keyName='horarioHora'
+        />
       </HorizontalContainer>
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
         <InputDescricao data={data} setData={setData} hasHorarioFuncionamento={false} />

@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Button } from '@mui/material';
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 import Input, { InputType } from '../../../../components/Input/Input';
+import InputHora from '../../../../components/Input/InputHora';
 import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import { formatCalendarDate } from '../../../../hooks/formatDate';
 import colors from '../../../../config/colors';
@@ -131,15 +130,12 @@ export default function AgendamentoEditar({ horario, setOpen }) {
           inputType={InputType.DATE}
           placeholder="Horário Atendimento"
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
-            label="Horário"
-            value={data.horarioHoraAtendimento}
-            onChange={(value) => {
-              setData({ ...data, horarioHoraAtendimento: dayjs(value.$d) });
-            }}
-          />
-        </LocalizationProvider>
+        <InputHora
+          data={data}
+          setData={setData}
+          hora={dayjs(data.horarioHoraAtendimento)}
+          keyName="horarioHoraAtendimento"
+        />
       </HorizontalContainer>
       {/* Horário Agendamento */}
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
@@ -150,15 +146,12 @@ export default function AgendamentoEditar({ horario, setOpen }) {
           inputType={InputType.DATE}
           placeholder="Horário Agendamento"
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
-            label="Horário"
-            value={data.horarioHoraAgendamento}
-            onChange={(value) => {
-              setData({ ...data, horarioHoraAgendamento: dayjs(value.$d) });
-            }}
-          />
-        </LocalizationProvider>
+        <InputHora
+          data={data}
+          setData={setData}
+          hora={dayjs(data.horarioHoraAgendamento)}
+          keyName="horarioHoraAgendamento"
+        />
       </HorizontalContainer>
       {/* Prontuário + Descrição */}
       <VerticalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
