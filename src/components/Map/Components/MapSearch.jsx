@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 import dayjs from 'dayjs';
@@ -14,22 +14,26 @@ import InputHora from '../../Input/InputHora';
 import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import PropTypes from 'prop-types';
+import { getRoute } from '../../../hooks/getRoute';
 
 const buttonWidth = '20rem';
 const inputWidth = '20rem';
 
 MapSearch.propTypes = {
   open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired
+  setOpen: PropTypes.func.isRequired,
+  setCoordenadas: PropTypes.func.isRequired
 };
 
-function MapSearch({ open, setOpen }) {
-  const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
+function MapSearch({ open, setOpen, setCoordenadas }) {
+  const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) || [];
+  const hasEstabelecimentos = estabelecimentos?.length > 0 || false;
+  const latitudeEstabelecimento = estabelecimentos[0]?.latitude;
+  const longitudeEstabelecimento = estabelecimentos[0]?.longitude;
 
-  const latitude = estabelecimentos[0]?.latitude;
-  const longitude = estabelecimentos[0]?.longitude;
-
-  const hasResult = useSelector((state) => state?.estabelecimentos?.hasResult) ?? false;
+  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
+  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
+  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) || false;
 
   const dispatch = useDispatch();
 
@@ -60,15 +64,41 @@ function MapSearch({ open, setOpen }) {
   };
 
   useEffect(() => {
-    // Navega até o primeiro resultado disponível (em destaque)
-    if (hasResult) {
+    if (hasEstabelecimentos && hasSearched) {
+      // Função para obter as rotas
+      async function getCoords() {
+        const coords = await getRoute([
+          {
+            latitude: Number.parseFloat(latitudeCliente),
+            longitude: Number.parseFloat(longitudeCliente)
+          },
+          {
+            latitude: Number.parseFloat(latitudeEstabelecimento),
+            longitude: Number.parseFloat(longitudeEstabelecimento)
+          }
+        ]);
+        setCoordenadas(coords);
+      }
       // TODO: Navegar até o primeiro estabelecimento pagante (propaganda?)
-      map.flyTo([latitude, longitude], zoomLevel);
+      map.flyTo([latitudeEstabelecimento, longitudeEstabelecimento], zoomLevel);
       // Redefinindo o estado de pesquisa
       setOpen(false);
       setData(initialData);
+      // Definindo a rota entre o cliente e o estabelecimento
+      getCoords();
     }
-  }, [hasResult, initialData, latitude, longitude, map, setOpen]);
+  }, [
+    hasEstabelecimentos,
+    hasSearched,
+    initialData,
+    latitudeCliente,
+    longitudeCliente,
+    latitudeEstabelecimento,
+    longitudeEstabelecimento,
+    map,
+    setCoordenadas,
+    setOpen
+  ]);
 
   return (
     <Drawer
@@ -117,7 +147,7 @@ function MapSearch({ open, setOpen }) {
             data={data}
             setData={setData}
             hora={dayjs(data.horarioHora)}
-            keyName='horarioHora'
+            keyName="horarioHora"
           />
         </HorizontalContainer>
         <Button

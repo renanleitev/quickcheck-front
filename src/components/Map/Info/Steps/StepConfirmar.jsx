@@ -4,7 +4,7 @@ import colors from '../../../../config/colors';
 
 StepConfirmar.propTypes = {
   title: PropTypes.string.isRequired,
-  funcionarioNome: PropTypes.string.isRequired,
+  funcionarioNome: PropTypes.string,
   horarioAtendimento: PropTypes.string.isRequired,
   descricao: PropTypes.string,
   hasComprovante: PropTypes.bool

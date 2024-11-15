@@ -21,7 +21,6 @@ export const initialEstabelecimento = {
 export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   hasSearched: false,
-  hasResult: false,
   error: '',
   estabelecimento: initialEstabelecimento,
   estabelecimentos: []
@@ -113,7 +112,6 @@ export const estabelecimentosSlice = createSlice({
       .addCase(getEstabelecimento.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         state.estabelecimento = action.payload;
-        state.hasResult = true;
       })
       .addCase(getEstabelecimento.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
@@ -127,7 +125,6 @@ export const estabelecimentosSlice = createSlice({
         state.fetchStatus = fetchStatus.SUCCESS;
         state.estabelecimentos = action.payload;
         state.hasSearched = false;
-        state.hasResult = true;
       })
       .addCase(getEstabelecimentos.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
@@ -144,10 +141,9 @@ export const estabelecimentosSlice = createSlice({
           state.fetchStatus = fetchStatus.SUCCESS;
           state.estabelecimentos = estabelecimentos;
           state.hasSearched = true;
-          state.hasResult = true;
         } else {
           toast.error('Não foi possível encontrar resultados');
-          state.hasResult = false;
+          state.estabelecimentos = estabelecimentos;
         }
       })
       .addCase(getEstabelecimentosByStatusAndEspecialidadeAndHorario.pending, (state) => {

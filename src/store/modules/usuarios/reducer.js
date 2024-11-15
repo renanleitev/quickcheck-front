@@ -19,6 +19,8 @@ export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   isLoggedIn: false,
   error: '',
+  latitude: 0,
+  longitude: 0,
   // entidade = cliente | funcionario | estabelecimento => todos possuem um usuario
   entidade: initialEntidade,
   usuarios: []
@@ -86,7 +88,11 @@ export const usuariosSlice = createSlice({
       state.error = '';
       state.usuarios = [];
       state.fetchStatus = fetchStatus.IDLE;
-    }
+    },
+    updateCoords: (state, action) => {
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+    },
   },
   extraReducers(builder) {
     builder
@@ -148,6 +154,6 @@ export const usuariosSlice = createSlice({
   }
 });
 
-export const { logoutUsuario, loginCadastro } = usuariosSlice.actions;
+export const { logoutUsuario, loginCadastro, updateCoords } = usuariosSlice.actions;
 
 export const usuariosReducer = usuariosSlice.reducer;

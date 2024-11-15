@@ -9,10 +9,11 @@ import { getEstabelecimentos } from '../../../store/modules/estabelecimentos/red
 import { zoomOutLevel } from '../../../config/enums';
 
 MapButtons.propTypes = {
-  setOpen: PropTypes.func.isRequired
+  setOpen: PropTypes.func.isRequired,
+  setCoordenadas: PropTypes.func.isRequired
 };
 
-export default function MapButtons({ setOpen }) {
+export default function MapButtons({ setOpen, setCoordenadas }) {
   const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? false;
 
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
@@ -26,6 +27,8 @@ export default function MapButtons({ setOpen }) {
     toast.success('Mapa redefinido com sucesso!');
     // Voltando para a localização padrão do usuário
     map.flyTo([entidade?.latitude, entidade?.longitude], zoomOutLevel);
+    // Redefinindo a rota desenha
+    setCoordenadas([]);
   };
 
   return (

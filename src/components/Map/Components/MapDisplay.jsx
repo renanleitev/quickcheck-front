@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
 import MapButtons from './MapButtons';
 import MapSearch from './MapSearch';
 import MapInfo from '../Info/MapInfo';
@@ -14,6 +14,7 @@ export default function MapDisplay() {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const [entidade, setEntidade] = useState(undefined);
+  const [coordenadas, setCoordenadas] = useState([]);
 
   return (
     <MapContainer
@@ -42,9 +43,10 @@ export default function MapDisplay() {
           />
         );
       })}
-      <MapButtons setOpen={setOpenSearch} />
-      <MapSearch open={openSearch} setOpen={setOpenSearch} />
+      <MapButtons setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
+      <MapSearch open={openSearch} setOpen={setOpenSearch} setCoordenadas={setCoordenadas} />
       <MapInfo entidade={entidade} open={openInfo} setOpen={setOpenInfo} />
+      {coordenadas.length > 0 && <Polyline positions={coordenadas} />}
     </MapContainer>
   );
 }
