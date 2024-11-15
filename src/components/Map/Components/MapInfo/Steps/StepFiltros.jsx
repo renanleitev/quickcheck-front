@@ -1,5 +1,8 @@
 import { Typography } from '@mui/material';
+import dayjs from 'dayjs';
+
 import Input, { InputType } from '../../../../Input/Input';
+import InputHora from '../../../../Input/InputHora';
 import { especialidadesOptions } from '../../../../../config/enums';
 import { HorizontalContainer, VerticalContainer } from '../../../../../config/GlobalStyle';
 import colors from '../../../../../config/colors';
@@ -15,7 +18,7 @@ export default function StepFiltros({ data, setData }) {
 
   return (
     <VerticalContainer style={{ width: '100%', rowGap: '1rem' }}>
-      <Typography variant="h5" color={colors.primaryWhiteColor}>
+      <Typography variant="h4" color={colors.primaryWhiteColor}>
         Pesquisar
       </Typography>
       <VerticalContainer style={{ width: '100%', rowGap: '2rem' }}>
@@ -39,16 +42,15 @@ export default function StepFiltros({ data, setData }) {
           <Input
             data={data}
             setData={setData}
-            keyName="dataInicial"
+            placeholder="Data"
+            keyName="horarioAtendimento"
             inputType={InputType.DATE}
-            placeholder="Início (Opcional)"
           />
-          <Input
+          <InputHora
             data={data}
             setData={setData}
-            keyName="dataFinal"
-            inputType={InputType.DATE}
-            placeholder="Fim (Opcional)"
+            hora={dayjs(data.horarioHora)}
+            keyName="horarioHora"
           />
         </HorizontalContainer>
       </VerticalContainer>

@@ -50,7 +50,7 @@ export default function StepButtons({
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
       <Button variant="contained" color="error" onClick={handleBack} sx={{ mr: 1 }}>
         Voltar
       </Button>

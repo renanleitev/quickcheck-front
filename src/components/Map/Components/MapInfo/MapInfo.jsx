@@ -56,8 +56,8 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
     return {
       especialidade: '',
       horario: undefined,
-      dataInicial: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-      dataFinal: formatCalendarDate(dayjs().add(1, 'month').toISOString()), // Pesquisar agendamentos até o mês seguinte
+      horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+      horarioHora: dayjs(),
       funcionario: undefined
     };
   }, []);
