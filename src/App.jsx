@@ -2,6 +2,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
 import history from './services/history';
 import store, { persistor } from './store';
 import RoutesController from './routes';

@@ -1,12 +1,12 @@
 import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
 
 import Input, { InputType } from '../../../../Input/Input';
 import InputHora from '../../../../Input/InputHora';
 import { especialidadesOptions } from '../../../../../config/enums';
 import { HorizontalContainer, VerticalContainer } from '../../../../../config/GlobalStyle';
 import colors from '../../../../../config/colors';
-import PropTypes from 'prop-types';
 
 StepFiltros.propTypes = {
   data: PropTypes.object.isRequired,

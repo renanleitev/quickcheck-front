@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Typography } from '@mui/material';
+
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import InputPessoal from '../../../components/Input/Content/InputPessoal';
 import InputContato from '../../../components/Input/Content/InputContato';

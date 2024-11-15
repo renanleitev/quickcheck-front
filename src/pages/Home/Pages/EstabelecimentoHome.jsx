@@ -2,6 +2,7 @@ import { Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
+
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import { RoutesList } from '../../../routes/enums';
 import colors from '../../../config/colors';

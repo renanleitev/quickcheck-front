@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
+
 import Input from '../Input';
 import { comorbidadesOptions, sexoOptions } from '../../../config/enums';
 import { numeroCartaoSUSRegex, numeroCartaoSUSFormat } from '../../../config/validationRegex';
-import PropTypes from 'prop-types';
 
 InputSaude.propTypes = {
   data: PropTypes.object.isRequired,

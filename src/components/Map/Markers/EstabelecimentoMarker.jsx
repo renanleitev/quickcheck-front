@@ -1,5 +1,6 @@
 import { Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
+
 import { hospitalIcon } from './MarkerIcons';
 
 EstabelecimentoMarker.propTypes = {

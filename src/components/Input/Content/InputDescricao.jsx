@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import PropTypes from 'prop-types';
+
 import Input from '../Input';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
 import ActionModal from '../../Modal/ActionModal';
-import PropTypes from 'prop-types';
 import colors from '../../../config/colors';
 
 InputDescricao.propTypes = {

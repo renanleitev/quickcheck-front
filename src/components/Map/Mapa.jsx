@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { getEstabelecimentos } from '../../store/modules/estabelecimentos/reducer';
 import { VerticalContainer } from '../../config/GlobalStyle';
 import MapDisplay from './Components/MapDisplay';

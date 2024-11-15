@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
+
 import Input from '../Input';
 import { telefoneFormat, telefoneRegex } from '../../../config/validationRegex';
-import PropTypes from 'prop-types';
 
 InputContato.propTypes = {
   data: PropTypes.object.isRequired,

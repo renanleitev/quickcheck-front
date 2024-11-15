@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+
 import colors from '../../../config/colors';
 import PerfilCard from '../../../components/Card/PerfilCard';
-import PropTypes from 'prop-types';
 
 Estabelecimento.propTypes = {
   entidade: PropTypes.object.isRequired

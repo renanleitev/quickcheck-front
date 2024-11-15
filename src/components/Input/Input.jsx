@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import colors from '../../config/colors';
 import { textMarshal } from 'text-marshal';
+import PropTypes from 'prop-types';
+
+import colors from '../../config/colors';
 
 const inputBorderRadius = '10px';
 

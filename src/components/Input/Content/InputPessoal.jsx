@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Input, { InputType } from '../Input';
 import { UserRoles } from '../../../config/enums';
 import {
@@ -8,7 +10,6 @@ import {
   onlyLettersRegex
 } from '../../../config/validationRegex';
 import { estabelecimentosOptions } from '../../../mocks/estabelecimentos';
-import PropTypes from 'prop-types';
 
 InputPessoal.propTypes = {
   data: PropTypes.object.isRequired,

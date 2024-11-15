@@ -192,7 +192,7 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
     >
       <VerticalContainer>
         <PerfilCard
-          estabelecimento={estabelecimento}
+          entidade={estabelecimento}
           subtitle={estabelecimento?.usuario?.endereco}
           hasMenu
           menu={

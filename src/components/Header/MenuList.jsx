@@ -7,8 +7,9 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+
 import colors from '../../config/colors';
 import { UserRoles, userLabels } from '../../config/enums';
 import useList from './useList';

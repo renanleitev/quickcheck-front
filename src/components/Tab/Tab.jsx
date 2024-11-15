@@ -1,5 +1,6 @@
 import { Tabs, Tab } from '@mui/material';
 import styled from 'styled-components';
+
 import colors from '../../config/colors';
 
 const tabWidth = '10rem';

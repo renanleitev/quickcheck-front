@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+
 import axiosInstance, { baseClientesURL, baseUsuariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
-import { toast } from 'react-toastify';
 
 // Atributos exclusivos de cliente
 export const initialCliente = {

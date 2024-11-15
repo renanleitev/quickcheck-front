@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Button } from '@mui/material';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
 
 import Input, { InputType } from '../../../../components/Input/Input';
 import InputHora from '../../../../components/Input/InputHora';
@@ -12,7 +13,6 @@ import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
 import { updateHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
-import PropTypes from 'prop-types';
 
 AgendamentoEditar.propTypes = {
   horario: PropTypes.object.isRequired,

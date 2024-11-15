@@ -1,5 +1,6 @@
-import Input, { InputType } from '../Input';
 import PropTypes from 'prop-types';
+
+import Input, { InputType } from '../Input';
 
 InputLogin.propTypes = {
   data: PropTypes.object.isRequired,

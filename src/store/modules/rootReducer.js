@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import { clientesReducer } from './clientes/reducer';
 import { funcionariosReducer } from './funcionarios/reducer';
 import { estabelecimentosReducer } from './estabelecimentos/reducer';

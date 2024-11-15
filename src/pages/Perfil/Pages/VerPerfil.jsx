@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+
 import { VerticalContainer } from '../../../config/GlobalStyle';
 import Cliente from '../Entidades/Cliente';
 import Estabelecimento from '../Entidades/Estabelecimento';

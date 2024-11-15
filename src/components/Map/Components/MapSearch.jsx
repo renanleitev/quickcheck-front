@@ -2,9 +2,9 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 import dayjs from 'dayjs';
-
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
 import {
   getEstabelecimentos,
@@ -17,7 +17,6 @@ import Input, { InputType } from '../../Input/Input';
 import InputHora from '../../Input/InputHora';
 import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
-import PropTypes from 'prop-types';
 import { getRoute } from '../../../hooks/getRoute';
 
 const buttonWidth = '20rem';

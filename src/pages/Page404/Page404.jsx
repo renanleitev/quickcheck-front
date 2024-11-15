@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
+
 import { VerticalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 import { RoutesList } from '../../routes/enums';

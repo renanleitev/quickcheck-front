@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
+
 import ClienteTable from './Visualizar/Tables/ClienteTable';
 import EstabelecimentoTable from './Visualizar/Tables/EstabelecimentoTable';
 import FuncionarioTable from './Visualizar/Tables/FuncionarioTable';

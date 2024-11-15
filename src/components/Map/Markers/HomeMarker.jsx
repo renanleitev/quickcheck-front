@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Popup, Marker, useMap } from 'react-leaflet';
+
 import { defaultCoords, zoomLevel } from '../../../config/enums';
 import { homeIcon } from './MarkerIcons';
 import { updateCoords } from '../../../store/modules/usuarios/reducer';

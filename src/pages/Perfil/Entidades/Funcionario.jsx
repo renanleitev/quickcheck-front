@@ -1,9 +1,10 @@
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+
 import colors from '../../../config/colors';
 import { formatBirthDate } from '../../../hooks/formatDate';
 import PerfilCard from '../../../components/Card/PerfilCard';
-import dayjs from 'dayjs';
-import PropTypes from 'prop-types';
 
 Funcionario.propTypes = {
   entidade: PropTypes.object.isRequired

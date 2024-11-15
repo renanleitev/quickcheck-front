@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
+
 import Input from '../Input';
 import { especialidadesOptions, sexoOptions } from '../../../config/enums';
 import { crmRegex } from '../../../config/validationRegex';
 import { HorizontalContainer } from '../../../config/GlobalStyle';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
-import PropTypes from 'prop-types';
 
 InputProfissao.propTypes = {
   data: PropTypes.object.isRequired,

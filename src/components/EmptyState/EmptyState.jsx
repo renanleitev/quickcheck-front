@@ -1,8 +1,10 @@
 import { Typography } from '@mui/material';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import PropTypes from 'prop-types';
+
 import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
-import PropTypes from 'prop-types';
+
 
 EmptyState.propTypes = {
   title: PropTypes.string,
