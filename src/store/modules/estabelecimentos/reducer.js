@@ -107,8 +107,8 @@ export const estabelecimentosSlice = createSlice({
   name: 'estabelecimentos',
   initialState,
   reducers: {
-    userHasSearched: (state) => {
-      state.hasSearched = true;
+    userHasSearched: (state, action) => {
+      state.hasSearched = action.payload.hasSearched;
     }
   },
   extraReducers(builder) {

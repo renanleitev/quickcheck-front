@@ -4,23 +4,23 @@ import dayjs from 'dayjs';
 import { Box, Drawer, MenuItem, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-import colors from '../../../config/colors';
-import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
+import colors from '../../../../config/colors';
+import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import StepInfo from './Steps/StepInfo';
 import StepFiltros from './Steps/StepFiltros';
 import StepHorarios from './Steps/StepHorarios';
 import StepConfirmar from './Steps/StepConfirmar';
-import StepButtons from '../../Step/StepButtons';
-import formatDate from '../../../hooks/formatDate';
+import StepButtons from '../../../Step/StepButtons';
+import formatDate from '../../../../hooks/formatDate';
 import {
   getHorariosByEstabelecimentoIdAndStatus,
   getHorariosByEstabelecimentoIdAndStatusAndEspecialidade,
   updateHorario
-} from '../../../store/modules/horarios/reducer';
-import PerfilCard from '../../Card/PerfilCard';
-import { AgendamentoStatus } from '../../../config/enums';
-import { formatCalendarDate } from '../../../hooks/formatDate';
-import RouteButton from '../../Button/RouteButton';
+} from '../../../../store/modules/horarios/reducer';
+import PerfilCard from '../../../Card/PerfilCard';
+import { AgendamentoStatus } from '../../../../config/enums';
+import { formatCalendarDate } from '../../../../hooks/formatDate';
+import RouteButton from '../../../Button/RouteButton';
 
 MapInfo.propTypes = {
   entidade: PropTypes.object,
@@ -226,7 +226,7 @@ export default function MapInfo({ entidade, open, setOpen, setCoordenadas }) {
           <Box sx={{ height: '23rem', overflow: 'auto' }}>{steps[activeStep].component}</Box>
           {/* Steps Buttons */}
           <HorizontalContainer
-            style={{ padding: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}
+            style={{ padding: '0.5rem', justifyContent: 'flex-end', alignItems: 'end' }}
           >
             {/* Mostra o botão de rotas apenas quando exibe a informação do estabelecimento */}
             {activeStep === 0 && (

@@ -6,7 +6,11 @@ import dayjs from 'dayjs';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 
-import { getEstabelecimentosByStatusAndEspecialidadeAndHorario } from '../../../store/modules/estabelecimentos/reducer';
+import {
+  getEstabelecimentos,
+  userHasSearched,
+  getEstabelecimentosByStatusAndEspecialidadeAndHorario
+} from '../../../store/modules/estabelecimentos/reducer';
 import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import Input, { InputType } from '../../Input/Input';
@@ -100,10 +104,20 @@ function MapSearch({ open, setOpen, setCoordenadas }) {
     setOpen
   ]);
 
+  const handleClose = () => {
+    // Fecha o drawer
+    setOpen(false);
+    // Se não tiver estabelecimentos, realiza a busca novamente e redefine o status de pesquisa
+    if (!hasEstabelecimentos) {
+      dispatch(getEstabelecimentos());
+      dispatch(userHasSearched({ hasSearched: false }));
+    }
+  };
+
   return (
     <Drawer
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       anchor="bottom"
       PaperProps={{
         sx: {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
 import MapButtons from './MapButtons';
 import MapSearch from './MapSearch';
-import MapInfo from '../Info/MapInfo';
+import MapInfo from './MapInfo/MapInfo';
 import HomeMarker from '../Markers/HomeMarker';
 import HospitalMarker from '../Markers/HospitalMarker';
 import { defaultCoords, zoomLevel } from '../../../config/enums';

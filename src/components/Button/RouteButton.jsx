@@ -1,4 +1,4 @@
-import { Fab } from '@mui/material';
+import { Button } from '@mui/material';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -35,12 +35,12 @@ export default function RouteButton({ coordenadas, setCoordenadas, onClick }) {
     onClick();
     getCoords();
     toast.success('Rota calculada com sucesso!');
-    dispatch(userHasSearched());
+    dispatch(userHasSearched({ hasSearched: true }));
   };
 
   return (
-    <Fab onClick={handleClick} variant="extended" color="success">
+    <Button onClick={handleClick} variant="contained" color="success">
       Rotas <NearMeIcon sx={{ marginLeft: '0.5rem' }} />
-    </Fab>
+    </Button>
   );
 }

@@ -1,9 +1,9 @@
 import { Avatar, Box, CardHeader, Checkbox, Typography } from '@mui/material';
-import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
-import colors from '../../../../config/colors';
+import { VerticalContainer, HorizontalContainer } from '../../../../../config/GlobalStyle';
+import colors from '../../../../../config/colors';
 import PropTypes from 'prop-types';
-import formatDate from '../../../../hooks/formatDate';
-import EmptyState from '../../../EmptyState/EmptyState';
+import formatDate from '../../../../../hooks/formatDate';
+import EmptyState from '../../../../EmptyState/EmptyState';
 
 StepHorarios.propTypes = {
   data: PropTypes.object.isRequired,
