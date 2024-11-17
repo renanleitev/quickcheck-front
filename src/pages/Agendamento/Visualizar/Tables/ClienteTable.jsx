@@ -69,14 +69,18 @@ export default function ClienteTable() {
 
   // Obtendo os horários
   useEffect(() => {
-      dispatch(getHorariosByClienteAndStatus(clienteData));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getHorariosByClienteAndStatus(clienteData));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <Box sx={{ alignSelf: 'flex-start' }}>
-        <ClienteFilter data={clienteData} setData={setClienteData} />
+        <ClienteFilter
+          data={clienteData}
+          setData={setClienteData}
+          initialData={initialClienteData}
+        />
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
