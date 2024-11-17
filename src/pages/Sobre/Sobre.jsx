@@ -8,7 +8,7 @@ export default function Sobre() {
           Sobre o QuickCheck
         </Typography>
         <Box marginBottom={2}>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1">
             O QuickCheck é um aplicativo inovador projetado para facilitar o processo de marcação de
             consultas médicas. Nossa missão é simplificar a vida dos usuários, proporcionando uma
             plataforma intuitiva e eficiente para encontrar médicos, agendar consultas e gerenciar o
