@@ -1,0 +1,64 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Button, Drawer, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+
+import Input from '../../../../components/Input/Input';
+import { VerticalContainer } from '../../../../config/GlobalStyle';
+import { especialidadesOptions, agendamentoStatusOptions } from '../../../../config/enums';
+import { getHorariosByClienteAndStatus } from '../../../../store/modules/horarios/reducer';
+
+ClienteFilter.propTypes = {
+  data: PropTypes.object.isRequired,
+  setData: PropTypes.func.isRequired
+};
+
+export default function ClienteFilter({ data, setData }) {
+  const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    dispatch(getHorariosByClienteAndStatus({ ...data }));
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Pesquisar
+      </Button>
+      <Drawer open={open} onClose={() => setOpen(false)}>
+        <VerticalContainer style={{ padding: '2rem' }}>
+          <Typography variant="h4">Pesquisar</Typography>
+          <Input
+            data={data}
+            setData={setData}
+            keyName="nomeEstabelecimento"
+            placeholder="Hospital/Clínica"
+          />
+          <Input data={data} setData={setData} keyName="nomeFuncionario" placeholder="Médico" />
+          <Input
+            data={data}
+            setData={setData}
+            keyName="especialidade"
+            placeholder="Especialidade"
+            select
+            selectList={especialidadesOptions}
+          />
+          <Input
+            data={data}
+            setData={setData}
+            keyName="status"
+            placeholder="Status"
+            select
+            selectList={agendamentoStatusOptions}
+          />
+          <Button variant="contained" color="success" onClick={handleSearch}>
+            Pesquisar
+          </Button>
+        </VerticalContainer>
+      </Drawer>
+    </>
+  );
+}

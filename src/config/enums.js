@@ -14,6 +14,14 @@ export const AgendamentoStatus = {
   PENDENTE: 'PENDENTE'
 };
 
+export const agendamentoStatusOptions = [
+  {value: AgendamentoStatus.AGENDADO, label: 'Agendado'},
+  {value: AgendamentoStatus.DISPONÍVEL, label: 'Disponivel'},
+  {value: AgendamentoStatus.CANCELADO, label: 'Cancelado'},
+  {value: AgendamentoStatus.CONCLUÍDO, label: 'Concluído'},
+  {value: AgendamentoStatus.PENDENTE, label: 'Pendente'},
+]
+
 export const UserRoles = {
   CLIENTE: 'CLIENTE',
   FUNCIONARIO: 'FUNCIONARIO',
