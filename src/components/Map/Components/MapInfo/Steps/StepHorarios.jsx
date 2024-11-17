@@ -1,10 +1,13 @@
 import { Avatar, Box, CardHeader, Checkbox, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { VerticalContainer, HorizontalContainer } from '../../../../../config/GlobalStyle';
 import colors from '../../../../../config/colors';
 import formatDate from '../../../../../hooks/formatDate';
 import EmptyState from '../../../../EmptyState/EmptyState';
+import fetchStatus from '../../../../../config/fetchStatus';
+import LoadingProgress from '../../../../Loading/LoadingProgress';
 
 StepHorarios.propTypes = {
   data: PropTypes.object.isRequired,
@@ -14,6 +17,16 @@ StepHorarios.propTypes = {
 };
 
 export default function StepHorarios({ data, setData, setFuncionario, horarios }) {
+  const status = useSelector((state) => state?.horarios?.fetchStatus) || fetchStatus.IDLE;
+
+  if (status === fetchStatus.PENDING) {
+    return (
+      <Box p="2rem">
+        <LoadingProgress />
+      </Box>
+    );
+  }
+
   return (
     <VerticalContainer style={{ rowGap: '0rem', padding: '1rem' }}>
       <Typography variant="h5" color={colors.primaryWhiteColor}>

@@ -1,24 +1,27 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
+import dayjs from 'dayjs';
 
 import MapButtons from './MapButtons';
 import MapSearch from './MapSearch';
 import MapInfo from './MapInfo/MapInfo';
 import HomeMarker from '../Markers/HomeMarker';
 import EstabelecimentoMarker from '../Markers/EstabelecimentoMarker';
-import { defaultCoords, zoomLevel } from '../../../config/enums';
+import {
+  AgendamentoStatus,
+  defaultCoords,
+  zoomLevel,
+  especialidadesOptions
+} from '../../../config/enums';
+import { formatCalendarDate } from '../../../hooks/formatDate';
+import { resetHorarios } from '../../../store/modules/horarios/reducer';
+import { setEstabelecimentoCoords } from '../../../store/modules/estabelecimentos/reducer';
 
 export default function MapDisplay() {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
 
-  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
-  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
-
-  const hasEstabelecimentos = estabelecimentos?.length > 0;
-
-  const latitudeEstabelecimento = hasEstabelecimentos ? estabelecimentos[0]?.latitude : 0;
-  const longitudeEstabelecimento = hasEstabelecimentos ? estabelecimentos[0]?.longitude : 0;
+  const dispatch = useDispatch();
 
   // Para abrir o drawer de pesquisa (MapSearch)
   const [openSearch, setOpenSearch] = useState(false);
@@ -28,23 +31,30 @@ export default function MapDisplay() {
   // Estabelecimento escolhido pelo usuário (quando clica no ícone e abre o drawer = MapInfo)
   const [estabelecimento, setEstabelecimento] = useState(undefined);
 
-  // Coordenadas utilizadas para calcular o trajeto do cliente ao estabelecimento
-  const initialCoordenadas = {
-    latitudeCliente: Number.parseFloat(latitudeCliente),
-    longitudeCliente: Number.parseFloat(longitudeCliente),
-    latitudeEstabelecimento: Number.parseFloat(latitudeEstabelecimento),
-    longitudeEstabelecimento: Number.parseFloat(longitudeEstabelecimento)
-  };
-  const [coordenadas, setCoordenadas] = useState(initialCoordenadas);
-
   // Coordenadas que desenham o trajeto do cliente ao estabelecimento
   const [waypoints, setWaypoints] = useState([]);
 
-  // Redefinindo a rota desenhada
+  // Redefinindo a rota desenhada, as coordenadas do estabelecimento e os horários
   const handleResetSearch = () => {
     setWaypoints([]);
-    setCoordenadas(initialCoordenadas);
+    dispatch(setEstabelecimentoCoords({ latitude: 0, longitude: 0 }));
+    dispatch(resetHorarios());
   };
+
+  // Agendamento inicial (antes de confirmar a consulta)
+  const initialAgendamento = useMemo(() => {
+    return {
+      status: AgendamentoStatus.DISPONÍVEL,
+      nomeFuncionario: '',
+      nomeEstabelecimento: '',
+      horarioHora: dayjs(),
+      horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
+      especialidade: especialidadesOptions[0].value,
+      horario: undefined // O horário que o usuário seleciona para agendar a consulta
+    };
+  }, []);
+
+  const [agendamento, setAgendamento] = useState(initialAgendamento);
 
   return (
     <MapContainer
@@ -69,6 +79,8 @@ export default function MapDisplay() {
             onClick={() => {
               setEstabelecimento(estabelecimento);
               setOpenInfo(true);
+              // Limpando os horários, caso o usuário tenha pesquisado antes
+              dispatch(resetHorarios());
             }}
           />
         );
@@ -78,15 +90,18 @@ export default function MapDisplay() {
         open={openSearch}
         setOpen={setOpenSearch}
         setWaypoints={setWaypoints}
-        coordenadas={coordenadas}
+        agendamento={agendamento}
+        setAgendamento={setAgendamento}
       />
       <MapInfo
         estabelecimento={estabelecimento}
         open={openInfo}
         setOpen={setOpenInfo}
-        setCoordenadas={setCoordenadas}
+        agendamento={agendamento}
+        setAgendamento={setAgendamento}
+        initialAgendamento={initialAgendamento}
       />
-      {waypoints.length > 0 && <Polyline positions={waypoints} />}
+      {waypoints?.length > 0 && <Polyline positions={waypoints} />}
     </MapContainer>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import { Box, Drawer, MenuItem, Typography } from '@mui/material';
@@ -12,93 +12,89 @@ import StepHorarios from './Steps/StepHorarios';
 import StepConfirmar from './Steps/StepConfirmar';
 import StepButtons from '../../../Step/StepButtons';
 import formatDate from '../../../../hooks/formatDate';
-import {
-  getHorariosByEstabelecimentoIdAndStatus,
-  getHorariosByEstabelecimentoIdAndStatusAndEspecialidade,
-  updateHorario
-} from '../../../../store/modules/horarios/reducer';
+import { searchHorarios, updateHorario } from '../../../../store/modules/horarios/reducer';
 import PerfilCard from '../../../Card/PerfilCard';
 import { AgendamentoStatus } from '../../../../config/enums';
-import { formatCalendarDate } from '../../../../hooks/formatDate';
 import RouteButton from '../../../Button/RouteButton';
+import fetchStatus from '../../../../config/fetchStatus';
+import { setEstabelecimentoCoords } from '../../../../store/modules/estabelecimentos/reducer';
 
 MapInfo.propTypes = {
   estabelecimento: PropTypes.object,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-  setCoordenadas: PropTypes.func.isRequired
+  agendamento: PropTypes.object.isRequired,
+  setAgendamento: PropTypes.func.isRequired,
+  initialAgendamento: PropTypes.object.isRequired
 };
 
-export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas }) {
+export default function MapInfo({
+  estabelecimento,
+  open,
+  setOpen,
+  agendamento,
+  setAgendamento,
+  initialAgendamento
+}) {
   const dispatch = useDispatch();
 
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
-  const cliente = useSelector((state) => state?.usuarios?.estabelecimento) || undefined;
+  const updateFetchStatus =
+    useSelector((state) => state?.horarios?.updateFetchStatus) || fetchStatus.IDLE;
 
-  const latitudeEstabelecimento = estabelecimento?.latitude;
-  const longitudeEstabelecimento = estabelecimento?.longitude;
-
-  const latitudeCliente = useSelector((state) => state?.usuarios?.latitude);
-  const longitudeCliente = useSelector((state) => state?.usuarios?.longitude);
-
-  // Coordenadas para calcular a rota entre o cliente e o estabelecimento
-  const coordenadasPesquisa = {
-    latitudeEstabelecimento: Number.parseFloat(latitudeEstabelecimento),
-    longitudeEstabelecimento: Number.parseFloat(longitudeEstabelecimento),
-    latitudeCliente: Number.parseFloat(latitudeCliente),
-    longitudeCliente: Number.parseFloat(longitudeCliente)
-  };
+  const cliente = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const [activeStep, setActiveStep] = useState(0);
 
-  const initialAgendamento = useMemo(() => {
-    return {
-      especialidade: '',
-      horario: undefined,
-      horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-      horarioHora: dayjs(),
-      funcionario: undefined
-    };
-  }, []);
-
-  const [agendamento, setAgendamento] = useState(initialAgendamento);
-
   // Perfil do funcionario selecionadp
   const [funcionario, setFuncionario] = useState(undefined);
-
-  // Obtendo os horários
-  useEffect(() => {
-    if (estabelecimento !== undefined) {
-      dispatch(
-        getHorariosByEstabelecimentoIdAndStatus({
-          estabelecimentoId: estabelecimento?.id,
-          status: AgendamentoStatus.DISPONÍVEL
-        })
-      );
-    }
-  }, [dispatch, estabelecimento]);
-
-  // Quando muda a especialidade, realiza uma nova pesquisa
-  useEffect(() => {
-    if (agendamento.especialidade !== '') {
-      dispatch(
-        getHorariosByEstabelecimentoIdAndStatusAndEspecialidade({
-          estabelecimentoId: estabelecimento?.id,
-          especialidade: agendamento.especialidade,
-          status: AgendamentoStatus.DISPONÍVEL
-        })
-      );
-    }
-  }, [agendamento.especialidade, dispatch, estabelecimento?.id]);
 
   // Redefinindo o estado geral quando muda de estabelecimento
   useEffect(() => {
     setActiveStep(0);
     setAgendamento(initialAgendamento);
-  }, [estabelecimento, initialAgendamento]);
+  }, [initialAgendamento, setAgendamento]);
+
+  // Redefinindo a aplicação para o estado inicial
+  const handleReset = useCallback(() => {
+    setOpen(false);
+    setAgendamento(initialAgendamento);
+    setFuncionario(undefined);
+    setActiveStep(0);
+  }, [initialAgendamento, setAgendamento, setOpen]);
+
+  // Pesquisando horários de acordo com os filtros aplicados
+  const handleSearch = useCallback(() => {
+    // Horário que será salvo no banco de dados
+    const hora = dayjs(agendamento.horarioHora).format('HH:mm:ss');
+    dispatch(
+      searchHorarios({
+        ...agendamento,
+        nomeEstabelecimento: estabelecimento?.nome ?? '',
+        horarioAtendimento: `${agendamento.horarioAtendimento}T${hora}` // Pesquisando horários a partir dessa data
+      })
+    );
+    setActiveStep(activeStep + 1);
+  }, [activeStep, agendamento, dispatch, estabelecimento?.nome]);
+
+  // Confirmando o agendamento
+  const handleConfirm = useCallback(() => {
+    const horario = {
+      ...agendamento.horario,
+      cliente: { ...cliente },
+      status: AgendamentoStatus.AGENDADO,
+      horarioAgendamento: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
+      mensagemSucesso: 'Consulta agendada com sucesso!'
+    };
+    dispatch(updateHorario({ horario }));
+    if (updateFetchStatus === fetchStatus.SUCCESS) {
+      setActiveStep(activeStep + 1);
+    }
+  }, [activeStep, agendamento.horario, cliente, dispatch, updateFetchStatus]);
 
   const steps = [
+    // Card com imagem do estabelecimento
     {
       component: (
         <StepInfo
@@ -108,9 +104,18 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
           alignItems="flex-start"
         />
       ),
-      block: false
+      block: false,
+      onCallApi: () => {},
+      isCallingApi: false
     },
-    { component: <StepFiltros data={agendamento} setData={setAgendamento} />, block: false },
+    // Filtros de pesquisa (para filtrar os horários disponíveis)
+    {
+      component: <StepFiltros data={agendamento} setData={setAgendamento} />,
+      onCallApi: handleSearch,
+      block: false,
+      isCallingApi: true // Chama a API para pesquisar os horários disponíveis
+    },
+    // Lista dos horários disponíveis, sendo possível ver o perfil do médico
     {
       component: funcionario ? (
         <StepInfo
@@ -127,8 +132,11 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
           horarios={horarios}
         />
       ),
-      block: true // Bloqueia o next button para impedir que o usuário avance sem ter escolhido uma opção
+      block: true, // Bloqueia o next button para impedir que o usuário avance sem ter escolhido uma opção
+      onCallApi: () => {},
+      isCallingApi: false
     },
+    // Confirmando a consulta
     {
       component: (
         <StepConfirmar
@@ -138,39 +146,25 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
           descricao={agendamento?.horario?.descricao}
         />
       ),
-      block: false
+      block: false,
+      onCallApi: handleConfirm,
+      isCallingApi: true // Chama a API para confirmar a consulta
+    },
+    // Consulta confirmada com sucesso
+    {
+      component: (
+        <StepConfirmar
+          title="Consulta confirmada com sucesso!"
+          funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
+          horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
+          descricao="Lembre-se de chegar com 30 minutos de antecedência."
+        />
+      ),
+      block: false,
+      onCallApi: () => {},
+      isCallingApi: false
     }
-    // {
-    //   component: (
-    //     <StepConfirmar
-    //       title="Consulta confirmada com sucesso!"
-    //       funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
-    //       horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-    //       descricao="Lembre-se de chegar com 30 minutos de antecedência."
-    //     />
-    //   ),
-    //   block: false
-    // }
   ];
-
-  const handleReset = useCallback(() => {
-    setOpen(false);
-    setAgendamento(initialAgendamento);
-    setFuncionario(undefined);
-    setActiveStep(0);
-  }, [initialAgendamento, setOpen]);
-
-  const handleConfirm = useCallback(() => {
-    const horario = {
-      ...agendamento.horario,
-      cliente: { ...cliente },
-      status: AgendamentoStatus.AGENDADO,
-      horarioAgendamento: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
-      mensagemSucesso: 'Consulta agendada com sucesso!'
-    };
-    dispatch(updateHorario({ horario }));
-    handleReset();
-  }, [agendamento.horario, cliente, dispatch, handleReset]);
 
   // Redefinindo quando fecha o drawer
   useEffect(() => {
@@ -234,7 +228,12 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
               <HorizontalContainer style={{ marginRight: 'auto' }}>
                 <RouteButton
                   onClick={() => {
-                    setCoordenadas({ ...coordenadasPesquisa });
+                    dispatch(
+                      setEstabelecimentoCoords({
+                        latitude: Number.parseFloat(estabelecimento?.latitude ?? 0),
+                        longitude: Number.parseFloat(estabelecimento?.longitude ?? 0)
+                      })
+                    );
                     setOpen(false);
                   }}
                 />
@@ -247,10 +246,11 @@ export default function MapInfo({ estabelecimento, open, setOpen, setCoordenadas
               stepsNumber={steps.length}
               nextStepLabel="Agendar"
               disableNextButton={steps[activeStep].block && agendamento?.horario === undefined}
-              // isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
+              isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
               hasCustomReturnStep={funcionario !== undefined} // Quando houver um funcionário selecionado, retorna para o mesmo step (horarios)
               onCustomReturnStep={() => setFuncionario(undefined)} // Remove funcionário, mas mantém no mesmo step anterior (horarios)
-              onCallApi={handleConfirm}
+              onCallApi={steps[activeStep].onCallApi}
+              isCallingApi={steps[activeStep].isCallingApi}
             />
           </HorizontalContainer>
         </PerfilCard>

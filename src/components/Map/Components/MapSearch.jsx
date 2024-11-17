@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 import dayjs from 'dayjs';
@@ -15,8 +15,7 @@ import colors from '../../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../../config/GlobalStyle';
 import Input, { InputType } from '../../Input/Input';
 import InputHora from '../../Input/InputHora';
-import { AgendamentoStatus, especialidadesOptions, zoomLevel } from '../../../config/enums';
-import { formatCalendarDate } from '../../../hooks/formatDate';
+import { especialidadesOptions, zoomOutLevel } from '../../../config/enums';
 import { getRoute } from '../../../hooks/getRoute';
 
 const buttonWidth = '20rem';
@@ -26,71 +25,76 @@ MapSearch.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   setWaypoints: PropTypes.func.isRequired,
-  coordenadas: PropTypes.object
+  agendamento: PropTypes.object.isRequired,
+  setAgendamento: PropTypes.func.isRequired
 };
 
-function MapSearch({ open, setOpen, setWaypoints, coordenadas }) {
+function MapSearch({ open, setOpen, setWaypoints, agendamento, setAgendamento }) {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) || [];
+
   const hasEstabelecimentos = estabelecimentos?.length > 0 || false;
 
-  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) || false;
+  const latitudeEstabelecimento = Number.parseFloat(
+    useSelector((state) => state?.estabelecimentos?.latitude) ?? 0
+  );
+  const longitudeEstabelecimento = Number.parseFloat(
+    useSelector((state) => state?.estabelecimentos?.longitude) ?? 0
+  );
+
+  const hasEstabelecimentoCoords = latitudeEstabelecimento !== 0 && longitudeEstabelecimento !== 0;
+
+  const latitudeCliente = Number.parseFloat(useSelector((state) => state?.usuarios?.latitude));
+  const longitudeCliente = Number.parseFloat(useSelector((state) => state?.usuarios?.longitude));
 
   const dispatch = useDispatch();
 
   const map = useMap();
 
-  const initialData = useMemo(() => {
-    return {
-      status: AgendamentoStatus.DISPONÍVEL,
-      nomeFuncionario: '',
-      nomeEstabelecimento: '',
-      horarioHora: dayjs(),
-      horarioAtendimento: formatCalendarDate(new Date().toISOString()), // Convertendo para o formato yyyy-MM-dd
-      especialidade: especialidadesOptions[0].value
-    };
-  }, []);
-
-  const [data, setData] = useState(initialData);
-
   const handleSearch = () => {
     // Horário que será salvo no banco de dados
-    const hora = dayjs(data.horarioHora).format('HH:mm:ss');
+    const hora = dayjs(agendamento.horarioHora).format('HH:mm:ss');
     dispatch(
       getEstabelecimentosByStatusAndEspecialidadeAndHorario({
-        ...data,
-        horarioAtendimento: `${data.horarioAtendimento}T${hora}` // Pesquisando horários a partir dessa data
+        ...agendamento,
+        horarioAtendimento: `${agendamento.horarioAtendimento}T${hora}` // Pesquisando horários a partir dessa data
       })
     );
   };
 
   // Calculando a rota do cliente até o estabelecimento
   useEffect(() => {
-    if (hasEstabelecimentos && hasSearched) {
+    if (hasEstabelecimentos && hasEstabelecimentoCoords) {
       // Convertendo as coordenadas para o formato de pesquisa
-      const coordenadasPesquisa = [
-        { latitude: coordenadas.latitudeCliente, longitude: coordenadas.longitudeCliente },
+      const coords = [
+        { latitude: latitudeCliente, longitude: longitudeCliente },
         {
-          latitude: coordenadas.latitudeEstabelecimento,
-          longitude: coordenadas.longitudeEstabelecimento
+          latitude: latitudeEstabelecimento,
+          longitude: longitudeEstabelecimento
         }
       ];
       // Função para obter as rotas
       async function getCoords() {
-        const waypoints = await getRoute(coordenadasPesquisa);
+        const waypoints = await getRoute(coords);
         setWaypoints(waypoints);
       }
       // TODO: Navegar até o primeiro estabelecimento assinante (propaganda?)
-      map.flyTo(
-        [coordenadas.latitudeEstabelecimento, coordenadas.longitudeEstabelecimento],
-        zoomLevel
-      );
-      // Redefinindo o estado de pesquisa
+      map.flyTo([latitudeEstabelecimento, longitudeEstabelecimento], zoomOutLevel);
+      // Fechando o modal
       setOpen(false);
-      setData(initialData);
       // Definindo a rota do cliente até o estabelecimento
       getCoords();
     }
-  }, [coordenadas, hasEstabelecimentos, hasSearched, initialData, map, setOpen, setWaypoints]);
+  }, [
+    hasEstabelecimentoCoords,
+    hasEstabelecimentos,
+    latitudeCliente,
+    latitudeEstabelecimento,
+    longitudeCliente,
+    longitudeEstabelecimento,
+    map,
+    setOpen,
+    setWaypoints
+  ]);
 
   const handleClose = () => {
     // Fecha o drawer
@@ -115,22 +119,22 @@ function MapSearch({ open, setOpen, setWaypoints, coordenadas }) {
     >
       <VerticalContainer style={{ padding: '2rem' }}>
         <Input
-          data={data}
-          setData={setData}
+          data={agendamento}
+          setData={setAgendamento}
           placeholder="Hospital ou Clínica"
           keyName="nomeEstabelecimento"
           inputWidth={inputWidth}
         />
         <Input
-          data={data}
-          setData={setData}
+          data={agendamento}
+          setData={setAgendamento}
           placeholder="Médico"
           keyName="nomeFuncionario"
           inputWidth={inputWidth}
         />
         <Input
-          data={data}
-          setData={setData}
+          data={agendamento}
+          setData={setAgendamento}
           placeholder="Especialidade"
           keyName="especialidade"
           inputWidth={inputWidth}
@@ -139,16 +143,16 @@ function MapSearch({ open, setOpen, setWaypoints, coordenadas }) {
         />
         <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
           <Input
-            data={data}
-            setData={setData}
+            data={agendamento}
+            setData={setAgendamento}
             placeholder="Data"
             keyName="horarioAtendimento"
             inputType={InputType.DATE}
           />
           <InputHora
-            data={data}
-            setData={setData}
-            hora={dayjs(data.horarioHora)}
+            data={agendamento}
+            setData={setAgendamento}
+            hora={dayjs(agendamento.horarioHora)}
             keyName="horarioHora"
           />
         </HorizontalContainer>

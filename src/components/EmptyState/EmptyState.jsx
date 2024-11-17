@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
 import colors from '../../config/colors';
 
-
 EmptyState.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string

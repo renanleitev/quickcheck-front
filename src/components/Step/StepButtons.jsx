@@ -14,6 +14,7 @@ StepButtons.propTypes = {
   isSetupFinished: PropTypes.bool,
   onValidateForm: PropTypes.func,
   onCallApi: PropTypes.func,
+  isCallingApi: PropTypes.bool,
   hasCustomReturnStep: PropTypes.bool,
   onCustomReturnStep: PropTypes.func
 };
@@ -28,17 +29,18 @@ export default function StepButtons({
   isSetupFinished = false,
   onValidateForm,
   onCallApi,
+  isCallingApi = false,
   hasCustomReturnStep,
   onCustomReturnStep
 }) {
   const handleNext = useCallback(() => {
     onValidateForm && onValidateForm();
-    if (onCallApi && activeStep === stepsNumber - 1) {
+    if (onCallApi && isCallingApi) {
       onCallApi();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-  }, [activeStep, onValidateForm, onCallApi, setActiveStep, stepsNumber]);
+  }, [onValidateForm, onCallApi, isCallingApi, setActiveStep]);
 
   const handleBack = () => {
     if (activeStep === 0 || isSetupFinished) {

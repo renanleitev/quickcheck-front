@@ -15,6 +15,7 @@ export const initialHorario = {
 
 export const initialState = {
   fetchStatus: fetchStatus.IDLE,
+  updateFetchStatus: fetchStatus.IDLE,
   error: '',
   horarios: []
 };
@@ -29,34 +30,6 @@ export const getHorarios = createAsyncThunk('horarios/getHorarios', async () => 
   }
 });
 
-export const getHorariosByEstabelecimentoIdAndStatus = createAsyncThunk(
-  'horarios/getHorariosByEstabelecimentoIdAndStatus',
-  async ({ estabelecimentoId, status }) => {
-    try {
-      const url = `${baseHorariosURL}/search?estabelecimentoId=${estabelecimentoId}&status=${status}`;
-      const response = await axiosInstance.get(url);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Não foi possível obter os dados');
-    }
-  }
-);
-
-export const getHorariosByEstabelecimentoIdAndStatusAndEspecialidade = createAsyncThunk(
-  'horarios/getHorariosByEstabelecimentoIdAndStatusAndEspecialidade',
-  async ({ estabelecimentoId, status, especialidade }) => {
-    try {
-      const url = `${baseHorariosURL}/search?estabelecimentoId=${estabelecimentoId}&status=${status}&especialidade=${especialidade}`;
-      const response = await axiosInstance.get(url);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Não foi possível obter os dados');
-    }
-  }
-);
-
 export const updateHorario = createAsyncThunk('horarios/updateHorario', async ({ horario }) => {
   try {
     const url = `${baseHorariosURL}/${horario.id}`;
@@ -64,7 +37,7 @@ export const updateHorario = createAsyncThunk('horarios/updateHorario', async ({
     return horario;
   } catch (error) {
     console.log(error);
-    throw new Error('Não foi possível atualizar os dados');
+    throw new Error('Houve um erro. Por favor, tente novamente mais tarde.');
   }
 });
 
@@ -78,9 +51,31 @@ export const createHorario = createAsyncThunk('horarios/createHorario', async ({
   }
 });
 
+export const searchHorarios = createAsyncThunk(
+  'estabelecimentos/searchHorarios',
+  async ({ horarioAtendimento, status, especialidade, nomeFuncionario, nomeEstabelecimento }) => {
+    try {
+      const url = `${baseHorariosURL}/search/estabelecimentos?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
+      const response = await axiosInstance.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível obter os dados');
+    }
+  }
+);
+
 export const horariosSlice = createSlice({
   name: 'horarios',
   initialState,
+  reducers: {
+    resetHorarios: (state) => {
+      state.horarios = [];
+      state.fetchStatus = fetchStatus.IDLE;
+      state.updateFetchStatus = fetchStatus.IDLE;
+      state.error = '';
+    }
+  },
   extraReducers(builder) {
     builder
       // getHorarios
@@ -92,19 +87,6 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getHorarios.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
-        state.error = action.error.message || errorMessage;
-        toast.error(state.error);
-      })
-      // getHorariosByEstabelecimentoIdAndStatus
-      .addCase(getHorariosByEstabelecimentoIdAndStatus.fulfilled, (state, action) => {
-        state.fetchStatus = fetchStatus.SUCCESS;
-        state.horarios = action.payload;
-      })
-      .addCase(getHorariosByEstabelecimentoIdAndStatus.pending, (state) => {
-        state.fetchStatus = fetchStatus.PENDING;
-      })
-      .addCase(getHorariosByEstabelecimentoIdAndStatus.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
@@ -122,6 +104,25 @@ export const horariosSlice = createSlice({
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       })
+      // searchHorarios
+      .addCase(searchHorarios.fulfilled, (state, action) => {
+        if (action.payload.length > 0) {
+          toast.success(`Encontrado(s) ${action.payload.length} resultado(s)`);
+          state.fetchStatus = fetchStatus.SUCCESS;
+          state.horarios = action.payload;
+        } else {
+          toast.error('Não foi possível encontrar resultados');
+          state.fetchStatus = fetchStatus.FAILURE;
+          state.horarios = action.payload;
+        }
+      })
+      .addCase(searchHorarios.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(searchHorarios.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
       // updateHorario
       .addCase(updateHorario.fulfilled, (state, action) => {
         state.horarios.forEach((horario, index) => {
@@ -129,7 +130,8 @@ export const horariosSlice = createSlice({
             state.horarios[index] = { ...action.payload };
           }
         });
-        state.fetchStatus = fetchStatus.SUCCESS;
+        state.updateFetchStatus = fetchStatus.SUCCESS;
+        state.error = '';
         if (action.payload?.mensagemSucesso) {
           toast.success(action.payload?.mensagemSucesso);
         } else {
@@ -154,14 +156,16 @@ export const horariosSlice = createSlice({
         }
       })
       .addCase(updateHorario.pending, (state) => {
-        state.fetchStatus = fetchStatus.PENDING;
+        state.updateFetchStatus = fetchStatus.PENDING;
       })
       .addCase(updateHorario.rejected, (state, action) => {
-        state.fetchStatus = fetchStatus.FAILURE;
+        state.updateFetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       });
   }
 });
+
+export const { resetHorarios } = horariosSlice.actions;
 
 export const horariosReducer = horariosSlice.reducer;

@@ -22,6 +22,8 @@ export const initialEstabelecimento = {
 export const initialState = {
   fetchStatus: fetchStatus.IDLE,
   hasSearched: false,
+  latitude: 0,
+  longitude: 0,
   error: '',
   estabelecimento: initialEstabelecimento,
   estabelecimentos: []
@@ -110,6 +112,10 @@ export const estabelecimentosSlice = createSlice({
   reducers: {
     userHasSearched: (state, action) => {
       state.hasSearched = action.payload.hasSearched;
+    },
+    setEstabelecimentoCoords: (state, action) => {
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
     }
   },
   extraReducers(builder) {
@@ -146,10 +152,16 @@ export const estabelecimentosSlice = createSlice({
           toast.success(`Encontrado(s) ${estabelecimentos.length} resultado(s)`);
           state.fetchStatus = fetchStatus.SUCCESS;
           state.estabelecimentos = estabelecimentos;
+          state.latitude = estabelecimentos[0]?.latitude ?? 0;
+          state.longitude = estabelecimentos[0]?.longitude ?? 0;
           state.hasSearched = true;
         } else {
           toast.error('Não foi possível encontrar resultados');
+          state.fetchStatus = fetchStatus.FAILURE;
           state.estabelecimentos = estabelecimentos;
+          state.latitude = 0;
+          state.longitude = 0;
+          state.hasSearched = false;
         }
       })
       .addCase(getEstabelecimentosByStatusAndEspecialidadeAndHorario.pending, (state) => {
@@ -190,6 +202,6 @@ export const estabelecimentosSlice = createSlice({
   }
 });
 
-export const { userHasSearched } = estabelecimentosSlice.actions;
+export const { userHasSearched, setEstabelecimentoCoords } = estabelecimentosSlice.actions;
 
 export const estabelecimentosReducer = estabelecimentosSlice.reducer;

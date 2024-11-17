@@ -25,7 +25,7 @@ export default function StepFiltros({ data, setData }) {
         <Input
           data={data}
           setData={setData}
-          keyName="nome"
+          keyName="nomeFuncionario"
           placeholder="Médico"
           inputWidth={inputWidth}
         />
