@@ -11,8 +11,9 @@ import EditarPerfil from '../pages/Perfil/Pages/EditarPerfil';
 import AlterarSenha from '../pages/Perfil/Pages/AlterarSenha';
 import Agendamento from '../pages/Agendamento/Agendamento';
 import history from '../services/history';
-import { RoutesList } from './enums';
 import Ajuda from '../pages/Ajuda/Ajuda';
+import Sobre from '../pages/Sobre/Sobre';
+import { RoutesList } from './enums';
 
 export default function RoutesController() {
   const isLoggedIn = useSelector((state) => state?.usuarios?.isLoggedIn) || false;
@@ -45,6 +46,7 @@ export default function RoutesController() {
       <Route path={RoutesList.AlterarSenha} element={handleAuth(<AlterarSenha />)} />
       <Route path={RoutesList.AgendamentosLista} element={handleAuth(<Agendamento />)} />
       <Route path={RoutesList.Ajuda} element={handleAuth(<Ajuda />)} />
+      <Route path={RoutesList.Sobre} element={handleAuth(<Sobre />)} />
       <Route path={RoutesList.NotFound} element={<Page404 />} />
     </Routes>
   );
