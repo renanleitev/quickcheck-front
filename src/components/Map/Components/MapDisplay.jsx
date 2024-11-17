@@ -16,7 +16,7 @@ import {
 } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { resetHorarios } from '../../../store/modules/horarios/reducer';
-import { setEstabelecimentoCoords } from '../../../store/modules/estabelecimentos/reducer';
+import { getEstabelecimentos, setEstabelecimentoCoords } from '../../../store/modules/estabelecimentos/reducer';
 
 export default function MapDisplay() {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];
@@ -37,6 +37,7 @@ export default function MapDisplay() {
   // Redefinindo a rota desenhada, as coordenadas do estabelecimento e os horários
   const handleResetSearch = () => {
     setWaypoints([]);
+    dispatch(getEstabelecimentos());
     dispatch(setEstabelecimentoCoords({ latitude: 0, longitude: 0 }));
     dispatch(resetHorarios());
   };

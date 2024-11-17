@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 
 import {
   getEstabelecimentos,
-  userHasSearched,
   getEstabelecimentosByStatusAndEspecialidadeAndHorario
 } from '../../../store/modules/estabelecimentos/reducer';
 import colors from '../../../config/colors';
@@ -43,8 +42,10 @@ function MapSearch({ open, setOpen, setWaypoints, agendamento, setAgendamento })
 
   const hasEstabelecimentoCoords = latitudeEstabelecimento !== 0 && longitudeEstabelecimento !== 0;
 
-  const latitudeCliente = Number.parseFloat(useSelector((state) => state?.usuarios?.latitude));
-  const longitudeCliente = Number.parseFloat(useSelector((state) => state?.usuarios?.longitude));
+  const latitudeCliente = Number.parseFloat(useSelector((state) => state?.usuarios?.latitude) ?? 0);
+  const longitudeCliente = Number.parseFloat(
+    useSelector((state) => state?.usuarios?.longitude) ?? 0
+  );
 
   const dispatch = useDispatch();
 
@@ -72,8 +73,8 @@ function MapSearch({ open, setOpen, setWaypoints, agendamento, setAgendamento })
           longitude: longitudeEstabelecimento
         }
       ];
-      // Função para obter as rotas
-      async function getCoords() {
+      // Função para obter as rotas até o estabelecimento
+      async function getWaypoints() {
         const waypoints = await getRoute(coords);
         setWaypoints(waypoints);
       }
@@ -82,7 +83,7 @@ function MapSearch({ open, setOpen, setWaypoints, agendamento, setAgendamento })
       // Fechando o modal
       setOpen(false);
       // Definindo a rota do cliente até o estabelecimento
-      getCoords();
+      getWaypoints();
     }
   }, [
     hasEstabelecimentoCoords,
@@ -99,10 +100,9 @@ function MapSearch({ open, setOpen, setWaypoints, agendamento, setAgendamento })
   const handleClose = () => {
     // Fecha o drawer
     setOpen(false);
-    // Se não tiver estabelecimentos, realiza a busca novamente e redefine o status de pesquisa
+    // Se não tiver estabelecimentos, realiza a busca novamente
     if (!hasEstabelecimentos) {
       dispatch(getEstabelecimentos());
-      dispatch(userHasSearched({ hasSearched: false }));
     }
   };
 

@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useMap } from 'react-leaflet';
 import { Button } from '@mui/material';
 import { Restore } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-import { getEstabelecimentos, userHasSearched } from '../../store/modules/estabelecimentos/reducer';
 import { zoomOutLevel } from '../../config/enums';
 
 ResetButton.propTypes = {
@@ -13,28 +12,31 @@ ResetButton.propTypes = {
 };
 
 export default function ResetButton({ onReset }) {
-  const hasSearched = useSelector((state) => state?.estabelecimentos?.hasSearched) ?? false;
+  const latitudeEstabelecimento = Number.parseFloat(
+    useSelector((state) => state?.estabelecimentos?.latitude) ?? 0
+  );
+  const longitudeEstabelecimento = Number.parseFloat(
+    useSelector((state) => state?.estabelecimentos?.longitude) ?? 0
+  );
+  const hasEstabelecimentoCoords = latitudeEstabelecimento !== 0 && longitudeEstabelecimento !== 0;
 
-  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
-
-  const dispatch = useDispatch();
+  const cliente = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const map = useMap();
 
   // Redefinindo o mapa para a exibição padrão
   const handleReset = () => {
-    dispatch(getEstabelecimentos());
-    dispatch(userHasSearched({ hasSearched: false }));
-    toast.success('Mapa redefinido com sucesso!');
-    // Voltando para a localização padrão do usuário
-    map.flyTo([entidade?.latitude, entidade?.longitude], zoomOutLevel);
     // Redefinindo a rota desenhada
     onReset();
+    // Exibinindo mensagem de sucesso
+    toast.success('Mapa redefinido com sucesso!');
+    // Voltando para a localização padrão do usuário
+    map.flyTo([cliente?.latitude, cliente?.longitude], zoomOutLevel);
   };
 
   return (
     <>
-      {hasSearched && (
+      {hasEstabelecimentoCoords && (
         <Button
           variant="contained"
           onClick={handleReset}
