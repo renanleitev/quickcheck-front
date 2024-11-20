@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import { logoutUsuario } from '../../store/modules/usuarios/reducer';
 import { RoutesList } from '../../routes/enums';
+import { setEstabelecimentoCoords } from '../../store/modules/estabelecimentos/reducer';
+import { resetHorarios } from '../../store/modules/horarios/reducer';
 
 /** Hook para obter as listas de menu */
 export default function useList() {
@@ -13,6 +15,8 @@ export default function useList() {
 
   const handleLogout = useCallback(() => {
     dispatch(logoutUsuario());
+    dispatch(resetHorarios());
+    dispatch(setEstabelecimentoCoords({latitude: 0, longitude: 0}));
   }, [dispatch]);
 
   const defaultList = useMemo(
