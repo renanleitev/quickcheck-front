@@ -21,8 +21,8 @@ export default function RoutesController() {
   // Obtendo a URL anterior que o usuário tentou acessar (caso não esteja autenticado)
   const location = useLocation();
 
-  // Rotas desprotegidas
-  const allowedRoutes = [RoutesList.Login, RoutesList.Cadastro];
+  // Rotas desprotegidas (qualquer usuário pode acessar, mesmo não estando autenticado)
+  const allowedRoutes = [RoutesList.Login, RoutesList.Cadastro, RoutesList.Ajuda, RoutesList.Sobre];
 
   // Protegendo as rotas, caso o usuário não esteja logado
   function handleAuth(children) {
@@ -45,8 +45,8 @@ export default function RoutesController() {
       <Route path={RoutesList.EditarPerfil} element={handleAuth(<EditarPerfil />)} />
       <Route path={RoutesList.AlterarSenha} element={handleAuth(<AlterarSenha />)} />
       <Route path={RoutesList.AgendamentosLista} element={handleAuth(<Agendamento />)} />
-      <Route path={RoutesList.Ajuda} element={handleAuth(<Ajuda />)} />
-      <Route path={RoutesList.Sobre} element={handleAuth(<Sobre />)} />
+      <Route path={RoutesList.Ajuda} element={<Ajuda />} />
+      <Route path={RoutesList.Sobre} element={<Sobre />} />
       <Route path={RoutesList.NotFound} element={<Page404 />} />
     </Routes>
   );
