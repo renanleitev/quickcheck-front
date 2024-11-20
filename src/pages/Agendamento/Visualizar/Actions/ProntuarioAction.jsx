@@ -4,7 +4,13 @@ import { updateHorario } from '../../../../store/modules/horarios/reducer';
 
 ProntuarioAction.propTypes = UpdateActionCommonType;
 
-export default function ProntuarioAction({ horario, setHorario, status }) {
+export default function ProntuarioAction({
+  horario,
+  setHorario,
+  status,
+  readOnly = false,
+  hasConfirmButton
+}) {
   return (
     <UpdateModal
       horario={horario}
@@ -15,9 +21,11 @@ export default function ProntuarioAction({ horario, setHorario, status }) {
       })}
       buttonLabel="Prontuário"
       confirmLabel="Editar"
-      readOnly={false}
+      readOnly={readOnly}
       disabled={status !== AgendamentoStatus.AGENDADO}
       keyName="prontuario"
+      hasConfirmButton={hasConfirmButton}
+      readOnlyText={horario["prontuario"]}
     />
   );
 }

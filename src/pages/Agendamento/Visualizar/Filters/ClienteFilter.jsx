@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Drawer, Typography } from '@mui/material';
+import { Search } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
@@ -39,6 +40,7 @@ export default function ClienteFilter({ data, initialData, setData }) {
     <>
       <Button variant="contained" onClick={() => setOpen(true)}>
         Pesquisar
+        <Search sx={{ marginLeft: '0.5rem' }} />
       </Button>
       <Drawer open={open} onClose={() => setOpen(false)}>
         <VerticalContainer style={{ padding: '2rem' }}>

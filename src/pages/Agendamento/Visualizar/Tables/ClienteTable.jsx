@@ -26,6 +26,7 @@ import {
 } from '../../../../store/modules/horarios/reducer';
 import RemarcarAction from '../Actions/RemarcarAction';
 import CancelarAction from '../Actions/CancelarAction';
+import ProntuarioAction from '../Actions/ProntuarioAction';
 import ClienteFilter from '../Filters/ClienteFilter';
 
 export default function ClienteTable() {
@@ -147,6 +148,13 @@ export default function ClienteTable() {
                   <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
                       <Box p="2rem">
+                        <ProntuarioAction
+                          horario={horarioData}
+                          setHorario={setHorarioData}
+                          status={horario?.status}
+                          hasConfirmButton={false}
+                          readOnly
+                        />
                         <RemarcarAction
                           horario={horarioData}
                           setHorario={setHorarioData}

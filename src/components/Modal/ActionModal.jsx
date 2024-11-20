@@ -15,7 +15,8 @@ ActionModal.propTypes = {
   confirmLabel: PropTypes.string,
   readOnlyText: PropTypes.string,
   readOnly: PropTypes.bool,
-  confirmColor: PropTypes.string
+  confirmColor: PropTypes.string,
+  hasConfirmButton: PropTypes.bool
 };
 
 const style = {
@@ -40,7 +41,8 @@ export default function ActionModal({
   title,
   readOnly = false,
   readOnlyText,
-  confirmColor = 'success'
+  confirmColor = 'success',
+  hasConfirmButton = true
 }) {
   return (
     <Modal
@@ -70,9 +72,11 @@ export default function ActionModal({
             <Button variant="contained" color="info" onClick={() => onClose()}>
               Voltar
             </Button>
-            <Button variant="contained" color={confirmColor} onClick={() => onConfirm()}>
-              {confirmLabel}
-            </Button>
+            {hasConfirmButton && (
+              <Button variant="contained" color={confirmColor} onClick={() => onConfirm()}>
+                {confirmLabel}
+              </Button>
+            )}
           </HorizontalContainer>
         </VerticalContainer>
       </Box>

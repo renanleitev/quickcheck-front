@@ -8,7 +8,9 @@ import PropTypes from 'prop-types';
 export const UpdateActionCommonType = {
   horario: PropTypes.object.isRequired,
   setHorario: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
+  readOnly: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 UpdateModal.propTypes = {
@@ -23,7 +25,8 @@ UpdateModal.propTypes = {
   readOnly: PropTypes.bool,
   readOnlyText: PropTypes.string,
   confirmColor: PropTypes.string,
-  confirmActionColor: PropTypes.string
+  confirmActionColor: PropTypes.string,
+  hasConfirmButton: PropTypes.bool
 };
 
 export default function UpdateModal({
@@ -38,7 +41,8 @@ export default function UpdateModal({
   readOnlyText,
   confirmColor = 'info',
   confirmActionColor = 'success',
-  onUpdate
+  onUpdate,
+  hasConfirmButton = true
 }) {
   // Abrir o modal oculto
   const [open, setOpen] = useState(false);
@@ -72,6 +76,7 @@ export default function UpdateModal({
         readOnlyText={readOnlyText}
         confirmColor={confirmActionColor}
         readOnly={readOnly}
+        hasConfirmButton={hasConfirmButton}
       />
     </>
   );
