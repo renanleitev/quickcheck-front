@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, CircularProgress } from '@mui/material';
 
 import { loginUsuario } from '../../store/modules/usuarios/reducer';
 import Input from '../../components/Input/Input';
@@ -21,6 +21,8 @@ export default function Login() {
 
   const [data, setData] = useState(initialUser);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { validateLogin, ...errorsLogin } = useValidateLogin({
     email: data.email,
     senha: data.senha
@@ -31,8 +33,10 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = useCallback(() => {
+    setIsLoading(true);
     validateLogin();
     dispatch(loginUsuario(data));
+    setIsLoading(false);
     navigate(RoutesList.Home);
   }, [validateLogin, dispatch, data, navigate]);
 
@@ -47,7 +51,10 @@ export default function Login() {
           sx={{ width: '15rem', padding: '1rem' }}
           onClick={() => handleLogin()}
         >
-          Entrar
+          {isLoading ?             
+            <CircularProgress size="1rem" sx={{ color: colors.primaryWhiteColor }} /> : 
+            <Typography color={ colors.primaryWhiteColor }>Entrar</Typography>
+          }
         </Button>
         <Typography>
           Primeiro acesso? <Link to={RoutesList.Cadastro}>Cadastre-se!</Link>

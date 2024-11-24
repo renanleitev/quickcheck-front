@@ -24,6 +24,7 @@ export default function HomeMarker() {
         },
         (error) => {
           setCoords({ latitude: defaultCoords[0], longitude: defaultCoords[1] });
+          dispatch(updateCoords({ latitude: defaultCoords[0], longitude: defaultCoords[1] }));
           console.error('Erro ao obter a localização:', error);
         }
       );
