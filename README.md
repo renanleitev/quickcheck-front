@@ -34,6 +34,18 @@ Para obter a cobertura de testes para todos os arquivos:
 
     npm run test:coverage:all
 
+Para pesquisar todos os arquivos de testes, digite na barra de pesquisa do Vs Code:
+
+    describe
+
+E clique nos três pontos (...) para incluir arquivos terminados em:
+
+    *.test.js
+
+Exemplo:
+
+![alt text](src/assets/image.png)
+
 ## Equipe
 
 - Flávio Raposo
