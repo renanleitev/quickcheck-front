@@ -43,4 +43,5 @@ export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 // Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 export const strongPasswordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$/;
+/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])(?:([0-9a-zA-Z$*&@#])(?!\1)){8,}$/;
+

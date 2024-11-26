@@ -11,6 +11,8 @@
     "preview": "vite preview",
     "lint:fix": "eslint . --fix",
     "test": "jest --runInBand --silent",
+    "test:coverage": "jest --collectCoverage",
+    "test:coverage:all": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx}'",
     "format": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json"
   },
   "dependencies": {
