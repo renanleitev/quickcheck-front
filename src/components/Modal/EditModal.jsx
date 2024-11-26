@@ -27,9 +27,7 @@ export default function EditModal({ open, onClose, children }) {
       aria-labelledby="edit-modal-title"
       aria-describedby="edit-modal-description"
     >
-      <Box sx={style}>
-        {children}
-      </Box>
+      <Box sx={style}>{children}</Box>
     </Modal>
   );
 }

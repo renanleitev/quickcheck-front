@@ -16,7 +16,7 @@ export default function useList() {
   const handleLogout = useCallback(() => {
     dispatch(logoutUsuario());
     dispatch(resetHorarios());
-    dispatch(setEstabelecimentoCoords({latitude: 0, longitude: 0}));
+    dispatch(setEstabelecimentoCoords({ latitude: 0, longitude: 0 }));
   }, [dispatch]);
 
   const defaultList = useMemo(

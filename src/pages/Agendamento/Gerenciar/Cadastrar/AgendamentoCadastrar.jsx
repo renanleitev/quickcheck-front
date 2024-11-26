@@ -64,7 +64,7 @@ export default function AgendamentoCadastrar({ setOpen }) {
   const handleCreateHorario = () => {
     // Horário que será salvo no banco de dados
     const hora = dayjs(data.horarioHora).format('HH:mm:ss');
-    const funcionario = funcionariosOptions.find(f => f.value === data.funcionarioNome);
+    const funcionario = funcionariosOptions.find((f) => f.value === data.funcionarioNome);
     const dataHorario = {
       ...data,
       funcionario: funcionario.data,
@@ -117,7 +117,7 @@ export default function AgendamentoCadastrar({ setOpen }) {
           data={data}
           setData={setData}
           hora={dayjs(data.horarioHora)}
-          keyName='horarioHora'
+          keyName="horarioHora"
         />
       </HorizontalContainer>
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>

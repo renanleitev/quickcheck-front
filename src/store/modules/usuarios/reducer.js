@@ -93,7 +93,7 @@ export const usuariosSlice = createSlice({
     updateCoords: (state, action) => {
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
-    },
+    }
   },
   extraReducers(builder) {
     builder

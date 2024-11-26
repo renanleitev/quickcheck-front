@@ -16,7 +16,10 @@ import {
 } from '../../../config/enums';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import { resetHorarios } from '../../../store/modules/horarios/reducer';
-import { getEstabelecimentos, setEstabelecimentoCoords } from '../../../store/modules/estabelecimentos/reducer';
+import {
+  getEstabelecimentos,
+  setEstabelecimentoCoords
+} from '../../../store/modules/estabelecimentos/reducer';
 
 export default function MapDisplay() {
   const estabelecimentos = useSelector((state) => state?.estabelecimentos?.estabelecimentos) ?? [];

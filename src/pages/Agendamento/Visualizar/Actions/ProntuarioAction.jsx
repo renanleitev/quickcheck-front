@@ -25,7 +25,7 @@ export default function ProntuarioAction({
       disabled={status !== AgendamentoStatus.AGENDADO}
       keyName="prontuario"
       hasConfirmButton={hasConfirmButton}
-      readOnlyText={horario["prontuario"]}
+      readOnlyText={horario['prontuario']}
     />
   );
 }

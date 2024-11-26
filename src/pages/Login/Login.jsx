@@ -51,10 +51,11 @@ export default function Login() {
           sx={{ width: '15rem', padding: '1rem' }}
           onClick={() => handleLogin()}
         >
-          {isLoading ?             
-            <CircularProgress size="1rem" sx={{ color: colors.primaryWhiteColor }} /> : 
-            <Typography color={ colors.primaryWhiteColor }>Entrar</Typography>
-          }
+          {isLoading ? (
+            <CircularProgress size="1rem" sx={{ color: colors.primaryWhiteColor }} />
+          ) : (
+            <Typography color={colors.primaryWhiteColor}>Entrar</Typography>
+          )}
         </Button>
         <Typography>
           Primeiro acesso? <Link to={RoutesList.Cadastro}>Cadastre-se!</Link>

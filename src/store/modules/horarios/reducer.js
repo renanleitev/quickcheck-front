@@ -71,16 +71,16 @@ export const getHorariosByClienteAndStatus = createAsyncThunk(
     try {
       let url = `${baseHorariosURL}/search/clientes?clienteId=${clienteId}`;
       if (status !== '') {
-        url += `&status=${status}`
+        url += `&status=${status}`;
       }
       if (especialidade !== '') {
-        url += `&especialidade=${especialidade}`
+        url += `&especialidade=${especialidade}`;
       }
       if (nomeEstabelecimento !== '') {
-        url += `&nomeEstabelecimento=${nomeEstabelecimento}`
+        url += `&nomeEstabelecimento=${nomeEstabelecimento}`;
       }
       if (nomeFuncionario !== '') {
-        url += `&nomeFuncionario=${nomeFuncionario}`
+        url += `&nomeFuncionario=${nomeFuncionario}`;
       }
       const response = await axiosInstance.get(url);
       return response.data;

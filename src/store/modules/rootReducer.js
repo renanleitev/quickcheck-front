@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   funcionarios: funcionariosReducer,
   estabelecimentos: estabelecimentosReducer,
   usuarios: usuariosReducer,
-  horarios: horariosReducer,
+  horarios: horariosReducer
 });
 
 export default rootReducer;

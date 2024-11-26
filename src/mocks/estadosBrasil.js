@@ -1,5 +1,5 @@
 export const estadosBrasil = [
-  { estado: 'Acre', value: 'AC' , label: 'AC' },
+  { estado: 'Acre', value: 'AC', label: 'AC' },
   { estado: 'Alagoas', value: 'AL', label: 'AL' },
   { estado: 'Amapá', value: 'AP', label: 'AP' },
   { estado: 'Amazonas', value: 'AM', label: 'AM' },

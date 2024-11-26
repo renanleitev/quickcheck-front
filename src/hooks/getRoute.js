@@ -31,10 +31,7 @@ export const getRoute = async (coordinates) => {
     });
     const coordinates = [];
     locations.forEach((location) => {
-      coordinates.push([
-        location[1],
-        location[0]
-      ]);
+      coordinates.push([location[1], location[0]]);
     });
     return coordinates;
   } catch (error) {

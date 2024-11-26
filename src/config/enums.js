@@ -15,12 +15,12 @@ export const AgendamentoStatus = {
 };
 
 export const agendamentoStatusOptions = [
-  {value: AgendamentoStatus.AGENDADO, label: 'Agendado'},
-  {value: AgendamentoStatus.DISPONÍVEL, label: 'Disponivel'},
-  {value: AgendamentoStatus.CANCELADO, label: 'Cancelado'},
-  {value: AgendamentoStatus.CONCLUÍDO, label: 'Concluído'},
-  {value: AgendamentoStatus.PENDENTE, label: 'Pendente'},
-]
+  { value: AgendamentoStatus.AGENDADO, label: 'Agendado' },
+  { value: AgendamentoStatus.DISPONÍVEL, label: 'Disponivel' },
+  { value: AgendamentoStatus.CANCELADO, label: 'Cancelado' },
+  { value: AgendamentoStatus.CONCLUÍDO, label: 'Concluído' },
+  { value: AgendamentoStatus.PENDENTE, label: 'Pendente' }
+];
 
 export const UserRoles = {
   CLIENTE: 'CLIENTE',
@@ -55,5 +55,5 @@ export const defaultCoords = [-8.062255486215344, -34.871117742328956];
 // Zoom padrão do mapa
 export const zoomLevel = 17;
 
-// Zoom out 
+// Zoom out
 export const zoomOutLevel = 14;

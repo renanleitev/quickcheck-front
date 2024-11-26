@@ -9,7 +9,10 @@ export default function BackButton() {
   const buttonHeight = '4rem';
 
   return (
-    <Button sx={{ width: buttonWidth, height: buttonHeight }} onClick={() => navigate(RoutesList.Home)}>
+    <Button
+      sx={{ width: buttonWidth, height: buttonHeight }}
+      onClick={() => navigate(RoutesList.Home)}
+    >
       Voltar
     </Button>
   );
