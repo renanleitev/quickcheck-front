@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import EditModal from '../EditModal';
 
@@ -30,7 +30,7 @@ describe('EditModal component', () => {
 
   it('deve renderizar corretamente o conteúdo passado como children', () => {
     const childContent = <div>Texto do Children</div>;
-    
+
     render(<TestEditModal open={true} children={childContent} />);
 
     // Verifica se o conteúdo passado como children está presente no modal

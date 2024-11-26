@@ -11,5 +11,9 @@ export default function calculateAge(date) {
     years--;
   }
 
+  if (years < 0) {
+    years = 0;
+  }
+
   return years;
 }

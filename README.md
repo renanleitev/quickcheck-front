@@ -20,6 +20,20 @@ Para rodar o back-end em outro endereço, renomeie o arquivo `.env.example` para
 
     VITE_BACKEND_URL="http://localhost:8080"
 
+## Para testar o projeto
+
+Para realizar os testes:
+
+    npm run test
+
+Para obter a cobertura de testes apenas dos arquivos testados:
+
+    npm run test:coverage
+
+Para obter a cobertura de testes para todos os arquivos:
+
+    npm run test:coverage:all
+
 ## Equipe
 
 - Flávio Raposo
