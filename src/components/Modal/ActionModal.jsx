@@ -1,5 +1,7 @@
+import React from 'react';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+
 import colors from '../../config/colors';
 import { VerticalContainer, HorizontalContainer } from '../../config/GlobalStyle';
 import Input from '../Input/Input';

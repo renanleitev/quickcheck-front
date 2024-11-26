@@ -10,8 +10,8 @@ describe('PerfilCard', () => {
   const entidadeMock = {
     usuario: {
       nome: 'João Silva',
-      imagem: 'https://via.placeholder.com/150',
-    },
+      imagem: 'https://via.placeholder.com/150'
+    }
   };
 
   it('deve renderizar o componente com avatar, título e subtítulo', () => {
