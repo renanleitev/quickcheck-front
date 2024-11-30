@@ -62,127 +62,131 @@ export default function EstabelecimentoTable() {
   }, [dispatch]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        {/* Cabeçalho */}
-        <TableHead>
-          <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-            {/* Espaço reservado para o ícone de expandir a linha oculta */}
-            <TableCell>
-              <IconButton>
-                <SettingsIcon />
-              </IconButton>
-            </TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Atendimento</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Agendamento</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Paciente</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Comorbidades</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>
-            <TableCell sx={{ minWidth: columnWidth }}>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        {/* Resultados */}
-        <TableBody>
-          {horarios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((horario) => (
-            <>
-              {/* Linha padrão - sempre visível */}
-              <TableRow
-                key={`${horario.id}-${horario?.horarioAtendimento}-1`}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                {/* Ícone para expandir a linha oculta */}
-                <TableCell>
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => {
-                      if (rowId === horario?.id) {
-                        setHorarioData({ ...initialHorario });
-                        setRowId('');
-                      } else {
-                        setHorarioData({ ...horario });
-                        setRowId(horario?.id);
-                      }
-                    }}
-                  >
-                    {rowId === horario?.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
-                </TableCell>
-                {/* Informações relevantes */}
-                <TableCell component="th" scope="row">
-                  {formatDate(horario?.horarioAtendimento)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {formatDate(horario?.horarioAgendamento)}
-                </TableCell>
-                <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
-                {/* Comorbidades é um array */}
-                <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
-                <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
-                <TableCell>{horario?.funcionario?.especialidade}</TableCell>
-                <TableCell>
-                  <ChipStatus status={horario?.status} />
-                </TableCell>
-              </TableRow>
-              {/* Linha oculta - expande quando o usuário clica no ícone */}
-              <TableRow key={`${horario.id}-${horario?.horarioAtendimento}-2`}>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                  <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
-                    <Box p="2rem">
-                      <CadastrarAction />
-                      <EditarAction horario={horarioData} />
-                      <ProntuarioAction
-                        horario={horarioData}
-                        setHorario={setHorarioData}
-                        status={horario?.status}
-                      />
-                      <ConfirmarAction
-                        horario={horarioData}
-                        setHorario={setHorarioData}
-                        status={horario?.status}
-                      />
-                      <ConcluirAction
-                        horario={{ ...horarioData }}
-                        setHorario={setHorarioData}
-                        status={horario?.status}
-                      />
-                      <CancelarAction
-                        horario={horarioData}
-                        setHorario={setHorarioData}
-                        status={horario?.status}
-                      />
-                    </Box>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </>
-          ))}
-        </TableBody>
-        {/* Paginação */}
-        <TableFooter>
-          <TableRow sx={{ width: '100%' }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={horarios.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{
-                select: {
-                  inputProps: {
-                    'aria-label': labelRowsPerPage
-                  },
-                  native: true
-                }
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage={labelRowsPerPage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+    <>
+      <Box sx={{ alignSelf: 'flex-start' }}>
+        <CadastrarAction />
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          {/* Cabeçalho */}
+          <TableHead>
+            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+              {/* Espaço reservado para o ícone de expandir a linha oculta */}
+              <TableCell>
+                <IconButton>
+                  <SettingsIcon />
+                </IconButton>
+              </TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Atendimento</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Agendamento</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Paciente</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Comorbidades</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Médico</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Especialidade</TableCell>
+              <TableCell sx={{ minWidth: columnWidth }}>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          {/* Resultados */}
+          <TableBody>
+            {horarios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((horario) => (
+              <>
+                {/* Linha padrão - sempre visível */}
+                <TableRow
+                  key={`${horario.id}-${horario?.horarioAtendimento}-1`}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  {/* Ícone para expandir a linha oculta */}
+                  <TableCell>
+                    <IconButton
+                      aria-label="expand row"
+                      size="small"
+                      onClick={() => {
+                        if (rowId === horario?.id) {
+                          setHorarioData({ ...initialHorario });
+                          setRowId('');
+                        } else {
+                          setHorarioData({ ...horario });
+                          setRowId(horario?.id);
+                        }
+                      }}
+                    >
+                      {rowId === horario?.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                  </TableCell>
+                  {/* Informações relevantes */}
+                  <TableCell component="th" scope="row">
+                    {formatDate(horario?.horarioAtendimento)}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {formatDate(horario?.horarioAgendamento)}
+                  </TableCell>
+                  <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
+                  {/* Comorbidades é um array */}
+                  <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
+                  <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
+                  <TableCell>{horario?.funcionario?.especialidade}</TableCell>
+                  <TableCell>
+                    <ChipStatus status={horario?.status} />
+                  </TableCell>
+                </TableRow>
+                {/* Linha oculta - expande quando o usuário clica no ícone */}
+                <TableRow key={`${horario.id}-${horario?.horarioAtendimento}-2`}>
+                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={rowId === horario?.id} timeout="auto" unmountOnExit>
+                      <Box p="2rem">
+                        <EditarAction horario={horarioData} />
+                        <ProntuarioAction
+                          horario={horarioData}
+                          setHorario={setHorarioData}
+                          status={horario?.status}
+                        />
+                        <ConfirmarAction
+                          horario={horarioData}
+                          setHorario={setHorarioData}
+                          status={horario?.status}
+                        />
+                        <ConcluirAction
+                          horario={{ ...horarioData }}
+                          setHorario={setHorarioData}
+                          status={horario?.status}
+                        />
+                        <CancelarAction
+                          horario={horarioData}
+                          setHorario={setHorarioData}
+                          status={horario?.status}
+                        />
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+          </TableBody>
+          {/* Paginação */}
+          <TableFooter>
+            <TableRow sx={{ width: '100%' }}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={3}
+                count={horarios.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                slotProps={{
+                  select: {
+                    inputProps: {
+                      'aria-label': labelRowsPerPage
+                    },
+                    native: true
+                  }
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage={labelRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

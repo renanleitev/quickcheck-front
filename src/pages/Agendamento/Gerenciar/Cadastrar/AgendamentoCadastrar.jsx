@@ -9,30 +9,44 @@ import InputHora from '../../../../components/Input/InputHora';
 import { VerticalContainer, HorizontalContainer } from '../../../../config/GlobalStyle';
 import { formatCalendarDate } from '../../../../hooks/formatDate';
 import colors from '../../../../config/colors';
-import { AgendamentoStatus } from '../../../../config/enums';
+import { AgendamentoStatus, UserRoles } from '../../../../config/enums';
 import { especialidadesOptions } from '../../../../config/enums';
 import { getFuncionariosOptions } from '../../../../store/modules/funcionarios/reducer';
 import { createHorario } from '../../../../store/modules/horarios/reducer';
 import InputDescricao from '../../../../components/Input/Content/InputDescricao';
 
 AgendamentoCadastrar.propTypes = {
-  setOpen: PropTypes.func.isRequired
+  setOpen: PropTypes.func.isRequired,
+  funcionarioData: PropTypes.object
 };
 
-export default function AgendamentoCadastrar({ setOpen }) {
-  // A entidade aqui é o estabelecimento, já que somente ele pode cadastrar ou editar horários
+export default function AgendamentoCadastrar({ setOpen, funcionarioData }) {
   const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
   const funcionarios = useSelector((state) => state?.funcionarios?.funcionarios) || [];
 
   const dispatch = useDispatch();
 
-  const funcionariosOptions = funcionarios.map((funcionario) => {
-    return {
-      data: funcionario ?? undefined,
-      value: funcionario?.usuario?.nome ?? '',
-      label: funcionario?.usuario?.nome ?? ''
-    };
-  });
+  const funcionariosOptions =
+    funcionarios.length > 0
+      ? funcionarios.map((funcionario) => {
+          return {
+            data: funcionario ?? undefined,
+            value: funcionario?.usuario?.nome ?? '',
+            label: funcionario?.usuario?.nome ?? ''
+          };
+        })
+      : [
+          {
+            data: funcionarioData?.funcionario ?? undefined,
+            value: funcionarioData?.funcionarioNome ?? '',
+            label: funcionarioData?.funcionarioNome ?? ''
+          }
+        ];
+
+  // Se a entidade logada for estabelecimento, retorna o próprio estabelecimento
+  // Se a entidade logada for funcionário, retorna o estabelecimento associado
+  const estabelecimento =
+    entidade?.usuario?.role === UserRoles.ESTABELECIMENTO ? entidade : entidade?.estabelecimento;
 
   // Horário que é alterado pelo usuário antes de inserir no banco de dados
   const initialData = {
@@ -42,11 +56,11 @@ export default function AgendamentoCadastrar({ setOpen }) {
     prontuario: '',
     descricao: '',
     status: AgendamentoStatus.DISPONÍVEL,
-    estabelecimento: entidade,
-    especialidade: especialidadesOptions[0].value,
+    estabelecimento,
+    especialidade: funcionarioData?.especialidade ?? especialidadesOptions[0].value,
     cliente: undefined,
-    funcionario: undefined,
-    funcionarioNome: ''
+    funcionario: funcionarioData?.funcionario ?? undefined,
+    funcionarioNome: funcionarioData?.funcionario?.nome ?? ''
   };
 
   const [data, setData] = useState(initialData);
@@ -82,7 +96,7 @@ export default function AgendamentoCadastrar({ setOpen }) {
   return (
     <VerticalContainer style={{ marginTop: '2rem' }}>
       <Typography variant="h4" color={colors.primaryDarkColor}>
-        Criar Consulta
+        Cadastrar Consulta
       </Typography>
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
         <Input

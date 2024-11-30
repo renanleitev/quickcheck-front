@@ -20,6 +20,26 @@ Para rodar o back-end em outro endereço, renomeie o arquivo `.env.example` para
 
     VITE_BACKEND_URL="http://localhost:8080"
 
+## Para logar no site (usando dados mockados)
+
+1. Paciente:
+
+   a. Email: carlos.silva@gmail.com
+
+   b. Senha: 123456
+
+2. Médico:
+
+   a. Email: dr.roberto.mendes@hospital.com
+
+   b. Senha: 123456
+
+3. Hospital:
+
+   a. Email: contato@hospitalportugues.com.br
+
+   b. Senha: 123456
+
 ## Para testar o projeto
 
 Para realizar os testes:

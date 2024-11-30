@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
+
 import AgendamentoCadastrar from '../../Gerenciar/Cadastrar/AgendamentoCadastrar';
 import EditModal from '../../../../components/Modal/EditModal';
 
-export default function CadastrarAction() {
+CadastrarAction.propTypes = {
+  funcionarioData: PropTypes.object
+};
+
+export default function CadastrarAction({ funcionarioData }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -17,7 +23,7 @@ export default function CadastrarAction() {
         Cadastrar
       </Button>
       <EditModal open={open} onClose={() => setOpen(false)}>
-        <AgendamentoCadastrar setOpen={setOpen} />
+        <AgendamentoCadastrar setOpen={setOpen} funcionarioData={funcionarioData} />
       </EditModal>
     </>
   );

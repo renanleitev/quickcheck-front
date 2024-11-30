@@ -76,6 +76,7 @@ export default function MapInfo({
       })
     );
     setActiveStep(activeStep + 1);
+    setOpen(false);
   }, [activeStep, agendamento, dispatch, estabelecimento?.nome]);
 
   // Confirmando o agendamento
@@ -88,9 +89,6 @@ export default function MapInfo({
       mensagemSucesso: 'Consulta agendada com sucesso!'
     };
     dispatch(updateHorario({ horario }));
-    if (updateFetchStatus === fetchStatus.SUCCESS) {
-      setActiveStep(activeStep + 1);
-    }
   }, [activeStep, agendamento.horario, cliente, dispatch, updateFetchStatus]);
 
   const steps = [
@@ -150,20 +148,8 @@ export default function MapInfo({
       onCallApi: handleConfirm,
       isCallingApi: true // Chama a API para confirmar a consulta
     },
-    // Consulta confirmada com sucesso
-    {
-      component: (
-        <StepConfirmar
-          title="Consulta confirmada com sucesso!"
-          funcionarioNome={agendamento?.horario?.funcionario?.usuario?.nome}
-          horarioAtendimento={formatDate(agendamento?.horario?.horarioAtendimento)}
-          descricao="Lembre-se de chegar com 30 minutos de antecedência."
-        />
-      ),
-      block: false,
-      onCallApi: () => {},
-      isCallingApi: false
-    }
+    // Adicionando um step extra para confirmar a consulta
+    {}
   ];
 
   // Redefinindo quando fecha o drawer
