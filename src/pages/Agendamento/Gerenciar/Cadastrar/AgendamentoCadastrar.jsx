@@ -90,7 +90,7 @@ export default function AgendamentoCadastrar({ setOpen, funcionarioData }) {
   };
 
   const inputWidth = '90%';
-  const buttonWidth = '12rem';
+  const buttonWidth = '100%';
   const buttonHeight = '3rem';
 
   return (
@@ -98,13 +98,12 @@ export default function AgendamentoCadastrar({ setOpen, funcionarioData }) {
       <Typography variant="h4" color={colors.primaryDarkColor}>
         Cadastrar Consulta
       </Typography>
-      <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
+      <HorizontalContainer style={{ width: inputWidth }}>
         <Input
           data={data}
           setData={setData}
           placeholder="Especialidade"
           keyName="especialidade"
-          inputWidth={inputWidth}
           select
           selectList={especialidadesOptions}
         />
@@ -113,7 +112,6 @@ export default function AgendamentoCadastrar({ setOpen, funcionarioData }) {
           setData={setData}
           placeholder="Médico"
           keyName="funcionarioNome"
-          inputWidth={inputWidth}
           select
           selectList={funcionariosOptions}
           disabled={funcionariosOptions.length === 0}
@@ -137,7 +135,7 @@ export default function AgendamentoCadastrar({ setOpen, funcionarioData }) {
       <HorizontalContainer style={{ width: inputWidth, flexWrap: 'nowrap' }}>
         <InputDescricao data={data} setData={setData} hasHorarioFuncionamento={false} />
       </HorizontalContainer>
-      <HorizontalContainer style={{ paddingBottom: '2rem' }}>
+      <HorizontalContainer style={{ width: inputWidth, paddingBottom: '2rem', flexWrap: 'nowrap' }}>
         <Button
           variant="contained"
           color="error"

@@ -8,16 +8,24 @@ StepInfo.propTypes = {
   info: PropTypes.string,
   subInfo: PropTypes.string,
   descricao: PropTypes.string,
-  alignItems: PropTypes.string
+  alignItems: PropTypes.string,
+  objectFit: PropTypes.string
 };
 
-export default function StepInfo({ imagem, info, subInfo, descricao, alignItems = 'center' }) {
+export default function StepInfo({
+  imagem,
+  info,
+  subInfo,
+  descricao,
+  alignItems = 'center',
+  objectFit = 'cover'
+}) {
   return (
     <>
       <CardMedia
         component="img"
         height="260"
-        sx={{ objectFit: 'contain' }}
+        sx={{ objectFit: objectFit }}
         image={imagem}
         alt="Imagem"
       />

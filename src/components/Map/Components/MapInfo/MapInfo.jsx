@@ -123,6 +123,7 @@ export default function MapInfo({
           info={funcionario?.usuario?.nome}
           subInfo={funcionario?.especialidade}
           descricao={`CRM ${funcionario?.crm}`}
+          objectFit="contain"
         />
       ) : (
         <StepHorarios
