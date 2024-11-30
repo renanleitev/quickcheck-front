@@ -76,7 +76,6 @@ export default function MapInfo({
       })
     );
     setActiveStep(activeStep + 1);
-    setOpen(false);
   }, [activeStep, agendamento, dispatch, estabelecimento?.nome]);
 
   // Confirmando o agendamento
@@ -89,6 +88,7 @@ export default function MapInfo({
       mensagemSucesso: 'Consulta agendada com sucesso!'
     };
     dispatch(updateHorario({ horario }));
+    setOpen(false);
   }, [activeStep, agendamento.horario, cliente, dispatch, updateFetchStatus]);
 
   const steps = [
@@ -104,14 +104,16 @@ export default function MapInfo({
       ),
       block: false,
       onCallApi: () => {},
-      isCallingApi: false
+      isCallingApi: false,
+      nextButtonLabel: 'Agendar'
     },
     // Filtros de pesquisa (para filtrar os horários disponíveis)
     {
       component: <StepFiltros data={agendamento} setData={setAgendamento} />,
       onCallApi: handleSearch,
       block: false,
-      isCallingApi: true // Chama a API para pesquisar os horários disponíveis
+      isCallingApi: true, // Chama a API para pesquisar os horários disponíveis
+      nextButtonLabel: 'Pesquisar'
     },
     // Lista dos horários disponíveis, sendo possível ver o perfil do médico
     {
@@ -132,7 +134,8 @@ export default function MapInfo({
       ),
       block: true, // Bloqueia o next button para impedir que o usuário avance sem ter escolhido uma opção
       onCallApi: () => {},
-      isCallingApi: false
+      isCallingApi: false,
+      nextButtonLabel: 'Agendar'
     },
     // Confirmando a consulta
     {
@@ -146,7 +149,8 @@ export default function MapInfo({
       ),
       block: false,
       onCallApi: handleConfirm,
-      isCallingApi: true // Chama a API para confirmar a consulta
+      isCallingApi: true, // Chama a API para confirmar a consulta
+      nextButtonLabel: 'Confirmar'
     },
     // Adicionando um step extra para confirmar a consulta
     {}
@@ -230,7 +234,7 @@ export default function MapInfo({
               setActiveStep={setActiveStep}
               onReset={handleReset}
               stepsNumber={steps.length}
-              nextStepLabel="Agendar"
+              nextStepLabel={steps[activeStep].nextButtonLabel}
               disableNextButton={steps[activeStep].block && agendamento?.horario === undefined}
               isSetupFinished={activeStep === steps.length - 1} // Omite o next button quando atinge o último step (confirmar)
               hasCustomReturnStep={funcionario !== undefined} // Quando houver um funcionário selecionado, retorna para o mesmo step (horarios)
