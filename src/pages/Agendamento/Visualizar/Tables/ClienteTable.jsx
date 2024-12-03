@@ -72,17 +72,12 @@ export default function ClienteTable() {
   // Obtendo os horários
   useEffect(() => {
     dispatch(getHorariosByClienteAndStatus(searchData));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <Box sx={{ alignSelf: 'flex-start' }}>
-        <ClienteFilter
-          data={searchData}
-          setData={setSearchData}
-          initialData={initialSearchData}
-        />
+        <ClienteFilter data={searchData} setData={setSearchData} initialData={initialSearchData} />
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -133,7 +128,11 @@ export default function ClienteTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
+                    {horario?.horarioAtendimento ? (
+                      formatDate(horario?.horarioAtendimento)
+                    ) : (
+                      <DoNotDisturbAltIcon />
+                    )}
                   </TableCell>
                   <TableCell>
                     {horario?.funcionario?.usuario?.nome ?? <DoNotDisturbAltIcon />}

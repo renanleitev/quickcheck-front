@@ -55,7 +55,7 @@ export const searchHorarios = createAsyncThunk(
   'horarios/searchHorarios',
   async ({ horarioAtendimento, status, especialidade, nomeFuncionario, nomeEstabelecimento }) => {
     try {
-      const url = `${baseHorariosURL}/search/estabelecimentos?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
+      const url = `${baseHorariosURL}/search/horarios?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
       const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {
@@ -101,6 +101,29 @@ export const getHorariosByFuncionarioAndStatus = createAsyncThunk(
       }
       if (nomeEstabelecimento) {
         url += `&nomeEstabelecimento=${nomeEstabelecimento}`;
+      }
+      const response = await axiosInstance.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível obter os dados');
+    }
+  }
+);
+
+export const getHorariosByEstabelecimentoAndStatus = createAsyncThunk(
+  'horarios/getHorariosByEstabelecimentoAndStatus',
+  async ({ estabelecimentoId, status, nomeFuncionario, especialidade }) => {
+    try {
+      let url = `${baseHorariosURL}/search/estabelecimentos?estabelecimentoId=${estabelecimentoId}`;
+      if (status) {
+        url += `&status=${status}`;
+      }
+      if (nomeFuncionario) {
+        url += `&nomeFuncionario=${nomeFuncionario}`;
+      }
+      if (especialidade) {
+        url += `&especialidade=${especialidade}`;
       }
       const response = await axiosInstance.get(url);
       return response.data;
@@ -190,6 +213,18 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getHorariosByFuncionarioAndStatus.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
+      // getHorariosByEstabelecimentoAndStatus
+      .addCase(getHorariosByEstabelecimentoAndStatus.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.horarios = action.payload;
+      })
+      .addCase(getHorariosByEstabelecimentoAndStatus.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(getHorariosByEstabelecimentoAndStatus.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })

@@ -21,15 +21,21 @@ import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 import ChipStatus from '../../../../components/Chip/ChipStatus';
 import formatDate from '../../../../hooks/formatDate';
-import { getHorarios, initialHorario } from '../../../../store/modules/horarios/reducer';
+import {
+  getHorariosByEstabelecimentoAndStatus,
+  initialHorario
+} from '../../../../store/modules/horarios/reducer';
 import ProntuarioAction from '../Actions/ProntuarioAction';
 import ConfirmarAction from '../Actions/ConfirmarAction';
 import ConcluirAction from '../Actions/ConcluirAction';
 import CancelarAction from '../Actions/CancelarAction';
 import CadastrarAction from '../Actions/CadastrarAction';
 import EditarAction from '../Actions/EditarAction';
+import EstabelecimentoFilter from '../Filters/EstabelecimentoFilter';
 
 export default function EstabelecimentoTable() {
+  const estabelecimento = useSelector((state) => state?.usuarios?.entidade) || undefined;
+
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
   const dispatch = useDispatch();
@@ -56,16 +62,29 @@ export default function EstabelecimentoTable() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados';
 
+  const initialSearchData = {
+    estabelecimentoId: estabelecimento?.id,
+    status: '',
+    especialidade: '',
+    nomeFuncionario: ''
+  };
+
+  const [searchData, setSearchData] = useState(initialSearchData);
+
   // Obtendo os horários
-  // TODO: Obter os horários de acordo com cada funcionário
   useEffect(() => {
-    dispatch(getHorarios());
-  }, [dispatch]);
+    dispatch(getHorariosByEstabelecimentoAndStatus(searchData));
+  }, []);
 
   return (
     <>
       <Box sx={{ alignSelf: 'flex-start' }}>
         <CadastrarAction />
+        <EstabelecimentoFilter
+          data={searchData}
+          setData={setSearchData}
+          initialData={initialSearchData}
+        />
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -116,10 +135,18 @@ export default function EstabelecimentoTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
+                    {horario?.horarioAtendimento ? (
+                      formatDate(horario?.horarioAtendimento)
+                    ) : (
+                      <DoNotDisturbAltIcon />
+                    )}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAgendamento) ?? <DoNotDisturbAltIcon />}
+                    {horario?.horarioAgendamento ? (
+                      formatDate(horario?.horarioAgendamento)
+                    ) : (
+                      <DoNotDisturbAltIcon />
+                    )}
                   </TableCell>
                   <TableCell>
                     {horario?.cliente?.usuario?.nome ?? <DoNotDisturbAltIcon />}

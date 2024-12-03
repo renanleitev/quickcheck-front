@@ -85,7 +85,7 @@ export const getEstabelecimentosByStatusAndEspecialidadeAndHorario = createAsync
   async ({ horarioAtendimento, status, especialidade, nomeFuncionario, nomeEstabelecimento }) => {
     try {
       // Estamos usando a URL de horários pois a pesquisa irá retornar os médicos (especialidade) e os respectivos hospitais/clínicas (nome)
-      const url = `${baseHorariosURL}/search/estabelecimentos?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
+      const url = `${baseHorariosURL}/search/horarios?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
       const response = await axiosInstance.get(url);
       return response.data;
     } catch (error) {

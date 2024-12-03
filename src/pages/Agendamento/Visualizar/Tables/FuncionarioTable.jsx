@@ -72,7 +72,7 @@ export default function FuncionarioTable() {
   // Obtendo os horários
   useEffect(() => {
     dispatch(getHorariosByFuncionarioAndStatus(searchData));
-  }, [dispatch]);
+  }, []);
 
   const funcionarioData = {
     funcionario: funcionario,
@@ -139,7 +139,11 @@ export default function FuncionarioTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
+                    {horario?.horarioAtendimento ? (
+                      formatDate(horario?.horarioAtendimento)
+                    ) : (
+                      <DoNotDisturbAltIcon />
+                    )}
                   </TableCell>
                   <TableCell>
                     {horario?.cliente?.usuario?.nome ?? <DoNotDisturbAltIcon />}
