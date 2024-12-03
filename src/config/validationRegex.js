@@ -19,14 +19,6 @@ export const telefoneRegex = /^\(?\d{0,2}\)? ?\d{0,5}-?\d{0,4}$/;
 // Formato específico para telefone = DD (2 dígitos) + número completo (9 dígitos)
 export const telefoneFormat = '(XX) XXXXX-XXXX';
 
-// Regex para número do cartão do SUS
-// Regex fixo (valida o valor completo)
-export const numeroCartaoSUSRegexFinal = /^\d{3} \d{4} \d{4} \d{4}$/;
-// Regex progressivo (valida conforme o usuário digita os números e os caracteres especiais)
-export const numeroCartaoSUSRegex = /^(?:\d{0,3}\s?\d{0,4}\s?\d{0,4}\s?\d{0,4})?$/;
-// Formato específico para número do cartão do SUS
-export const numeroCartaoSUSFormat = 'XXX XXXX XXXX XXXX';
-
 // Regex para validar CRM
 // Regex fixo (valida o valor completo)
 export const crmRegexFinal = /^.{5,10}$/;

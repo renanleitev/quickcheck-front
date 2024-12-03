@@ -2,7 +2,6 @@ import {
   cpfRegexFinal,
   cnpjRegexFinal,
   telefoneRegexFinal,
-  numeroCartaoSUSRegexFinal,
   crmRegexFinal,
   onlyLettersRegex,
   emailRegex,
@@ -52,21 +51,6 @@ describe('Regex Tests', () => {
 
     it('deve validar um telefone sem DDD e com hífen', () => {
       expect(telefoneRegexFinal.test('91234-5678')).toBe(true);
-    });
-  });
-
-  // Testes para Número do Cartão do SUS
-  describe('Número do Cartão do SUS Regex Tests', () => {
-    it('deve validar um número do cartão SUS completo (com espaços)', () => {
-      expect(numeroCartaoSUSRegexFinal.test('123 4567 8901 2345')).toBe(true);
-    });
-
-    it('não deve validar um número do cartão SUS sem espaços', () => {
-      expect(numeroCartaoSUSRegexFinal.test('123456789012345')).toBe(false);
-    });
-
-    it('não deve validar um número de cartão SUS inválido', () => {
-      expect(numeroCartaoSUSRegexFinal.test('1234 5678 9012 3456')).toBe(false);
     });
   });
 

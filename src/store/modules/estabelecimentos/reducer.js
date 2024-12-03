@@ -42,8 +42,8 @@ export const getEstabelecimento = createAsyncThunk(
   }
 );
 
-export const criarEstabelecimento = createAsyncThunk(
-  'estabelecimentos/criarEstabelecimento',
+export const cadastrarEstabelecimento = createAsyncThunk(
+  'estabelecimentos/cadastrarEstabelecimento',
   async (estabelecimento) => {
     try {
       // Primeiro cadastra o usuário e obtém o id como retorno
@@ -51,11 +51,15 @@ export const criarEstabelecimento = createAsyncThunk(
       const responseUsuario = await axiosInstance.post(baseUsuariosURL, usuario);
       const usuarioId = responseUsuario.data;
       // Depois, cadastra o funcionario (relacionando com o usuário)
-      const responseEstabelecimento = await axiosInstance.post(baseEstabelecimentosURL, {
+      const estabelecimentoFinal = {
         ...estabelecimento,
         usuario: { ...usuario, id: usuarioId }
-      });
-      return responseEstabelecimento.data;
+      };
+      const responseEstabelecimento = await axiosInstance.post(
+        baseEstabelecimentosURL,
+        estabelecimentoFinal
+      );
+      return { ...estabelecimentoFinal, id: responseEstabelecimento.data };
     } catch (error) {
       console.log(error);
       throw new Error('Não foi possível cadastrar usuário');
@@ -164,16 +168,16 @@ export const estabelecimentosSlice = createSlice({
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })
-      // criarEstabelecimento
-      .addCase(criarEstabelecimento.fulfilled, (state, action) => {
+      // cadastrarEstabelecimento
+      .addCase(cadastrarEstabelecimento.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         state.estabelecimento = action.payload;
         toast.success('Usuário cadastrado com sucesso! Redirecionando...');
       })
-      .addCase(criarEstabelecimento.pending, (state) => {
+      .addCase(cadastrarEstabelecimento.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
-      .addCase(criarEstabelecimento.rejected, (state, action) => {
+      .addCase(cadastrarEstabelecimento.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

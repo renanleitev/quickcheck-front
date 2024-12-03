@@ -43,9 +43,6 @@ export default function Cliente({ entidade }) {
       <Typography variant={textSize} color={color}>
         Comorbidades: {entidade?.comorbidades}
       </Typography>
-      <Typography variant={textSize} color={color}>
-        Número Cartão SUS: {entidade?.numeroCartaoSUS}
-      </Typography>
     </PerfilCard>
   );
 }

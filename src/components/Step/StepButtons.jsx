@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { Box, Button, CircularProgress } from '@mui/material';
+import React, { useCallback } from 'react';
+import { Box, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import colors from '../../config/colors';
@@ -33,14 +33,10 @@ export default function StepButtons({
   hasCustomReturnStep,
   onCustomReturnStep
 }) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleNext = useCallback(() => {
     onValidateForm && onValidateForm();
     if (onCallApi && isCallingApi) {
-      setIsLoading(true);
       onCallApi();
-      setIsLoading(false);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -66,20 +62,14 @@ export default function StepButtons({
         <Button
           variant="contained"
           onClick={handleNext}
-          disabled={disableNextButton || isLoading}
+          disabled={disableNextButton}
           sx={{
             '&.Mui-disabled': {
               color: colors.secondaryGrayColor
             }
           }}
         >
-          {isLoading ? (
-            <CircularProgress size="1rem" sx={{ color: colors.primaryWhiteColor }} />
-          ) : activeStep === stepsNumber - 1 ? (
-            'Finalizar'
-          ) : (
-            nextStepLabel
-          )}
+          {activeStep === stepsNumber - 1 ? 'Finalizar' : nextStepLabel}
         </Button>
       )}
     </Box>

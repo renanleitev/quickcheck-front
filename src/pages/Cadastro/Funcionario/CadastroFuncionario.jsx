@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { VerticalContainer } from '../../../config/GlobalStyle';
+import PropTypes from 'prop-types';
+
 import { UserRoles, sexoOptions, especialidadesOptions } from '../../../config/enums';
 import StepCount from '../../../components/Step/StepCount';
 import StepButtons from '../../../components/Step/StepButtons';
@@ -14,10 +16,18 @@ import InputPessoal from '../../../components/Input/Content/InputPessoal';
 import InputContato from '../../../components/Input/Content/InputContato';
 import InputProfissao from '../../../components/Input/Content/InputProfissao';
 import InputLogin from '../../../components/Input/Content/InputLogin';
-import PropTypes from 'prop-types';
 import { estadosBrasil } from '../../../mocks/estadosBrasil';
-import { criarFuncionario } from '../../../store/modules/funcionarios/reducer';
+import { cadastrarFuncionario } from '../../../store/modules/funcionarios/reducer';
 import { loginCadastro } from '../../../store/modules/usuarios/reducer';
+import { RoutesList } from '../../../routes/enums';
+
+// Steps que serão exibidos durante o cadastro do funcionario
+const stepsFuncionario = {
+  PESSOAL: 'Pessoal',
+  CONTATO: 'Contato',
+  PROFISSAO: 'Profissão',
+  LOGIN: 'Login'
+};
 
 CadastroFuncionario.propTypes = {
   setStartCadastro: PropTypes.func.isRequired
@@ -38,7 +48,7 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     estadoCrm: estadosBrasil.find((estado) => estado.label === 'PE').value, // Pernambuco (PE)
     sexo: sexoOptions[0].value,
     especialidade: especialidadesOptions[0].value,
-    // StepFinal
+    // InputLogin
     email: '',
     senha: '',
     repetirSenha: '',
@@ -49,7 +59,7 @@ export default function CadastroFuncionario({ setStartCadastro }) {
 
   const [activeStep, setActiveStep] = useState(0);
 
-  const steps = ['Pessoal', 'Contato', 'Profissão', 'Login'];
+  const steps = Object.values(stepsFuncionario);
 
   const widthContainer = '20rem';
 
@@ -79,31 +89,32 @@ export default function CadastroFuncionario({ setStartCadastro }) {
     repetirSenha: data.repetirSenha
   });
 
+  // Função executada quando o usuário clicar no next button
   const handleForm = useCallback(() => {
-    if (activeStep === 0) {
-      return validatePessoal();
+    switch (activeStep) {
+      case steps.indexOf(stepsFuncionario.CONTATO):
+        return validateContato();
+      case steps.indexOf(stepsFuncionario.PROFISSAO):
+        return validateProfissao();
+      case steps.indexOf(stepsFuncionario.LOGIN):
+        return validateLogin();
+      case steps.indexOf(stepsFuncionario.PESSOAL):
+        return validatePessoal();
+      default:
+        return () => {};
     }
-    if (activeStep === 1) {
-      return validateContato();
-    }
-    if (activeStep === 2) {
-      return validateProfissao();
-    }
-    if (activeStep === 3) {
-      return validateLogin();
-    }
-    return () => {};
   }, [activeStep, validateContato, validateLogin, validatePessoal, validateProfissao]);
 
+  // Renderiza diferentes inputs para cada step
   function stepRender() {
     switch (activeStep) {
-      case 1:
+      case steps.indexOf(stepsFuncionario.CONTATO):
         return <InputContato data={data} setData={setData} errors={errorsContato} />;
-      case 2:
+      case steps.indexOf(stepsFuncionario.PROFISSAO):
         return <InputProfissao data={data} setData={setData} errors={errorsProfissao} />;
-      case 3:
+      case steps.indexOf(stepsFuncionario.LOGIN):
         return <InputLogin data={data} setData={setData} errors={errorsLogin} />;
-      case 0:
+      case steps.indexOf(stepsFuncionario.PESSOAL):
       default:
         return <InputPessoal data={data} setData={setData} errors={errorsPessoal} />;
     }
@@ -113,7 +124,8 @@ export default function CadastroFuncionario({ setStartCadastro }) {
 
   const navigate = useNavigate();
 
-  const handleCriarFuncionario = () => {
+  // Função principal para cadastrar o funcionario
+  const handleCadastrarFuncionario = () => {
     const funcionario = {
       usuario: {
         nome: data.nome,
@@ -131,10 +143,11 @@ export default function CadastroFuncionario({ setStartCadastro }) {
       especialidade: data.especialidade,
       nascimento: data.nascimento
     };
-    dispatch(criarFuncionario({ ...funcionario }));
-    dispatch(loginCadastro({ ...funcionario }));
-    // Após o cadastro, redireciona para a página principal
-    navigate('/');
+    dispatch(cadastrarFuncionario({ ...funcionario })).then(() => {
+      dispatch(loginCadastro(UserRoles.FUNCIONARIO));
+      // Após o cadastro, redireciona para a página principal
+      navigate(RoutesList.Home);
+    });
   };
 
   return (
@@ -151,7 +164,8 @@ export default function CadastroFuncionario({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
-        onCallApi={handleCriarFuncionario}
+        onCallApi={handleCadastrarFuncionario}
+        isCallingApi={activeStep === steps.indexOf(stepsFuncionario.LOGIN)}
       />
     </VerticalContainer>
   );

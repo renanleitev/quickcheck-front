@@ -1,16 +1,18 @@
+import { Checkbox, Link, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import Input from '../Input';
+import { HorizontalContainer } from '../../../config/GlobalStyle';
 import { comorbidadesOptions, sexoOptions } from '../../../config/enums';
-import { numeroCartaoSUSRegex, numeroCartaoSUSFormat } from '../../../config/validationRegex';
+import colors from '../../../config/colors';
 
 InputSaude.propTypes = {
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
-  errors: PropTypes.object
+  hasCompartilharDados: PropTypes.bool
 };
 
-export default function InputSaude({ data, setData, errors }) {
+export default function InputSaude({ data, setData, hasCompartilharDados = true }) {
   return (
     <>
       <Input
@@ -29,16 +31,32 @@ export default function InputSaude({ data, setData, errors }) {
         selectList={sexoOptions}
         placeholder="Sexo"
       />
-      <Input
-        data={data}
-        setData={setData}
-        keyName="numeroCartaoSUS"
-        placeholder="Número do Cartão do SUS"
-        error={errors?.errorSaude}
-        errorText={errors?.errorSaudeText}
-        regex={numeroCartaoSUSRegex}
-        format={numeroCartaoSUSFormat}
-      />
+      {hasCompartilharDados && (
+        <HorizontalContainer style={{ flexWrap: 'nowrap' }}>
+          <Checkbox
+            size="small"
+            onChange={() => setData({ ...data, compartilharDados: !data.compartilharDados })}
+            sx={{
+              color: colors.primaryWhiteColor,
+              '&.Mui-checked': {
+                color: colors.primaryWhiteColor
+              }
+            }}
+          />
+          <Typography variant="subtitle2">
+            Autorizo que os meus dados pessoais sejam utilizados em conformidade com a{' '}
+            <Link
+              href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: colors.primaryWhiteColor }}
+            >
+              Lei Geral de Proteção de Dados
+            </Link>
+            .
+          </Typography>
+        </HorizontalContainer>
+      )}
     </>
   );
 }

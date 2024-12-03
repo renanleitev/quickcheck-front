@@ -28,7 +28,7 @@ export default function EditarPerfil() {
   // Dados alterados pelo formulário
   const [data, setData] = useState({
     ...entidade,
-    role: entidade?.usuario?.role,
+    role: usuarioRole,
     crm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[0] : '',
     estadoCrm: usuarioRole === UserRoles.FUNCIONARIO ? entidade?.crm?.split('-')[1] : '',
     nome: entidade?.usuario?.nome ?? '',
@@ -64,16 +64,16 @@ export default function EditarPerfil() {
   const handleEdit = () => {
     switch (data?.role) {
       case UserRoles.ESTABELECIMENTO:
-        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarUsuario(usuarioFinal));
         dispatch(atualizarEstabelecimento(usuarioFinal));
         break;
       case UserRoles.FUNCIONARIO:
-        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarUsuario(usuarioFinal));
         dispatch(atualizarFuncionario(usuarioFinal));
         break;
       case UserRoles.CLIENTE:
       default:
-        dispatch(atualizarUsuario(usuarioFinal.usuario));
+        dispatch(atualizarUsuario(usuarioFinal));
         dispatch(atualizarCliente(usuarioFinal));
         break;
     }
@@ -103,7 +103,7 @@ export default function EditarPerfil() {
           <HorizontalContainer>
             <InputPessoal data={data} setData={setData} />
             <InputContato data={data} setData={setData} />
-            <InputSaude data={data} setData={setData} />
+            <InputSaude data={data} setData={setData} hasCompartilharDados={false} />
           </HorizontalContainer>
         );
     }

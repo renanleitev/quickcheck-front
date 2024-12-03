@@ -8,15 +8,23 @@ import StepButtons from '../../../components/Step/StepButtons';
 import { formatCalendarDate } from '../../../hooks/formatDate';
 import useValidatePessoal from '../../../components/Input/Validation/useValidatePessoal';
 import useValidateContato from '../../../components/Input/Validation/useValidateContato';
-import useValidateSaude from '../../../components/Input/Validation/useValidateSaude';
 import useValidateLogin from '../../../components/Input/Validation/useValidateLogin';
 import InputPessoal from '../../../components/Input/Content/InputPessoal';
 import InputContato from '../../../components/Input/Content/InputContato';
 import InputSaude from '../../../components/Input/Content/InputSaude';
 import InputLogin from '../../../components/Input/Content/InputLogin';
-import { criarCliente } from '../../../store/modules/clientes/reducer';
+import { cadastrarCliente } from '../../../store/modules/clientes/reducer';
 import { loginCadastro } from '../../../store/modules/usuarios/reducer';
+import { RoutesList } from '../../../routes/enums';
 import PropTypes from 'prop-types';
+
+// Steps que serão exibidos durante o cadastro do cliente
+const stepsCliente = {
+  PESSOAL: 'Pessoal',
+  CONTATO: 'Contato',
+  SAUDE: 'Saúde',
+  LOGIN: 'Login'
+};
 
 CadastroCliente.propTypes = {
   setStartCadastro: PropTypes.func.isRequired
@@ -33,10 +41,10 @@ export default function CadastroCliente({ setStartCadastro }) {
     telefone: '',
     imagem: '', // Opcional
     // InputSaude
-    numeroCartaoSUS: '',
     sexo: sexoOptions[0].value,
     comorbidades: comorbidadesOptions[0].value,
-    // StepFinal
+    compartilharDados: false, // Checkbox para autorizar o uso de dados da LGPD
+    // InputLogin
     email: '',
     senha: '',
     repetirSenha: '',
@@ -50,7 +58,7 @@ export default function CadastroCliente({ setStartCadastro }) {
 
   const [activeStep, setActiveStep] = useState(0);
 
-  const steps = ['Pessoal', 'Contato', 'Saúde', 'Login'];
+  const steps = Object.values(stepsCliente);
 
   const widthContainer = '20rem';
 
@@ -68,11 +76,6 @@ export default function CadastroCliente({ setStartCadastro }) {
     telefone: data.telefone
   });
 
-  // Saude
-  const { validateSaude, ...errorsSaude } = useValidateSaude({
-    numeroCartaoSUS: data.numeroCartaoSUS
-  });
-
   // Login
   const { validateLogin, ...errorsLogin } = useValidateLogin({
     email: data.email,
@@ -80,31 +83,30 @@ export default function CadastroCliente({ setStartCadastro }) {
     repetirSenha: data.repetirSenha
   });
 
+  // Função executada quando o usuário clicar no next button
   const handleForm = useCallback(() => {
-    if (activeStep === 0) {
-      return validatePessoal();
+    switch (activeStep) {
+      case steps.indexOf(stepsCliente.PESSOAL):
+        return validatePessoal();
+      case steps.indexOf(stepsCliente.CONTATO):
+        return validateContato();
+      case steps.indexOf(stepsCliente.LOGIN):
+        return validateLogin();
+      default:
+        return () => {};
     }
-    if (activeStep === 1) {
-      return validateContato();
-    }
-    if (activeStep === 2) {
-      return validateSaude();
-    }
-    if (activeStep === 3) {
-      return validateLogin();
-    }
-    return () => {};
-  }, [activeStep, validateContato, validatePessoal, validateSaude, validateLogin]);
+  }, [activeStep, validateContato, validatePessoal, validateLogin]);
 
+  // Renderiza diferentes inputs para cada step
   function stepRender() {
     switch (activeStep) {
-      case 1:
+      case steps.indexOf(stepsCliente.CONTATO):
         return <InputContato data={data} setData={setData} errors={errorsContato} />;
-      case 2:
-        return <InputSaude data={data} setData={setData} errors={errorsSaude} />;
-      case 3:
+      case steps.indexOf(stepsCliente.SAUDE):
+        return <InputSaude data={data} setData={setData} />;
+      case steps.indexOf(stepsCliente.LOGIN):
         return <InputLogin data={data} setData={setData} errors={errorsLogin} />;
-      case 0:
+      case steps.indexOf(stepsCliente.PESSOAL):
       default:
         return <InputPessoal data={data} setData={setData} errors={errorsPessoal} />;
     }
@@ -114,7 +116,8 @@ export default function CadastroCliente({ setStartCadastro }) {
 
   const navigate = useNavigate();
 
-  const handleCriarCliente = () => {
+  // Função principal para cadastrar o cliente
+  const handleCadastrarCliente = () => {
     const cliente = {
       usuario: {
         nome: data.nome,
@@ -127,18 +130,22 @@ export default function CadastroCliente({ setStartCadastro }) {
       },
       latitude: data.latitude,
       longitude: data.longitude,
-      numeroCartaoSUS: data.numeroCartaoSUS,
       nascimento: data.nascimento,
       sexo: data.sexo,
       cpf: data.cpf,
-      // O paciente pode ter uma ou mais comorbidades (array)
+      // O cliente (paciente) pode ter uma ou mais comorbidades (array)
       comorbidades: [data.comorbidades]
     };
-    dispatch(criarCliente({ ...cliente }));
-    dispatch(loginCadastro({ ...cliente }));
-    // Após o cadastro, redireciona para a página principal
-    navigate('/');
+    dispatch(cadastrarCliente({ ...cliente })).then(() => {
+      dispatch(loginCadastro(UserRoles.CLIENTE));
+      // Após o cadastro, redireciona para a página principal
+      navigate(RoutesList.Home);
+    });
   };
+
+  // Desabilita o next button quando o usuário ainda não autorizou compartilhar os dados
+  const dadosPendentes =
+    activeStep === steps.indexOf(stepsCliente.SAUDE) && !data.compartilharDados;
 
   return (
     <VerticalContainer
@@ -154,7 +161,9 @@ export default function CadastroCliente({ setStartCadastro }) {
         onReset={() => setStartCadastro(false)}
         stepsNumber={steps.length}
         onValidateForm={handleForm}
-        onCallApi={handleCriarCliente}
+        onCallApi={handleCadastrarCliente}
+        isCallingApi={activeStep === steps.indexOf(stepsCliente.LOGIN)}
+        disableNextButton={dadosPendentes}
       />
     </VerticalContainer>
   );

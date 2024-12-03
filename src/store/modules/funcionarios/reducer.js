@@ -46,8 +46,8 @@ export const getFuncionariosOptions = createAsyncThunk(
   }
 );
 
-export const criarFuncionario = createAsyncThunk(
-  'funcionarios/criarFuncionario',
+export const cadastrarFuncionario = createAsyncThunk(
+  'funcionarios/cadastrarFuncionario',
   async (funcionario) => {
     try {
       // Primeiro cadastra o usuário e obtém o id como retorno
@@ -55,11 +55,12 @@ export const criarFuncionario = createAsyncThunk(
       const responseUsuario = await axiosInstance.post(baseUsuariosURL, usuario);
       const usuarioId = responseUsuario.data;
       // Depois, cadastra o funcionario (relacionando com o usuário)
-      const responseFuncionario = await axiosInstance.post(baseFuncionariosURL, {
+      const funcionarioFinal = {
         ...funcionario,
         usuario: { ...usuario, id: usuarioId }
-      });
-      return responseFuncionario.data;
+      };
+      const responseFuncionario = await axiosInstance.post(baseFuncionariosURL, funcionarioFinal);
+      return { ...funcionarioFinal, id: responseFuncionario.data };
     } catch (error) {
       console.log(error);
       throw new Error('Não foi possível cadastrar usuário');
@@ -110,16 +111,16 @@ export const funcionariosSlice = createSlice({
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })
-      // criarFuncionario
-      .addCase(criarFuncionario.fulfilled, (state, action) => {
+      // cadastrarFuncionario
+      .addCase(cadastrarFuncionario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         state.funcionario = action.payload;
         toast.success('Usuário cadastrado com sucesso! Redirecionando...');
       })
-      .addCase(criarFuncionario.pending, (state) => {
+      .addCase(cadastrarFuncionario.pending, (state) => {
         state.fetchStatus = fetchStatus.PENDING;
       })
-      .addCase(criarFuncionario.rejected, (state, action) => {
+      .addCase(cadastrarFuncionario.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
         toast.error(state.error);

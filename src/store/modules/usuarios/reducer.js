@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import axiosInstance, { baseUsuariosURL } from '../../../services/axios';
 import fetchStatus, { errorMessage } from '../../../config/fetchStatus';
+import { UserRoles } from '../../../config/enums';
 
 // Atributos comuns para todas as entidades (cliente, funcionario e estabelecimento)
 export const initialEntidade = {
@@ -63,26 +64,46 @@ export const alterarSenha = createAsyncThunk('usuarios/alterarSenha', async (log
   }
 });
 
-export const atualizarUsuario = createAsyncThunk('usuarios/atualizarUsuario', async (usuario) => {
+export const atualizarUsuario = createAsyncThunk('usuarios/atualizarUsuario', async (entidade) => {
   try {
+    const usuario = entidade?.usuario;
     const url = `${baseUsuariosURL}/${usuario?.id}`;
     await axiosInstance.put(url, usuario);
-    return usuario;
+    return entidade;
   } catch (error) {
     console.log(error);
     throw new Error('Não foi possível atualizar usuário');
   }
 });
 
+// Login realizado após o cadastro (com id da entidade e id do usuário)
+export const loginCadastro = createAsyncThunk(
+  'usuarios/loginCadastro',
+  async (usuarioRole, { getState }) => {
+    try {
+      const state = await getState();
+      switch (usuarioRole) {
+        case UserRoles.ESTABELECIMENTO:
+          return state.estabelecimentos.estabelecimento;
+        case UserRoles.FUNCIONARIO:
+          return state.funcionarios.funcionario;
+        case UserRoles.CLIENTE:
+        default:
+          return state.clientes.cliente;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error(
+        'Não foi possível realizar o login no momento. Por favor, tente novamente mais tarde.'
+      );
+    }
+  }
+);
+
 export const usuariosSlice = createSlice({
   name: 'usuarios',
   initialState,
   reducers: {
-    loginCadastro: (state, action) => {
-      state.isLoggedIn = true;
-      state.entidade = action.payload;
-      state.fetchStatus = fetchStatus.SUCCESS;
-    },
     logoutUsuario: (state) => {
       state.isLoggedIn = false;
       state.entidade = initialEntidade;
@@ -139,7 +160,21 @@ export const usuariosSlice = createSlice({
         state.error = action.error.message || errorMessage;
         toast.error(state.error);
       })
-      // atualizarCliente
+      // loginCadastro
+      .addCase(loginCadastro.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.isLoggedIn = true;
+        state.entidade = action.payload;
+      })
+      .addCase(loginCadastro.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(loginCadastro.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+        toast.error(state.error);
+      })
+      // atualizarUsuario
       .addCase(atualizarUsuario.fulfilled, (state, action) => {
         state.fetchStatus = fetchStatus.SUCCESS;
         state.entidade = action.payload;
@@ -155,6 +190,6 @@ export const usuariosSlice = createSlice({
   }
 });
 
-export const { logoutUsuario, loginCadastro, updateCoords } = usuariosSlice.actions;
+export const { logoutUsuario, updateCoords } = usuariosSlice.actions;
 
 export const usuariosReducer = usuariosSlice.reducer;
