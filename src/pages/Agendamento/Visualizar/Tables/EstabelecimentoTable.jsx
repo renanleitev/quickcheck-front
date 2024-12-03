@@ -66,7 +66,8 @@ export default function EstabelecimentoTable() {
     estabelecimentoId: estabelecimento?.id,
     status: '',
     especialidade: '',
-    nomeFuncionario: ''
+    nomeFuncionario: '',
+    nomeCliente: ''
   };
 
   const [searchData, setSearchData] = useState(initialSearchData);

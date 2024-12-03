@@ -64,7 +64,8 @@ export default function FuncionarioTable() {
   const initialSearchData = {
     funcionarioId: funcionario?.id,
     status: '',
-    nomeEstabelecimento: ''
+    nomeEstabelecimento: '',
+    nomeCliente: ''
   };
 
   const [searchData, setSearchData] = useState(initialSearchData);

@@ -93,7 +93,7 @@ export const getHorariosByClienteAndStatus = createAsyncThunk(
 
 export const getHorariosByFuncionarioAndStatus = createAsyncThunk(
   'horarios/getHorariosByFuncionarioAndStatus',
-  async ({ funcionarioId, status, nomeEstabelecimento }) => {
+  async ({ funcionarioId, status, nomeEstabelecimento, nomeCliente }) => {
     try {
       let url = `${baseHorariosURL}/search/funcionarios?funcionarioId=${funcionarioId}`;
       if (status) {
@@ -101,6 +101,9 @@ export const getHorariosByFuncionarioAndStatus = createAsyncThunk(
       }
       if (nomeEstabelecimento) {
         url += `&nomeEstabelecimento=${nomeEstabelecimento}`;
+      }
+      if (nomeCliente) {
+        url += `&nomeCliente=${nomeCliente}`;
       }
       const response = await axiosInstance.get(url);
       return response.data;
@@ -113,7 +116,7 @@ export const getHorariosByFuncionarioAndStatus = createAsyncThunk(
 
 export const getHorariosByEstabelecimentoAndStatus = createAsyncThunk(
   'horarios/getHorariosByEstabelecimentoAndStatus',
-  async ({ estabelecimentoId, status, nomeFuncionario, especialidade }) => {
+  async ({ estabelecimentoId, status, nomeFuncionario, especialidade, nomeCliente }) => {
     try {
       let url = `${baseHorariosURL}/search/estabelecimentos?estabelecimentoId=${estabelecimentoId}`;
       if (status) {
@@ -124,6 +127,9 @@ export const getHorariosByEstabelecimentoAndStatus = createAsyncThunk(
       }
       if (especialidade) {
         url += `&especialidade=${especialidade}`;
+      }
+      if (nomeCliente) {
+        url += `&nomeCliente=${nomeCliente}`;
       }
       const response = await axiosInstance.get(url);
       return response.data;

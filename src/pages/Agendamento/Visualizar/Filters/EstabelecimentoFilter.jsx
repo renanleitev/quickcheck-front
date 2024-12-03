@@ -45,6 +45,7 @@ export default function EstabelecimentoFilter({ data, initialData, setData }) {
       <Drawer open={open} onClose={() => setOpen(false)}>
         <VerticalContainer style={{ padding: '2rem' }}>
           <Typography variant="h4">Pesquisar</Typography>
+          <Input data={data} setData={setData} keyName="nomeCliente" placeholder="Paciente" />
           <Input data={data} setData={setData} keyName="nomeFuncionario" placeholder="Médico" />
           <Input
             data={data}
