@@ -52,7 +52,7 @@ export const createHorario = createAsyncThunk('horarios/createHorario', async ({
 });
 
 export const searchHorarios = createAsyncThunk(
-  'estabelecimentos/searchHorarios',
+  'horarios/searchHorarios',
   async ({ horarioAtendimento, status, especialidade, nomeFuncionario, nomeEstabelecimento }) => {
     try {
       const url = `${baseHorariosURL}/search/estabelecimentos?horarioAtendimento=${horarioAtendimento}&status=${status}&especialidade=${especialidade}&nomeEstabelecimento=${nomeEstabelecimento}&nomeFuncionario=${nomeFuncionario}`;
@@ -66,21 +66,41 @@ export const searchHorarios = createAsyncThunk(
 );
 
 export const getHorariosByClienteAndStatus = createAsyncThunk(
-  'estabelecimentos/getHorariosByClienteAndStatus',
+  'horarios/getHorariosByClienteAndStatus',
   async ({ clienteId, status, especialidade, nomeEstabelecimento, nomeFuncionario }) => {
     try {
       let url = `${baseHorariosURL}/search/clientes?clienteId=${clienteId}`;
-      if (status !== '') {
+      if (status) {
         url += `&status=${status}`;
       }
-      if (especialidade !== '') {
+      if (especialidade) {
         url += `&especialidade=${especialidade}`;
       }
-      if (nomeEstabelecimento !== '') {
+      if (nomeEstabelecimento) {
         url += `&nomeEstabelecimento=${nomeEstabelecimento}`;
       }
-      if (nomeFuncionario !== '') {
+      if (nomeFuncionario) {
         url += `&nomeFuncionario=${nomeFuncionario}`;
+      }
+      const response = await axiosInstance.get(url);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Não foi possível obter os dados');
+    }
+  }
+);
+
+export const getHorariosByFuncionarioAndStatus = createAsyncThunk(
+  'horarios/getHorariosByFuncionarioAndStatus',
+  async ({ funcionarioId, status, nomeEstabelecimento }) => {
+    try {
+      let url = `${baseHorariosURL}/search/funcionarios?funcionarioId=${funcionarioId}`;
+      if (status) {
+        url += `&status=${status}`;
+      }
+      if (nomeEstabelecimento) {
+        url += `&nomeEstabelecimento=${nomeEstabelecimento}`;
       }
       const response = await axiosInstance.get(url);
       return response.data;
@@ -158,6 +178,18 @@ export const horariosSlice = createSlice({
         state.fetchStatus = fetchStatus.PENDING;
       })
       .addCase(getHorariosByClienteAndStatus.rejected, (state, action) => {
+        state.fetchStatus = fetchStatus.FAILURE;
+        state.error = action.error.message || errorMessage;
+      })
+      // getHorariosByFuncionarioAndStatus
+      .addCase(getHorariosByFuncionarioAndStatus.fulfilled, (state, action) => {
+        state.fetchStatus = fetchStatus.SUCCESS;
+        state.horarios = action.payload;
+      })
+      .addCase(getHorariosByFuncionarioAndStatus.pending, (state) => {
+        state.fetchStatus = fetchStatus.PENDING;
+      })
+      .addCase(getHorariosByFuncionarioAndStatus.rejected, (state, action) => {
         state.fetchStatus = fetchStatus.FAILURE;
         state.error = action.error.message || errorMessage;
       })

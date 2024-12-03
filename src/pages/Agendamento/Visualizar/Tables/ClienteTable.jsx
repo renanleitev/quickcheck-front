@@ -17,6 +17,7 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 import formatDate from '../../../../hooks/formatDate';
 import ChipStatus from '../../../../components/Chip/ChipStatus';
@@ -58,7 +59,7 @@ export default function ClienteTable() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados';
 
-  const initialClienteData = {
+  const initialSearchData = {
     clienteId: cliente?.id,
     status: '',
     especialidade: '',
@@ -66,11 +67,11 @@ export default function ClienteTable() {
     nomeFuncionario: ''
   };
 
-  const [clienteData, setClienteData] = useState(initialClienteData);
+  const [searchData, setSearchData] = useState(initialSearchData);
 
   // Obtendo os horários
   useEffect(() => {
-    dispatch(getHorariosByClienteAndStatus(clienteData));
+    dispatch(getHorariosByClienteAndStatus(searchData));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,9 +79,9 @@ export default function ClienteTable() {
     <>
       <Box sx={{ alignSelf: 'flex-start' }}>
         <ClienteFilter
-          data={clienteData}
-          setData={setClienteData}
-          initialData={initialClienteData}
+          data={searchData}
+          setData={setSearchData}
+          initialData={initialSearchData}
         />
       </Box>
       <TableContainer component={Paper}>
@@ -132,13 +133,23 @@ export default function ClienteTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento)}
+                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
                   </TableCell>
-                  <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
-                  <TableCell>{horario?.funcionario?.especialidade}</TableCell>
-                  <TableCell>{horario?.estabelecimento?.usuario?.nome}</TableCell>
-                  <TableCell>{horario.estabelecimento?.usuario?.telefone}</TableCell>
-                  <TableCell>{horario.estabelecimento?.usuario?.endereco}</TableCell>
+                  <TableCell>
+                    {horario?.funcionario?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario?.funcionario?.especialidade ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario?.estabelecimento?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario.estabelecimento?.usuario?.telefone ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario.estabelecimento?.usuario?.endereco ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
                   <TableCell>
                     <ChipStatus status={horario?.status} />
                   </TableCell>

@@ -17,20 +17,25 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 import ChipStatus from '../../../../components/Chip/ChipStatus';
 import formatDate from '../../../../hooks/formatDate';
-import { getHorarios, initialHorario } from '../../../../store/modules/horarios/reducer';
+import {
+  getHorariosByFuncionarioAndStatus,
+  initialHorario
+} from '../../../../store/modules/horarios/reducer';
 import ProntuarioAction from '../Actions/ProntuarioAction';
 import CadastrarAction from '../Actions/CadastrarAction';
 import ConfirmarAction from '../Actions/ConfirmarAction';
 import ConcluirAction from '../Actions/ConcluirAction';
 import CancelarAction from '../Actions/CancelarAction';
+import FuncionarioFilter from '../Filters/FuncionarioFilter';
 
 export default function FuncionarioTable() {
   const horarios = useSelector((state) => state?.horarios?.horarios) || [];
 
-  const entidade = useSelector((state) => state?.usuarios?.entidade) || undefined;
+  const funcionario = useSelector((state) => state?.usuarios?.entidade) || undefined;
 
   const dispatch = useDispatch();
 
@@ -56,22 +61,34 @@ export default function FuncionarioTable() {
   const columnWidth = 150;
   const labelRowsPerPage = 'Resultados';
 
+  const initialSearchData = {
+    funcionarioId: funcionario?.id,
+    status: '',
+    nomeEstabelecimento: ''
+  };
+
+  const [searchData, setSearchData] = useState(initialSearchData);
+
   // Obtendo os horários
-  // TODO: Obter os horários de acordo com cada funcionário
   useEffect(() => {
-    dispatch(getHorarios());
+    dispatch(getHorariosByFuncionarioAndStatus(searchData));
   }, [dispatch]);
 
   const funcionarioData = {
-    funcionario: entidade,
-    funcionarioNome: entidade?.usuario?.nome,
-    especialidade: entidade?.especialidade
+    funcionario: funcionario,
+    funcionarioNome: funcionario?.usuario?.nome,
+    especialidade: funcionario?.especialidade
   };
 
   return (
     <>
       <Box sx={{ alignSelf: 'flex-start' }}>
         <CadastrarAction funcionarioData={funcionarioData} />
+        <FuncionarioFilter
+          data={searchData}
+          setData={setSearchData}
+          initialData={initialSearchData}
+        />
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -122,14 +139,24 @@ export default function FuncionarioTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento)}
+                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
                   </TableCell>
-                  <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
+                  <TableCell>
+                    {horario?.cliente?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
                   {/* Comorbidades é um array */}
-                  <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
-                  <TableCell>{horario?.estabelecimento?.usuario?.nome}</TableCell>
-                  <TableCell>{horario.estabelecimento?.usuario?.telefone}</TableCell>
-                  <TableCell>{horario.estabelecimento?.usuario?.endereco}</TableCell>
+                  <TableCell>
+                    {horario?.cliente?.comorbidades.join(', ') ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario?.estabelecimento?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario.estabelecimento?.usuario?.telefone ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario.estabelecimento?.usuario?.endereco ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
                   <TableCell>
                     <ChipStatus status={horario?.status} />
                   </TableCell>

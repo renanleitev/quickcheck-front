@@ -17,6 +17,7 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 import ChipStatus from '../../../../components/Chip/ChipStatus';
 import formatDate from '../../../../hooks/formatDate';
@@ -115,16 +116,24 @@ export default function EstabelecimentoTable() {
                   </TableCell>
                   {/* Informações relevantes */}
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAtendimento)}
+                    {formatDate(horario?.horarioAtendimento) ?? <DoNotDisturbAltIcon />}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {formatDate(horario?.horarioAgendamento)}
+                    {formatDate(horario?.horarioAgendamento) ?? <DoNotDisturbAltIcon />}
                   </TableCell>
-                  <TableCell>{horario?.cliente?.usuario?.nome}</TableCell>
+                  <TableCell>
+                    {horario?.cliente?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
                   {/* Comorbidades é um array */}
-                  <TableCell>{horario?.cliente?.comorbidades.join(', ')}</TableCell>
-                  <TableCell>{horario?.funcionario?.usuario?.nome}</TableCell>
-                  <TableCell>{horario?.funcionario?.especialidade}</TableCell>
+                  <TableCell>
+                    {horario?.cliente?.comorbidades.join(', ') ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario?.funcionario?.usuario?.nome ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
+                  <TableCell>
+                    {horario?.funcionario?.especialidade ?? <DoNotDisturbAltIcon />}
+                  </TableCell>
                   <TableCell>
                     <ChipStatus status={horario?.status} />
                   </TableCell>
