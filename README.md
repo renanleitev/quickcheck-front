@@ -1,4 +1,4 @@
-# QuickChek
+# QuickCheck
 
 Aplicativo para marcação de consultas.
 
