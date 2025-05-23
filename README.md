@@ -1,76 +1,77 @@
 # QuickCheck
 
-Aplicativo para marcação de consultas.
+Appointment scheduling application.
 
-## Instalação
+## Installation
 
-Instale as dependências
+Install dependencies:
 
-    npm i
+```bash
+npm i
+```
 
-Para rodar a aplicação
+To run the application:
 
-    npm start
+```bash
+npm start
+```
 
-Acesse o endereço `localhost:9090` no seu navegador para visualizar a aplicação
+Access `localhost:9090` in your browser to view the application.
 
-## Alterando as variáveis de ambiente
+## Changing environment variables
 
-Para rodar o back-end em outro endereço, renomeie o arquivo `.env.example` para `.env` e altere o valor do endereço:
+To run the backend at a different address, rename the `.env.example` file to `.env` and change the address value:
 
-    VITE_BACKEND_URL="http://localhost:8080"
+```env
+VITE_BACKEND_URL="http://localhost:8080"
+```
 
-## Para logar no site (usando dados mockados)
+## Logging into the site (using mock data)
 
-1. Paciente:
+1. **Patient**:
+   - Email: carlos.silva@gmail.com
+   - Password: 123456
 
-   a. Email: carlos.silva@gmail.com
+2. **Doctor**:
+   - Email: dr.roberto.mendes@hospital.com
+   - Password: 123456
 
-   b. Senha: 123456
+3. **Hospital**:
+   - Email: contato@hospitalportugues.com.br
+   - Password: 123456
 
-2. Médico:
+## Testing the project
 
-   a. Email: dr.roberto.mendes@hospital.com
+To run tests:
 
-   b. Senha: 123456
+```bash
+npm run test
+```
 
-3. Hospital:
+To get test coverage for tested files only:
 
-   a. Email: contato@hospitalportugues.com.br
+```bash
+npm run test:coverage
+```
 
-   b. Senha: 123456
+To get test coverage for all files:
 
-## Para testar o projeto
+```bash
+npm run test:coverage:all
+```
 
-Para realizar os testes:
+To find all test files, search in the Vs Code search bar:
 
-    npm run test
+```
+describe
+```
 
-Para obter a cobertura de testes apenas dos arquivos testados:
+And click the three dots (...) to include files ending with:
 
-    npm run test:coverage
+```
+*.test.js
+```
 
-Para obter a cobertura de testes para todos os arquivos:
-
-    npm run test:coverage:all
-
-Para pesquisar todos os arquivos de testes, digite na barra de pesquisa do Vs Code:
-
-    describe
-
-E clique nos três pontos (...) para incluir arquivos terminados em:
-
-    *.test.js
-
-Exemplo:
+Example:
 
 ![alt text](src/assets/image.png)
-
-## Equipe
-
-- Flávio Raposo
-- João Pedro Marinho
-- José Adeilton
-- Renan Leite Vieira
-- Rian Vinicius
-- Robério José
